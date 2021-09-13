@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <left></left>
-    <right></right>
+    <left :areaId="areaId"></left>
+    <right :areaId="areaId"></right>
     <Map></Map>
   </div>
 </template>

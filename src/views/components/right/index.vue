@@ -4,7 +4,21 @@
 
 <script>
 export default {
-  name: "index"
+  name: "index",
+  props: {
+    areaId: {
+      type: Number
+    }
+  },
+  data() {
+    return {
+    }
+  },
+  watch: {
+    areaId() {
+      console.log('areaId改变了');
+    }
+  },
 }
 </script>
 
@@ -15,7 +29,6 @@ export default {
   right: 32px;
   width: 584px;
   min-height: 800px;
-  background: #0e63f9;
 }
 
 </style>

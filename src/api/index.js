@@ -1,5 +1,13 @@
 import service from "../utils/request";
 
+// 村落概况
+export function getVillageOverview (params) {
+    return service({
+        url: '/api/villageOverview',
+        method: 'get',
+        params
+    })
+}
 // 农家乐数量分布
 export function getAgritainmentDistribution (params) {
     return service({

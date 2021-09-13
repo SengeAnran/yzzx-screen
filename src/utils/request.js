@@ -23,7 +23,7 @@ service.interceptors.request.use(
 // response 拦截器
 service.interceptors.response.use(
   response => {
-    return response.data
+    return response.data.data
   },
   error => {
     return Promise.reject(error)
