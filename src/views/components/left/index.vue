@@ -6,6 +6,9 @@
   <Panel title-name="历史文化村落保护">
     <village-protection :village-protection="villageProtection"/>
   </Panel>
+  <Panel title-name="村景">
+    <village-view />
+  </Panel>
 </div>
 </template>
 
@@ -13,11 +16,13 @@
 import { getVillageOverview } from "@/api/index"
 import VillageOverview from "./components/VillageOverview";
 import VillageProtection from "./components/VillageProtection";
+import VillageView from "./components/VillageView";
 export default {
   name: "index",
   components: {
     VillageOverview,
     VillageProtection,
+    VillageView,
   },
   props: {
     areaId: {

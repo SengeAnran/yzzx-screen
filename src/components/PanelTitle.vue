@@ -20,7 +20,7 @@ export default {
 .panel-title{
   position: relative;
   width: 100%;
-  height: 60px;
+  height: 36px;
   font-size: 22px;
   font-family: Microsoft YaHei;
   font-weight: bold;
@@ -28,11 +28,12 @@ export default {
   background-image:-webkit-linear-gradient(0deg, #79C0F6 0%, #DCEAF5 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  padding-bottom: 14px;
   .title-box{
     position: absolute;
     width: 32px;
     height: 5px;
-    bottom: 5px;
+    bottom: -4px;
     left: 0;
     background: linear-gradient(90deg, #79C0F6 0%, #C4E0F5 100%);
   }

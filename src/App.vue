@@ -9,6 +9,7 @@
 <script>
 import AppTitle from "./components/AppTitle";
 import FitScreen from "./components/FitScreen";
+import("./scss/common.scss")
 export default {
   name: 'App',
   components: {AppTitle, FitScreen},

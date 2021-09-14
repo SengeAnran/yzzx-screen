@@ -8,6 +8,14 @@ export function getVillageOverview (params) {
         params
     })
 }
+// 村景星级分类
+export function getStarRating (params) {
+    return service({
+        url: '/api/starRating',
+        method: 'get',
+        params
+    })
+}
 // 农家乐数量分布
 export function getAgritainmentDistribution (params) {
     return service({
