@@ -1,0 +1,210 @@
+<template>
+  <div class="box-content">
+    <div class="content-top">
+      <div class="item" v-for="(item, index) in dataList" :key="index">
+        <div class="item-left">
+          <div class="img">
+            <img :src="item.imgUrl" alt="">
+          </div>
+          <div class="name">
+            {{item.name}}
+          </div>
+        </div>
+        <div class="item-right">
+          <div class="number">
+            <span><CountUp :num="item.number || 0"/></span>
+            {{item.unit}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-bottom">
+      <div class="content-bottom-left">
+        <div class="item">
+          <div class="name">床位数</div>
+          <div class="number">
+            <count-up :num="bedNumber || 0" />
+            个
+          </div>
+        </div>
+        <div class="item">
+          <div class="name">餐位数</div>
+          <div class="number">
+            <count-up :num="mealNumber || 0" />
+            个
+          </div>
+        </div>
+      </div>
+      <div class="content-bottom-right">
+        <star-classification :area-id="areaId"/>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import StarClassification from "./StarClassification";
+import { getFarmhouseManagement } from "@/api/index";
+export default {
+  name: "AgritainmentManagement",
+  components: {
+    StarClassification,
+  },
+  props: {
+    areaId: {
+      type: Number
+    }
+  },
+  data() {
+    return {
+      dataList: [
+        {
+          name: '农家乐总数',
+          imgUrl: require('./img/njlzs.png'),
+          number: 100,
+          unit: '家',
+        },
+        {
+          name: '从业人数',
+          imgUrl: require('./img/cyrs.png'),
+          number: 100,
+          unit: '人',
+        },
+        {
+          name: ' 经营收入',
+          imgUrl: require('./img/jjsr.png'),
+          number: 500,
+          unit: '万元',
+        },
+        {
+          name: ' 带动农户数',
+          imgUrl: require('./img/ddnhs.png'),
+          number: 100,
+          unit: '户',
+        },
+      ],
+      bedNumber: 300,
+      mealNumber: 9800,
+    }
+  },
+  mounted() {
+    this.getData()
+  },
+  methods: {
+    getData() {
+      const data = {
+        areaId: this.areaId,
+      }
+      getFarmhouseManagement(data).then((res) => {
+        console.log(res);
+        this.bedNumber = res.query2.bedNum;
+        this.mealNumber = res.query2.mealsNum;
+        this.dataList[0].number = res.query1;
+        this.dataList[1].number = res.query2.engagedNum;
+        this.dataList[2].number = Number(res.query2.revenue.toFixed(0));
+        this.dataList[3].number = res.query2.farmerHouse;
+      });
+    },
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.box-content {
+  margin-top: 11px;
+  .content-top{
+    display: flex;
+    flex-wrap: wrap;
+    .item{
+      height: 43px;
+      width: 50%;
+      display: flex;
+      .item-left{
+        width: 165px;
+        display: flex;
+        .img {
+
+        }
+        .name {
+          font-size: 16px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #FEFFFF;
+          line-height: 40px;
+        }
+      }
+      .item-right{
+        .number {
+          span {
+            //width: 49px;
+            font-size: 24px;
+            font-family: Microsoft YaHei;
+            font-weight: bold;
+            font-style: italic;
+            background: linear-gradient(0deg, #A9D4F5 0%, #FAFDFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            padding-right: 5px;
+            margin-right: 4px;
+          }
+          font-size: 14px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: rgba(254, 255, 255, 0.45);
+        }
+      }
+    }
+  }
+  .content-bottom{
+    display: flex;
+    height: 132px;
+    .content-bottom-left{
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 130px;
+      .item{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        flex: 1;
+        .name {
+          font-size: 16px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #FFFFFF;
+          line-height: 30px;
+          opacity: 0.85;
+
+        }
+        .number{
+          span {
+            font-size: 24px;
+            font-family: Microsoft YaHei;
+            font-weight: bold;
+            color: #FFFFFF;
+            line-height: 30px;
+
+            background: linear-gradient(0deg, #79C0F6 0%, #DCEAF5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            margin-right: 6px;
+          }
+          font-size: 14px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: rgba(255, 255, 255, 0.45);
+          line-height: 30px;
+        }
+      }
+    }
+    .content-bottom-right{
+      width: 394px;
+      height: 100%;
+    }
+  }
+}
+
+</style>

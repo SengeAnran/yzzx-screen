@@ -10,9 +10,16 @@ export function getVillageOverview (params) {
 }
 // 村景星级分类
 export function getStarRating (params) {
-    console.log(params)
     return service({
         url: '/api/starRating',
+        method: 'get',
+        params
+    })
+}
+// 农家乐经营一件事
+export function getFarmhouseManagement (params) {
+    return service({
+        url: '/api/farmhouseManagement',
         method: 'get',
         params
     })

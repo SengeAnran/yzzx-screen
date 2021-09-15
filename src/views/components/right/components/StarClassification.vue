@@ -1,13 +1,18 @@
 <template>
   <div class="TalentType">
-    <pie-chart :list="chartData" :color="color" :is-percent="false" />
+    <pie-chart
+      :list="chartData"
+      :color="color"
+      :title=title
+      :is-percent="false"
+      legend-left="43%"
+    />
   </div>
 </template>
 
 <script>
 import PieChart from '@/components/PieChart';
-import { getStarRating } from "@/api/index"
-// import { getPersonTypeTrend } from '@/api/Overview/Innovation/api';
+import { getFarmhouseManagement } from "@/api/index";
 export default {
   props: {
     areaId: {
@@ -20,9 +25,13 @@ export default {
   },
   data() {
     return {
-      // title: '人才类型\n分布',
+      title: '星级\n分类',
       color: ['#5B9DFE', '#03C3FF', '#00DCA6', '#FFD6AF','#FF9E9F'],
-      chartData: [],
+      chartData: [
+        { name: '5星', value: 26 },
+        { name: '4星', value: 94 },
+        { name: '3星', value: 620 },
+      ],
     };
   },
   mounted() {
@@ -33,12 +42,13 @@ export default {
       const data = {
         areaId: this.areaId,
       }
-      getStarRating(data).then((json) => {
-        json.map((item) => {
-          item.name = item.typeName;
+      getFarmhouseManagement(data).then((json) => {
+        json.query3.map((item) => {
+          item.name = item.lev;
           item.value = item.num;
         });
-        this.chartData = json;
+        console.log(json)
+        this.chartData = json.query3;
       });
     },
   },

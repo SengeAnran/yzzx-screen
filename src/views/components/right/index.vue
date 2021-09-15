@@ -3,15 +3,25 @@
   <Panel title-name="村趣">
     <village-interest :area-id="areaId"/>
   </Panel>
+  <Panel title-name="农家乐经营一件事">
+    <agritainment-management :area-id="areaId"/>
+  </Panel>
+  <Panel title-name="村味">
+    <village-flavor :area-id="areaId"/>
+  </Panel>
 </div>
 </template>
 
 <script>
 import VillageInterest from "./components/VillageInterest";
+import AgritainmentManagement from "./components/AgritainmentManagement";
+import VillageFlavor from "./components/VillageFlavor";
 export default {
   name: "index",
   components: {
     VillageInterest,
+    AgritainmentManagement,
+    VillageFlavor,
   },
   props: {
     areaId: {

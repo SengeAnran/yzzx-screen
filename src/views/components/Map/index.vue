@@ -10,6 +10,12 @@ export default {
 
 <style lang="scss" scoped>
 .map {
+  position: absolute;
+  width: 688px;
+  height: 985px;
+  //background: red;
+  left: 616px;
+  top: 92px;
 }
 
 </style>

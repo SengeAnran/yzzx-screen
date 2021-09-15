@@ -18,7 +18,7 @@ export default {
     },
     color: {
       type: Array,
-      default: () => ['#5B9DFE', '#03C3FF', '#00DCA6', '#FFD6AF'],
+      default: () => ['#5B9DFE', '#03C3FF', '#00DCA6', '#FFD6AF','#FF9E9F'],
     },
     title: {
       type: String,
@@ -40,6 +40,10 @@ export default {
       type: Number,
       default: 20,
     },
+    legendLeft: {
+      type: String,
+      default: '54%'
+    }
   },
   watch: {
     list: {
@@ -82,7 +86,7 @@ export default {
             // shadowBlur: 4,
           },
           // itemGap: this.itemGap,
-          left: '54%',
+          left: this.legendLeft,
           top: 'center',
           orient: 'vertical',
           textStyle: {
@@ -129,11 +133,11 @@ export default {
             label: {
               position: 'center',
               formatter: this.title,
-              color: '#fff',
-              fontSize: 34,
-              lineHeight: 46,
+              color: '#FEFEFE',
+              fontSize: 14,
+              lineHeight: 20,
               verticalAlign: 'bottom',
-              fontFamily: 'Oswald',
+              fontFamily: 'Microsoft YaHei',
               fontWeight: 'bold',
             },
             data: this.list,

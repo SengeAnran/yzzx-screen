@@ -17,8 +17,14 @@
       <swiper-slider v-for="(item, index) in listData" :key="item.name">
         <div class="item">
           <div class="item-left">
-            <div class="item-img" style="{background: url('../img/d_1.png') }" v-if="index < 3">
-<!--            <div class="item-img" v-show="index < 3">-->
+            <div class="item-img" :style="{
+              background: `url(${require('./img/d_' +
+               (index+1) +
+               '.png')})`
+            }" v-if="index < 3">
+              {{index+1}}
+            </div>
+            <div class="item-img" v-else>
               {{index+1}}
             </div>
           </div>
@@ -26,14 +32,14 @@
         </div>
       </swiper-slider>
     </swiper>
-<!--    <div v-else class="item" v-for="(item, index) in listData" :key="item.name" >-->
-<!--      <div class="item-left">-->
-<!--        <div class="item-img" v-if="index < 3">-->
-<!--          {{index+1}}-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="item-name">{{item.name}}</div>-->
-<!--    </div>-->
+    <div v-else class="item" v-for="(item, index) in listData" :key="item.name" >
+      <div class="item-left">
+        <div class="item-img" v-if="index < 3">
+          {{index+1}}
+        </div>
+      </div>
+      <div class="item-name">{{item.name}}</div>
+    </div>
   </div>
 </div>
 </template>
@@ -47,40 +53,17 @@ export default {
     swiper,
     SwiperSlider,
   },
+  props: {
+    listData: {
+      type: Array,
+      default: () => {}
+    },
+    title: {
+      type: String,
+    }
+  },
   data() {
     return {
-      listData: [
-        {
-          name: '秀山岛景区'
-        },
-        {
-          name: '鹿栏晴沙景区'
-        },
-        {
-          name: '双石合璧'
-        },
-        {
-          name: '雁荡山'
-        },
-        {
-          name: '千岛湖'
-        },
-        {
-          name: '西塘古镇'
-        },
-        {
-          name: '莫干山'
-        },
-        // {
-        //   name: '嵊泗列岛'
-        // },
-        // {
-        //   name: '仙都景区'
-        // },
-        // {
-        //   name: '浙东大峡谷'
-        // },
-      ],
       swiperOption: {
         direction: 'vertical',
         speed: 1000,
@@ -89,11 +72,11 @@ export default {
         loop: true,
         grabCursor: true,
         // observer: true,
-        autoplay: {
-          delay: 1500,
-          disableOnInteraction: false,
-        },
-        // autoplay: true,
+        // autoplay: {
+        //   delay: 1500,
+        //   disableOnInteraction: false,
+        // },
+        autoplay: true,
       },
     }
   },
@@ -102,13 +85,13 @@ export default {
       if (lists.length < 3) {
         return;
       }
-      this.swiper.autoplay.stop();
+      this.$refs.mySwiper.swiper.autoplay.stop();
     },
     mouseleave(lists) {
       if (lists.length < 3) {
         return;
       }
-      this.swiper.autoplay.start();
+      this.$refs.mySwiper.swiper.autoplay.start();
     },
   },
 }
@@ -120,21 +103,6 @@ export default {
     margin-top: 20px;
     .item{
       display: flex;
-      &:nth-of-type(1) {
-        .item-img{
-          background: url("../img/dy.png");
-        }
-      }
-      &:nth-of-type(2) {
-        .item-img{
-          background: url("../img/dr.png");
-        }
-      }
-      &:nth-of-type(3) {
-        .item-img{
-          background: url("../img/ds.png");
-        }
-      }
       .item-left{
         width: 24px;
         height: 26px;
