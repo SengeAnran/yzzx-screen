@@ -2,7 +2,7 @@
 <div class="box-content">
   <div class="content-left">
     <div class="small-title title">星级分类</div>
-    <star-classification></star-classification>
+    <star-classification :area-id="areaId"></star-classification>
   </div>
   <div class="content-right">
     <div class="small-title title">醉美村景TOP10</div>
@@ -16,9 +16,17 @@ import StarClassification from "./components/StarClassification";
 import MostBeautifulVillage from "./components/MostBeautifulVillage";
 export default {
   name: "VillageView",
+  props: {
+    areaId: {
+      type: Number,
+    }
+  },
   components: {
     StarClassification,
     MostBeautifulVillage,
+  },
+  mounted() {
+    console.log(this.areaId);
   }
 }
 </script>

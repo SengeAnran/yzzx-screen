@@ -1,10 +1,18 @@
 <template>
-<div class="right-content"></div>
+<div class="right-content">
+  <Panel title-name="村趣">
+    <village-interest :area-id="areaId"/>
+  </Panel>
+</div>
 </template>
 
 <script>
+import VillageInterest from "./components/VillageInterest";
 export default {
   name: "index",
+  components: {
+    VillageInterest,
+  },
   props: {
     areaId: {
       type: Number

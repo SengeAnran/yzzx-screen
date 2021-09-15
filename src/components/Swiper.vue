@@ -6,8 +6,8 @@
   </div>
 </template>
 <script>
-import { Swiper } from 'swiper/vue';
-import 'swiper/css';
+import Swiper from 'swiper';
+// import "swiper/css/swiper.css";
 export default {
   name: 'Swiper',
   props: {
@@ -65,3 +65,6 @@ export default {
   },
 };
 </script>
+<style scoped>
+/*@import "../assets/css/swiper.css";*/
+</style>

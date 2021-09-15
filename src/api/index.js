@@ -10,6 +10,7 @@ export function getVillageOverview (params) {
 }
 // 村景星级分类
 export function getStarRating (params) {
+    console.log(params)
     return service({
         url: '/api/starRating',
         method: 'get',

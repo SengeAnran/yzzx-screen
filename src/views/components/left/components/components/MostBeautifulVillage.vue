@@ -1,5 +1,13 @@
 <template>
 <div class="content">
+<!--  <div  class="item" v-for="(item, index) in listData" :key="item.name" >-->
+<!--    <div class="item-left">-->
+<!--      <div class="item-img" v-show="index < 3">-->
+<!--        {{index+1}}-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="item-name">{{item.name}}</div>-->
+<!--  </div>-->
   <div
       @mouseenter="mouseEnter(listData)"
       @mouseleave="mouseleave(listData)">
@@ -9,7 +17,8 @@
       <swiper-slider v-for="(item, index) in listData" :key="item.name">
         <div class="item">
           <div class="item-left">
-            <div class="item-img" v-show="index < 3">
+            <div class="item-img" style="{background: url('../img/d_1.png') }" v-if="index < 3">
+<!--            <div class="item-img" v-show="index < 3">-->
               {{index+1}}
             </div>
           </div>
@@ -17,14 +26,14 @@
         </div>
       </swiper-slider>
     </swiper>
-    <div v-else class="item" v-for="(item, index) in listData" :key="item.name" >
-      <div class="item-left">
-        <div class="item-img" v-show="index < 3">
-          {{index+1}}
-        </div>
-      </div>
-      <div class="item-name">{{item.name}}</div>
-    </div>
+<!--    <div v-else class="item" v-for="(item, index) in listData" :key="item.name" >-->
+<!--      <div class="item-left">-->
+<!--        <div class="item-img" v-if="index < 3">-->
+<!--          {{index+1}}-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="item-name">{{item.name}}</div>-->
+<!--    </div>-->
   </div>
 </div>
 </template>
@@ -62,24 +71,24 @@ export default {
         {
           name: '莫干山'
         },
-        {
-          name: '嵊泗列岛'
-        },
-        {
-          name: '仙都景区'
-        },
-        {
-          name: '浙东大峡谷'
-        },
-
+        // {
+        //   name: '嵊泗列岛'
+        // },
+        // {
+        //   name: '仙都景区'
+        // },
+        // {
+        //   name: '浙东大峡谷'
+        // },
       ],
       swiperOption: {
         direction: 'vertical',
         speed: 1000,
         slidesPerView: 3,
-        spaceBetween: 16,
+        spaceBetween: 0,
         loop: true,
         grabCursor: true,
+        // observer: true,
         autoplay: {
           delay: 1500,
           disableOnInteraction: false,
@@ -107,6 +116,7 @@ export default {
 
 <style lang="scss" scoped>
   .content{
+    overflow: hidden;
     margin-top: 20px;
     .item{
       display: flex;
@@ -147,6 +157,17 @@ export default {
         opacity: 0.85;
       }
 
+    }
+    .swiper-container {
+      width: 100%;
+      height: 100px;
+      .swiper-slide {
+        //height: 76px;
+        box-sizing: border-box;
+      }
+      .item {
+
+      }
     }
   }
 </style>

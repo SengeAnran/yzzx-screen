@@ -1,5 +1,5 @@
 <template>
-  <div ref="pieChart"></div>
+  <div class="chart" ref="pieChart"></div>
 </template>
 
 <script>
@@ -179,3 +179,17 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+  .chart{
+    width: 100%;
+    height: 100%;
+    ::v-deep div {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    //::v-deep canvas {
+    //  width: 100% !important;
+    //  height: 100% !important;
+    //}
+  }
+</style>

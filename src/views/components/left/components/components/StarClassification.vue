@@ -1,13 +1,20 @@
 <template>
   <div class="TalentType">
-    <pie-chart :color="color" :is-percent="false" />
+    <pie-chart :list="chartData" :color="color" :is-percent="false" />
   </div>
 </template>
 
 <script>
 import PieChart from './PieChart';
+import { getStarRating } from "@/api/index"
 // import { getPersonTypeTrend } from '@/api/Overview/Innovation/api';
 export default {
+  props: {
+    areaId: {
+      type: Number,
+      default: null
+    }
+  },
   components: {
     PieChart,
   },
@@ -23,17 +30,16 @@ export default {
   },
   methods: {
     loadData() {
-      // getPersonTypeTrend()
-      //   .request()
-      //   .then((json) => {
-      //     const total = json.map((item) => item.rcsl).reduce((m, n) => m + n);
-      //     json.map((item) => {
-      //       item.name = item.rclx;
-      //       item.value = item.rcsl;
-      //       item.percent = item.value / total * 100 + '%';
-      //     });
-      //     this.chartData = json;
-      //   });
+      const data = {
+        areaId: this.areaId,
+      }
+      getStarRating(data).then((json) => {
+        json.map((item) => {
+          item.name = item.typeName;
+          item.value = item.num;
+        });
+        this.chartData = json;
+      });
     },
   },
 };

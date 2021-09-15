@@ -7,7 +7,7 @@
     <village-protection :village-protection="villageProtection"/>
   </Panel>
   <Panel title-name="村景">
-    <village-view />
+    <village-view :area-id.sync="areaId"/>
   </Panel>
 </div>
 </template>
@@ -54,7 +54,7 @@ export default {
         areaId: areaId
       }
       getVillageOverview(data).then(res => {
-        console.log(res)
+        // console.log(res)
         this.villageOverview = res
       })
     }
