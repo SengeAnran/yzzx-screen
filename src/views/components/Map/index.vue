@@ -31,11 +31,15 @@
         </div>
       </div>
     </div>
-    <div class=""></div>
+    <div class="map-bottom" ref="map"></div>
   </div>
 </template>
 
 <script>
+import * as echarts from 'echarts';
+import option from "./map_option";
+const dapuJson = require("./330000_full.json");  //保存的json文件
+
 export default {
   name: "index",
   data() {
@@ -67,6 +71,16 @@ export default {
         },
       ]
     }
+  },
+  methods: {
+    mapEchartsInit() {
+      echarts.registerMap('浙江省', dapuJson); //引入地图文件
+      const myChart = echarts.init(this.$refs.map); // 获取展示区域
+      myChart.setOption(option, true); // 添加配置
+    }
+  },
+  mounted() {
+    this.mapEchartsInit(); // 绘画地图
   }
 }
 </script>
@@ -146,6 +160,12 @@ export default {
         }
       }
     }
+  }
+  .map-bottom{
+    margin-top: 56px;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
   }
 }
 
