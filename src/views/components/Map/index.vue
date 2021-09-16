@@ -32,13 +32,41 @@
       </div>
     </div>
     <div class="map-bottom" ref="map"></div>
+    <div class="icon-button">
+      <div
+        class="item"
+        @click="iconOnClick(item, index)"
+        :class="{iconActive: activeIndex === index}"
+        v-for="(item, index) in iconList"
+        :key="index">
+        <img :src="item.url" alt="">
+        <span v-if="activeIndex === index">{{item.type}}</span>
+      </div>
+    </div>
+    <div class="toggle-layer">
+      <ul>
+        <li v-for="(item, index) in list" :key="`toggle-${index}`">
+          <span @click="selectMart(item,index)" :class="{active: item.show}"></span>
+          <img :src="item.url" alt="">
+          <span>{{item.type}}</span>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 import * as echarts from 'echarts';
+import getOption from './number_option';
 import option from "./map_option";
 const dapuJson = require("./330000_full.json");  //保存的json文件
+import {
+  getAgritainmentDistribution, // 农家乐数量分布
+  getHistoryCultureDistribution, // 历史文化重点保护村数量分布
+  getSolarTermDistribution, // 24节气村数量分布
+  getAgriculturalHeritageDistribution, // 农业文化遗产地数量分布
+} from '@/api/index';
+import {getProtectionItem} from "../../../api";
 
 export default {
   name: "index",
@@ -69,14 +97,91 @@ export default {
           number: 98,
           unit: '%'
         },
-      ]
+      ],
+      list: [
+        {
+          type: '24节气村',
+          show: false,
+          url: require('./img/jqc.png'),
+        },
+        {
+          type: '农业文化遗产地',
+          show: false,
+          url: require('./img/nywhyc.png'),
+        },
+        {
+          type: '历史文化重点保护村',
+          show: false,
+          url: require('./img/lswhzdbhc.png'),
+        },
+        {
+          type: '农家乐',
+          show: false,
+          url: require('./img/njl.png'),
+        },
+      ],
+      activeIndex: 6,
+      myChart: undefined,
+      iconList: [
+        {
+          type: '24节气村',
+          url: require('./img/icon_01.png'),
+        },
+        {
+          type: '农业文化遗产地',
+          url: require('./img/icon_02.png'),
+        },
+        {
+          type: '历史文化重点保护村',
+          url: require('./img/icon_03.png'),
+        },
+        {
+          type: '农家乐',
+          url: require('./img/icon_04.png'),
+        },
+        {
+          type: '历史文化村落保护项目',
+          url: require('./img/icon_05.png'),
+        },
+      ],
     }
   },
   methods: {
     mapEchartsInit() {
       echarts.registerMap('浙江省', dapuJson); //引入地图文件
-      const myChart = echarts.init(this.$refs.map); // 获取展示区域
-      myChart.setOption(option, true); // 添加配置
+      this.myChart = echarts.init(this.$refs.map); // 获取展示区域
+      this.myChart.setOption(option, true); // 添加配置
+    },
+    selectMart(item, index) {
+      this.list[index].show = !this.list[index].show;
+      if(this.list[index].show) {
+        this.getData(item.type)
+      }
+    },
+    getData(type) {
+      console.log(type)
+    },
+    async getIconData(type) {
+      let res
+      switch (type) {
+        case '24节气村' : { res = await getSolarTermDistribution()} break;
+        case '农业文化遗产地' : { res = await getAgriculturalHeritageDistribution() } break;
+        case '历史文化重点保护村' : { res = await getHistoryCultureDistribution() } break;
+        case '农家乐' : { res = await getAgritainmentDistribution() } break;
+        default: { res = await getProtectionItem() } break;
+      }
+      const data = res.map(item => {
+        return{
+          name: item.areaName,
+          value: item.count,
+        }
+      })
+      console.log(data)
+      this.myChart.setOption(getOption(data), true); // 添加配置
+    },
+    iconOnClick(item, index) {
+      this.activeIndex = index;
+      this.getIconData(item.type)
     }
   },
   mounted() {
@@ -166,6 +271,80 @@ export default {
     width: 100%;
     height: 600px;
     overflow: hidden;
+  }
+  .icon-button {
+    width: 100px;
+    height: 200px;
+    position: absolute;
+    top: 204px;
+    left: 24px;
+    .item {
+      width: 36px;
+      height: 36px;
+      background: rgba(121, 192, 246, 0.1);
+      border-radius: 18px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      img {
+        margin-top: 10px;
+        margin-left: 10px;
+      }
+    }
+    .iconActive {
+      width: max-content;
+      height: 36px;
+      background: #2D7EE7;
+      border-radius: 18px;
+      span{
+        display: inline-block;
+        font-size: 18px;
+        font-family: Microsoft YaHei;
+        color: #FFFFFF;
+        margin-left: 9px;
+        margin-right: 13px;
+        line-height: 36px;
+      }
+    }
+  }
+  .toggle-layer {
+    position: absolute;
+    width: 300px;
+    height: 180px;
+    //background: #00CE79;
+    top: 761px;
+    left: 24px;
+    z-index: 1000;
+    font-size: 18px;
+    font-family: Microsoft YaHei;
+    ul {
+      margin: 0;
+      padding: 0;
+      li {
+        list-style: none;
+        height: 37px;
+        line-height: 37px;
+        span {
+          display: inline-block;
+          vertical-align: middle;
+          &:nth-of-type(1) {
+            width: 16px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #FFFFFF;
+            border-radius: 2px;
+            margin-right: 5px;
+            cursor: pointer;
+          }
+        }
+        .active {
+          background: url("./img/checked-icon.png") no-repeat center !important;
+        }
+        img{
+          vertical-align: middle;
+        }
+      }
+    }
+
   }
 }
 

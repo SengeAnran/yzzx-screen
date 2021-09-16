@@ -57,3 +57,19 @@ export function getSolarTermDistribution (params) {
         params
     })
 }
+// 农业文化遗产地数量分布
+export function getAgriculturalHeritageDistribution (params) {
+    return service({
+        url: '/api/agriculturalHeritageDistribution ',
+        method: 'get',
+        params
+    })
+}
+//  历史文化村落保护项目数量分布
+export function getProtectionItem (params) {
+    return service({
+        url: '/api/protectionItem',
+        method: 'get',
+        params
+    })
+}
