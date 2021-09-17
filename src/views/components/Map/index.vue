@@ -39,7 +39,7 @@
         :class="{iconActive: activeIndex === index}"
         v-for="(item, index) in iconList"
         :key="index">
-        <img :src="item.url" alt="">
+        <div class="img" :style="{background:`url('${item.url}')`}"></div>
         <span v-if="activeIndex === index">{{item.type}}</span>
       </div>
     </div>
@@ -52,12 +52,16 @@
         </li>
       </ul>
     </div>
+    <div class="icon-numbers">
+
+    </div>
   </div>
 </template>
 
 <script>
 import * as echarts from 'echarts';
 import getOption from './number_option';
+import getSpotOption from './spot_option';
 import option from "./map_option";
 const dapuJson = require("./330000_full.json");  //保存的json文件
 import {
@@ -65,6 +69,7 @@ import {
   getHistoryCultureDistribution, // 历史文化重点保护村数量分布
   getSolarTermDistribution, // 24节气村数量分布
   getAgriculturalHeritageDistribution, // 农业文化遗产地数量分布
+  getLocationDistribution, // 打点
 } from '@/api/index';
 import {getProtectionItem} from "../../../api";
 
@@ -79,22 +84,22 @@ export default {
       statisticalData: [
         {
           name: '累计访问量',
-          number: 2000,
+          number: 2068,
           unit: '次',
         },
         {
           name: '日访问量',
-          number: 100,
+          number: 57,
           unit: '次'
         },
         {
           name: '招商/招聘发布量',
-          number: 2000,
+          number: 110,
           unit: '次'
         },
         {
           name: '应用好评率',
-          number: 98,
+          number: 96,
           unit: '%'
         },
       ],
@@ -154,12 +159,57 @@ export default {
     },
     selectMart(item, index) {
       this.list[index].show = !this.list[index].show;
-      if(this.list[index].show) {
-        this.getData(item.type)
-      }
+      this.getData();
     },
-    getData(type) {
-      console.log(type)
+    async getData() {
+      const data = {
+        q1: this.list[0].show,
+        q2: this.list[1].show,
+        q3: this.list[2].show,
+        q4: this.list[3].show,
+      }
+      const res = await getLocationDistribution(data);
+      const optionData = {
+        data1: [],
+        data2: [],
+        data3: [],
+        data4: [],
+      }
+      if(res.q1) {
+        optionData.data1 = res.q1.map(item => {
+          return {
+            name: item.name,
+            value:[Number(item.areaY), Number(item.areaX)]
+          }
+        })
+      }
+      if(res.q2) {
+        optionData.data2 = res.q2.map(item => {
+          return {
+            name: item.name,
+            value:[Number(item.areaY), Number(item.areaX)]
+          }
+        })
+      }
+      if(res.q3) {
+        optionData.data3 = res.q3.map(item => {
+          return {
+            name: item.name,
+            value:[Number(item.areaY), Number(item.areaX)]
+          }
+        })
+      }
+      if(res.q4) {
+        optionData.data4 = res.q4.map(item => {
+          return {
+            name: item.name,
+            value:[Number(item.areaY), Number(item.areaX)]
+          }
+        })
+      }
+      console.log(optionData);
+      console.log(getSpotOption(optionData))
+      this.myChart.setOption(getSpotOption(optionData),true)
     },
     async getIconData(type) {
       let res
@@ -232,6 +282,7 @@ export default {
         background: rgba(196, 224, 245, 0.4);
       }
       .name {
+        text-align: center;
         margin-left: 20px;
         margin-top: 19px;
         margin-bottom: 18px;
@@ -243,6 +294,7 @@ export default {
         opacity: 0.65;
       }
       .number {
+        text-align: center;
         margin-left: 20px;
         font-size: 16px;
         font-family: Microsoft YaHei;
@@ -252,9 +304,10 @@ export default {
           font-size: 24px;
           font-family: Microsoft YaHei;
           font-weight: bold;
-          background: linear-gradient(0deg, #79C0F6 0%, #DCEAF5 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+          color: #FFFFFF;
+          //background: linear-gradient(0deg, #79C0F6 0%, #DCEAF5 100%);
+          //-webkit-background-clip: text;
+          //-webkit-text-fill-color: transparent;
           display: inline-block;
           margin-right: 11px;
         }
@@ -279,15 +332,21 @@ export default {
     top: 204px;
     left: 24px;
     .item {
+      position: relative;
       width: 36px;
       height: 36px;
       background: rgba(121, 192, 246, 0.1);
       border-radius: 18px;
       margin-bottom: 16px;
       cursor: pointer;
-      img {
-        margin-top: 10px;
-        margin-left: 10px;
+      .img {
+        position: absolute;
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        left: -7px;
+        top: -7px;
+        background-size: contain;
       }
     }
     .iconActive {
@@ -300,7 +359,7 @@ export default {
         font-size: 18px;
         font-family: Microsoft YaHei;
         color: #FFFFFF;
-        margin-left: 9px;
+        margin-left: 40px;
         margin-right: 13px;
         line-height: 36px;
       }
@@ -337,6 +396,7 @@ export default {
           }
         }
         .active {
+          border: 0;
           background: url("./img/checked-icon.png") no-repeat center !important;
         }
         img{

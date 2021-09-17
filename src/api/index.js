@@ -73,3 +73,11 @@ export function getProtectionItem (params) {
         params
     })
 }
+//  历史文化村落保护项目数量分布
+export function getLocationDistribution (data) {
+    return service({
+        url: '/api/locationDistribution',
+        method: 'post',
+        data
+    })
+}
