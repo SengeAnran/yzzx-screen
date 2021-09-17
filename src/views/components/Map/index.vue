@@ -43,17 +43,15 @@
         <span v-if="activeIndex === index">{{item.type}}</span>
       </div>
     </div>
-    <div class="toggle-layer">
+    <div class="toggle-layer" :class="{iconClickActive: showDim}">
       <ul>
         <li v-for="(item, index) in list" :key="`toggle-${index}`">
           <span @click="selectMart(item,index)" :class="{active: item.show}"></span>
-          <img :src="item.url" alt="">
+          <img v-if="showDim" :src="item.url2" alt="">
+          <img v-else :src="item.url" alt="">
           <span>{{item.type}}</span>
         </li>
       </ul>
-    </div>
-    <div class="icon-numbers">
-
     </div>
   </div>
 </template>
@@ -108,24 +106,29 @@ export default {
           type: '24节气村',
           show: false,
           url: require('./img/jqc.png'),
+          url2: require('./img/jqc2.png'),
         },
         {
           type: '农业文化遗产地',
           show: false,
           url: require('./img/nywhyc.png'),
+          url2: require('./img/nywhycd2.png'),
         },
         {
           type: '历史文化重点保护村',
           show: false,
           url: require('./img/lswhzdbhc.png'),
+          url2: require('./img/lswhzdbhc2.png'),
         },
         {
           type: '农家乐',
           show: false,
           url: require('./img/njl.png'),
+          url2: require('./img/njl2.png'),
         },
       ],
       activeIndex: 6,
+      showDim: false, // 左下方按钮文字显示暗淡
       myChart: undefined,
       iconList: [
         {
@@ -158,6 +161,8 @@ export default {
       this.myChart.setOption(option, true); // 添加配置
     },
     selectMart(item, index) {
+      this.showDim = false;
+      this.activeIndex = 6; // 上面按钮初始化
       this.list[index].show = !this.list[index].show;
       this.getData();
     },
@@ -230,6 +235,10 @@ export default {
       this.myChart.setOption(getOption(data), true); // 添加配置
     },
     iconOnClick(item, index) {
+      this.showDim = true;
+      this.list.forEach(item => {
+        item.show = false
+      })
       this.activeIndex = index;
       this.getIconData(item.type)
     }
@@ -404,7 +413,14 @@ export default {
         }
       }
     }
-
+  }
+  .iconClickActive {
+    color: #FFFFFF;
+    opacity: 0.65;
+    img{
+      margin-left: 10px;
+      margin-right: 12px;
+    }
   }
 }
 

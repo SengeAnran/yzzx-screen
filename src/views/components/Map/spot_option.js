@@ -102,8 +102,13 @@ export default function getSpotOption (data) {
         },
         itemStyle: {
           normal: {
-            color: '#2D7EE7'
+            color: '#2D7EE7',
+            borderColor: 'rgba(45,126,231,0.2)',
+            borderWidth: 8,
           }
+        },
+        tooltip: {
+          formatter: `<div style="font-weight: bold">{a}</div><div style="margin-top: 3px">{b}</div>`
         }
       },
       {
@@ -134,8 +139,13 @@ export default function getSpotOption (data) {
         },
         itemStyle: {
           normal: {
-            color: '#1E913F'
+            color: '#1E913F',
+            borderColor: 'rgba(30,145,63,0.2)',
+            borderWidth: 8,
           }
+        },
+        tooltip: {
+          formatter: `<div style="font-weight: bold">{a}</div><div style="margin-top: 3px">{b}</div>`
         }
       },
       {
@@ -166,8 +176,13 @@ export default function getSpotOption (data) {
         },
         itemStyle: {
           normal: {
-            color: '#F6B980'
+            color: '#F6B980',
+            borderColor: 'rgba(246,185,128,0.2)',
+            borderWidth: 8,
           }
+        },
+        tooltip: {
+          formatter: `<div style="font-weight: bold">{a}</div><div style="margin-top: 3px">{b}</div>`
         }
       },
       {
@@ -198,8 +213,13 @@ export default function getSpotOption (data) {
         },
         itemStyle: {
           normal: {
-            color: '#00DCA6'
+            color: '#00DCA6',
+            borderColor: 'rgba(0,220,166,0.2)',
+            borderWidth: 8,
           }
+        },
+        tooltip: {
+          formatter: `<div style="font-weight: bold">{a}</div><div style="margin-top: 3px">{b}</div>`
         }
       },
     ]
