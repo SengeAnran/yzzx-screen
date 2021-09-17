@@ -4,16 +4,16 @@
       <div class="item" v-for="(item, index) in dataList" :key="index">
         <div class="item-left">
           <div class="img">
-            <img :src="item.imgUrl" alt="">
+            <img :src="item.imgUrl" alt="" />
           </div>
           <div class="name">
-            {{item.name}}
+            {{ item.name }}
           </div>
         </div>
         <div class="item-right">
           <div class="number">
             <span><CountUp :num="item.number || 0"/></span>
-            {{item.unit}}
+            {{ item.unit }}
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="content-bottom-right">
-        <star-classification :area-id="areaId"/>
+        <star-classification :area-id="areaId" />
       </div>
     </div>
   </div>
@@ -52,96 +52,109 @@ export default {
   },
   props: {
     areaId: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   data() {
     return {
       dataList: [
         {
-          name: '农家乐总数',
-          imgUrl: require('./img/njlzs.png'),
-          number: 100,
-          unit: '家',
+          name: "农家乐总数",
+          imgUrl: require("./img/njlzs.png"),
+          number: 0,
+          unit: "家",
         },
         {
-          name: '从业人数',
-          imgUrl: require('./img/cyrs.png'),
-          number: 100,
-          unit: '人',
+          name: "从业人数",
+          imgUrl: require("./img/cyrs.png"),
+          number: 0,
+          unit: "人",
         },
         {
-          name: ' 经营收入',
-          imgUrl: require('./img/jjsr.png'),
-          number: 500,
-          unit: '万元',
+          name: " 经营收入",
+          imgUrl: require("./img/jjsr.png"),
+          number: 0,
+          unit: "万元",
         },
         {
-          name: ' 带动农户数',
-          imgUrl: require('./img/ddnhs.png'),
-          number: 100,
-          unit: '户',
+          name: " 带动农户数",
+          imgUrl: require("./img/ddnhs.png"),
+          number: 0,
+          unit: "户",
         },
       ],
       bedNumber: 300,
       mealNumber: 9800,
-    }
+    };
   },
   mounted() {
-    this.getData()
+    this.getData();
   },
   methods: {
     getData() {
       const data = {
         areaId: this.areaId,
-      }
+      };
       getFarmhouseManagement(data).then((res) => {
-        console.log(res);
+        // let level = 1; // 根据level判断单位
+        const unit = ["万家", "万人", "亿元", "万户"];
         this.bedNumber = res.query2.bedNum;
         this.mealNumber = res.query2.mealsNum;
-        this.dataList[0].number = res.query1;
-        this.dataList[1].number = res.query2.engagedNum;
-        this.dataList[2].number = Number(res.query2.revenue.toFixed(0));
-        this.dataList[3].number = res.query2.farmerHouse;
+        this.dataList[0].number = this._normalizeData(res.query1);
+        this.dataList[1].number = this._normalizeData(res.query2.engagedNum);
+        this.dataList[2].number = this._normalizeData(
+          Number(res.query2.revenue.toFixed(0))
+        );
+        this.dataList[3].number = this._normalizeData(res.query2.farmerHouse);
+
+        this.dataList.forEach((item, i) => {
+          item.unit = unit[i];
+        });
       });
     },
-  }
-}
+
+    _normalizeData(val) {
+      // 实际情况需根据level判断
+      return Number((val / 10000).toFixed(2));
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .box-content {
   margin-top: 11px;
-  .content-top{
+  .content-top {
     display: flex;
     flex-wrap: wrap;
-    .item{
+    .item {
       height: 43px;
       width: 50%;
       display: flex;
-      .item-left{
+      .item-left {
         width: 165px;
         display: flex;
         .img {
-
         }
         .name {
           font-size: 16px;
           font-family: Microsoft YaHei;
           font-weight: 400;
-          color: #FEFFFF;
+          color: #feffff;
           line-height: 40px;
         }
       }
-      .item-right{
+      .item-right {
         .number {
+          white-space: nowrap;
+
           span {
             //width: 49px;
             font-size: 24px;
             font-family: Microsoft YaHei;
             font-weight: bold;
             font-style: italic;
-            background: linear-gradient(0deg, #A9D4F5 0%, #FAFDFF 100%);
+            background: linear-gradient(0deg, #a9d4f5 0%, #fafdff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: inline-block;
@@ -156,15 +169,15 @@ export default {
       }
     }
   }
-  .content-bottom{
+  .content-bottom {
     display: flex;
     height: 132px;
-    .content-bottom-left{
+    .content-bottom-left {
       display: flex;
       flex-direction: column;
       height: 100%;
       width: 130px;
-      .item{
+      .item {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
@@ -173,20 +186,19 @@ export default {
           font-size: 16px;
           font-family: Microsoft YaHei;
           font-weight: 400;
-          color: #FFFFFF;
+          color: #ffffff;
           line-height: 30px;
           opacity: 0.85;
-
         }
-        .number{
+        .number {
           span {
             font-size: 24px;
             font-family: Microsoft YaHei;
             font-weight: bold;
-            color: #FFFFFF;
+            color: #ffffff;
             line-height: 30px;
 
-            background: linear-gradient(0deg, #79C0F6 0%, #DCEAF5 100%);
+            background: linear-gradient(0deg, #79c0f6 0%, #dceaf5 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: inline-block;
@@ -200,11 +212,10 @@ export default {
         }
       }
     }
-    .content-bottom-right{
+    .content-bottom-right {
       width: 394px;
       height: 100%;
     }
   }
 }
-
 </style>

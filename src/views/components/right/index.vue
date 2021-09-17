@@ -1,15 +1,15 @@
 <template>
-<div class="right-content">
-  <Panel title-name="村趣">
-    <village-interest :area-id="areaId"/>
-  </Panel>
-  <Panel title-name="农家乐经营一件事">
-    <agritainment-management :area-id="areaId"/>
-  </Panel>
-  <Panel title-name="村味">
-    <village-flavor :area-id="areaId"/>
-  </Panel>
-</div>
+  <div class="right-content">
+    <Panel title-name="村趣">
+      <village-interest :area-id="areaId" />
+    </Panel>
+    <Panel title-name="农家乐经营一件事">
+      <agritainment-management :area-id="areaId" />
+    </Panel>
+    <Panel title-name="人气村品">
+      <village-flavor :area-id="areaId" />
+    </Panel>
+  </div>
 </template>
 
 <script>
@@ -25,28 +25,26 @@ export default {
   },
   props: {
     areaId: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   data() {
-    return {
-    }
+    return {};
   },
   watch: {
     areaId() {
-      console.log('areaId改变了');
-    }
+      console.log("areaId改变了");
+    },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-.right-content{
+.right-content {
   position: absolute;
   top: 59px;
   right: 32px;
   width: 584px;
   min-height: 800px;
 }
-
 </style>

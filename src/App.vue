@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <fit-screen/>
-    <app-title/>
-    <router-view/>
+    <fit-screen />
+    <app-title />
+    <router-view />
   </div>
 </template>
 
 <script>
 import AppTitle from "./components/AppTitle";
 import FitScreen from "./components/FitScreen";
-import("./scss/common.scss")
+import("./scss/common.scss");
 export default {
-  name: 'App',
-  components: {AppTitle, FitScreen},
+  name: "App",
+  components: { AppTitle, FitScreen },
   data() {
     return {
       pageSize: {
@@ -25,11 +25,10 @@ export default {
     AppTitle,
     FitScreen,
   },
-}
+};
 </script>
 
 <style lang="scss">
 #app {
-
 }
 </style>

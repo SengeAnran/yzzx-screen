@@ -3,33 +3,34 @@
   font-size: 18px;
   font-family: Microsoft YaHei;
   font-weight: bold;
-  color: #FFFFFF;
+  color: #ffffff;
   line-height: 30px;
 }
 // 黄色渐变
 .yellow-gradient {
-  background: linear-gradient(0deg, #F6B980 0%, #F5DCC4 100%);
+  background: linear-gradient(0deg, #f6b980 0%, #f5dcc4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 // 酒红色渐变
 .claret-gradient {
-  background: linear-gradient(0deg, #FF6D6E 0%, #FF9999 100%);
+  background: linear-gradient(0deg, #ff6d6e 0%, #ff9999 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 // 酒红色渐变
 .green-gradient {
-  background: linear-gradient(0deg, #00CE79 0.146484375%, #A5CFBD 98.2421875%);
+  background: linear-gradient(0deg, #00ce79 0.146484375%, #a5cfbd 98.2421875%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .yellow {
-  background: #F6B980;
+  background: #f6b980;
 }
 .claret {
- background: #FF6D6E;
+  background: #ff6d6e;
 }
-.greed {
-  background: #00CE79;
+.greed,
+.green {
+  background: #00ce79;
 }

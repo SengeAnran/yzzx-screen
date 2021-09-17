@@ -1,13 +1,13 @@
 <template>
   <div class="AppTitle-root">
-    <img src="../assets/img/top_title.png">
+    <img src="../assets/img/top_title.png" />
   </div>
 </template>
 
 <script>
 export default {
-  name: "AppTitle"
-}
+  name: "AppTitle",
+};
 </script>
 
 <style lang="scss" scoped>
@@ -18,7 +18,8 @@ export default {
   left: 0;
   right: 0;
   z-index: 999;
-  width: 100%;
+  // width: 100%;
+  width: 1920px;
   height: 90px;
   overflow: hidden;
   text-align: center;
@@ -27,5 +28,4 @@ export default {
     height: 90px;
   }
 }
-
 </style>

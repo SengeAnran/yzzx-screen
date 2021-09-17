@@ -7,14 +7,14 @@
 </template>
 
 <script>
-import {getAgritainmentDistribution} from '@/api/index'
+import { getAgritainmentDistribution } from "@/api/index";
 
-import left from './components/left'
-import right from './components/right'
-import Map from './components/Map'
+import left from "./components/left";
+import right from "./components/right";
+import Map from "./components/Map";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     left,
     right,
@@ -23,12 +23,21 @@ export default {
   data() {
     return {
       areaId: 1,
-    }
+    };
   },
   mounted() {
-    getAgritainmentDistribution().then(res => {
-      console.log(res)
-    })
-  }
-}
+    getAgritainmentDistribution().then((res) => {
+      console.log(res);
+    });
+  },
+};
 </script>
+<style lang="scss" scoped>
+.home {
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+  user-select: none;
+  background: url(../assets/img/dp_bg.png) no-repeat 100% 100%;
+}
+</style>
