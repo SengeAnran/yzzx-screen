@@ -72,7 +72,9 @@ export default function getSpotOption (data) {
             },
           }
         },
-        data: []
+        tooltip: {
+          formatter: '{b}'
+        }
       },
       {
         name: '24节气村',
