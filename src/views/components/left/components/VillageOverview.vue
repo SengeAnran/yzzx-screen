@@ -85,9 +85,10 @@ export default {
         font-family: Microsoft YaHei;
         font-weight: bold;
         line-height: 30px;
-        background: linear-gradient(0deg, #79C0F6 0%, #DCEAF5 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: white;
+        //background: linear-gradient(0deg, #79C0F6 0%, #DCEAF5 100%);
+        //-webkit-background-clip: text;
+        //-webkit-text-fill-color: transparent;
         display: inline-block;
         margin-right: 10px;
 

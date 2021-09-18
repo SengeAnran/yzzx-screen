@@ -72,6 +72,14 @@ export default function getSpotOption (data) {
             },
           }
         },
+        select: {
+          itemStyle: {
+            areaColor: '#213E5F', //区域背景颜色,
+          },
+          label: {
+            color: '#FFFFFF',
+          }
+        },
         tooltip: {
           formatter: '{b}'
         }

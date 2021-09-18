@@ -3,6 +3,7 @@
     <left :areaId="areaId"></left>
     <right :areaId="areaId"></right>
     <Map></Map>
+    <app-bottom/>
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import { getAgritainmentDistribution } from "@/api/index";
 import left from "./components/left";
 import right from "./components/right";
 import Map from "./components/Map";
+import AppBottom from "../components/AppBottom";
 
 export default {
   name: "Home",
@@ -19,6 +21,7 @@ export default {
     left,
     right,
     Map,
+    AppBottom,
   },
   data() {
     return {
