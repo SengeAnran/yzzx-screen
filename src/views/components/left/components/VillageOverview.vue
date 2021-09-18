@@ -62,7 +62,7 @@ export default {
   justify-content: space-between;
   flex-flow: wrap;
   .item {
-    margin-top: 16px;
+    margin-top: 20px;
     box-sizing: border-box;
     padding: 14px 20px;
     .item-title{

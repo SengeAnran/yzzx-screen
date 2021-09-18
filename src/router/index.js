@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import index from '../views/index'
+import config from "../utils/config";
 
 Vue.use(VueRouter)
 
@@ -13,6 +14,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  base: config.routerBase,
   routes
 })
 

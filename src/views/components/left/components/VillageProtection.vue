@@ -120,6 +120,7 @@ export default {
         opacity: 0.85;
       }
       .item-number {
+        margin-top: 12px;
         font-size: 14px;
         font-family: Microsoft YaHei;
         font-weight: 400;
@@ -142,6 +143,7 @@ export default {
     }
   }
   .content-bottom {
+    margin-top: 18px;
     .bottom-title {
       margin-bottom: 20px;
       line-height: 1;
