@@ -6,7 +6,7 @@
     <Panel title-name="农家乐经营一件事">
       <agritainment-management :area-id="areaId" />
     </Panel>
-    <Panel title-name="人气村品">
+    <Panel title-name="人气村品" style="padding-bottom:8px;">
       <village-flavor :area-id="areaId" />
     </Panel>
   </div>

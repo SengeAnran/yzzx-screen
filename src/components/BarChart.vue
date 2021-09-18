@@ -1,5 +1,5 @@
 <template>
-  <div class="bar-chart" ref="chart"></div>
+  <div class="chart" ref="chart"></div>
 </template>
 <script>
 import * as echarts from "echarts/core";
@@ -21,12 +21,6 @@ export default {
     return {
       myChart: null,
     };
-  },
-  computed: {
-    max() {
-      const valueMax = Math.max(...this.data.map((item) => item.value));
-      return (parseInt(valueMax - 1) / 10 + 1) * 10;
-    },
   },
   watch: {
     data(val) {
@@ -114,7 +108,6 @@ export default {
       this.myChart.setOption({
         xAxis: {
           gridIndex: 0,
-          // max: this.max,
           data: this.data.map((item) => item.name),
         },
         yAxis: {
@@ -124,7 +117,6 @@ export default {
           {
             name: "bar",
             data,
-            // max: this.max,
           },
         ],
       });
@@ -154,8 +146,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.bar-chart {
+.chart {
   width: 100%;
   height: 420px;
+  // ::v-deep {
+  //   div {
+  //     width: 100% !important;
+  //   }
+  //   canvas {
+  //     width: auto !important;
+  //   }
+  // }
 }
 </style>
