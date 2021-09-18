@@ -24,6 +24,7 @@ export default {
       mapType: '浙江省',
       roam: false,
       zoom: 1.2,
+      selectedMode: false,
       itemStyle: { //控制镇名文字显示
         normal: {
           areaColor: '#213E5F', //区域背景颜色
@@ -49,7 +50,7 @@ export default {
             shadowBlur: 4,
             shadowOffsetY: 4,
           },
-        }
+        },
       },
       data: []
     }
