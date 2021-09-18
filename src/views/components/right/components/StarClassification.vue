@@ -3,7 +3,9 @@
     <pie-chart
       :list="chartData"
       :color="color"
-      :title=title
+      :min-title="title"
+      showMinTitle
+      :total="totalNumber"
       :is-percent="false"
       legend-left="43%"
     />
@@ -25,7 +27,8 @@ export default {
   },
   data() {
     return {
-      title: '星级\n分类',
+      title: '农家乐',
+      totalNumber: 0,
       color: ['#5B9DFE', '#03C3FF', '#00DCA6', '#FFD6AF','#FF9E9F'],
       chartData: [
         { name: '5星', value: 26 },
@@ -38,19 +41,18 @@ export default {
     this.loadData();
   },
   methods: {
-    loadData() {
+    async loadData() {
       const data = {
         areaId: this.areaId,
       }
-      getFarmhouseManagement(data).then((json) => {
-        json.query3.map((item) => {
-          item.name = item.lev;
-          item.value = item.num;
-        });
-        console.log(json)
-        this.chartData = json.query3;
+      const json = await getFarmhouseManagement(data)
+      json.query3.map((item) => {
+        this.totalNumber = this.totalNumber + Number(item.num);
+        item.name = item.lev;
+        item.value = item.num;
       });
-    },
+      this.chartData = json.query3;
+    }
   },
 };
 </script>

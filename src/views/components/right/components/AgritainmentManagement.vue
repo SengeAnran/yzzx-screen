@@ -154,9 +154,10 @@ export default {
             font-family: Microsoft YaHei;
             font-weight: bold;
             font-style: italic;
-            background: linear-gradient(0deg, #a9d4f5 0%, #fafdff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: white;
+            //background: linear-gradient(0deg, #a9d4f5 0%, #fafdff 100%);
+            //-webkit-background-clip: text;
+            //-webkit-text-fill-color: transparent;
             display: inline-block;
             padding-right: 5px;
             margin-right: 4px;
