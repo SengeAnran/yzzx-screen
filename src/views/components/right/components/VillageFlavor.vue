@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
-import "swiper/css/swiper.css";
+// import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
+// import "swiper/css/swiper.css";
 const LIST_DATA = [
   {
     name: "桃形李",
@@ -88,16 +88,21 @@ const LIST_DATA = [
 ];
 export default {
   name: "VillageFlavor",
-  components: {
-    Swiper,
-    SwiperSlide,
-  },
-  directives: {
-    swiper: directive,
-  },
+  // components: {
+  //   Swiper,
+  //   SwiperSlide,
+  // },
+  // directives: {
+  //   swiper: directive,
+  // },
   props: {
     areaId: {
       type: Number,
+    },
+  },
+  computed: {
+    swiper() {
+      return this.$refs.mySwiper.$swiper;
     },
   },
   data() {

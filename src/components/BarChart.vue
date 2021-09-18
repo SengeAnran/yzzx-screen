@@ -120,6 +120,7 @@ export default {
           },
         ],
       });
+      this.myChart.resize();
     },
 
     _transGradientColor(c1, c2) {

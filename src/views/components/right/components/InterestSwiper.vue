@@ -21,30 +21,27 @@
   </div>
 </template>
 <script>
-import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
-import "swiper/css/swiper.css";
+// import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
+// import "swiper/css/swiper.css";
 export default {
-  components: {
-    Swiper,
-    SwiperSlide,
-  },
-  directives: {
-    swiper: directive,
+  // components: {
+  //   Swiper,
+  //   SwiperSlide,
+  // },
+  // directives: {
+  //   swiper: directive,
+  // },
+  computed: {
+    swiper() {
+      return this.$refs.mySwiper.$swiper;
+    },
   },
   data() {
     return {
       swiperOption: {
         speed: 1000,
-        // slidesPerView: 3,
-        // spaceBetween: 0,
         loop: true,
         grabCursor: true,
-        // observer: true,
-        // autoplay: {
-        //   delay: 1500,
-        //   disableOnInteraction: false,
-        // },
-        // autoplay: true,
         pagination: {
           type: "fraction",
           el: ".swiper-pagination",
@@ -81,8 +78,10 @@ export default {
 <style lang="scss" scoped>
 .swiper-wrp {
   position: relative;
+  padding-right: 4px;
   .swiper {
-    width: 524px;
+    width: 520px;
+    border-right: 2px solid #031f40;
   }
   .swiper-pagination {
     width: 48px;
@@ -102,7 +101,7 @@ export default {
     width: 32px;
     height: 100%;
     background: #031f40;
-    right: 0;
+    right: -2px;
     top: 0;
     margin-top: 0;
 
