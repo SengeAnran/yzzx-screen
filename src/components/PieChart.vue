@@ -20,7 +20,18 @@ export default {
       type: Array,
       default: () => ['#5B9DFE', '#03C3FF', '#00DCA6', '#FFD6AF','#FF9E9F'],
     },
+    total: {
+      type: Number,
+    },
     title: {
+      type: String,
+      default: '',
+    },
+    showMinTitle: {
+      type: Boolean,
+      default: false,
+    },
+    minTitle: {
       type: String,
       default: '',
     },
@@ -123,6 +134,29 @@ export default {
             } else {
               return [`{name|${name}}`, `         {percent|${item.value}${this.unit}}`].join('');
             }
+          },
+        },
+        title: {
+          show: this.showMinTitle,
+          text: `{a|${this.total}}\n {b|${this.minTitle}}`,
+          top: '35%',
+          textAlign: 'center',
+          left: '18.5%',
+          textStyle: {
+            color: '#fff',
+            rich: {
+              a: {
+                fontSize: 18,
+                fontWeight: 'bold',
+                fontFamily: 'Microsoft YaHei',
+                padding: [0, 0, 0, 5],
+              },
+              b: {
+                fontSize: 12,
+                fontFamily: 'Microsoft YaHei',
+                // padding: [0, 0, 0, 10],
+              },
+            },
           },
         },
         series: [
