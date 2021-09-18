@@ -1,9 +1,12 @@
 import service from "../utils/request";
 
 // 村落概况
+// const path = process.env.VUE_APP_ENV === "production"? "" : "/api";
+const path = "/api";
+
 export function getVillageOverview(params) {
   return service({
-    url: "/api/villageOverview",
+    url: path + "/villageOverview",
     method: "get",
     params,
   });
@@ -11,7 +14,7 @@ export function getVillageOverview(params) {
 // 村景星级分类
 export function getStarRating(params) {
   return service({
-    url: "/api/starRating",
+    url: path + "/starRating",
     method: "get",
     params,
   });
@@ -19,7 +22,7 @@ export function getStarRating(params) {
 // 农家乐经营一件事
 export function getFarmhouseManagement(params) {
   return service({
-    url: "/api/farmhouseManagement",
+    url: path + "/farmhouseManagement",
     method: "get",
     params,
   });
@@ -27,7 +30,7 @@ export function getFarmhouseManagement(params) {
 // 农家乐数量分布
 export function getAgritainmentDistribution(params) {
   return service({
-    url: "/api/agritainmentDistribution",
+    url: path + "/agritainmentDistribution",
     method: "get",
     params,
   });
@@ -35,7 +38,7 @@ export function getAgritainmentDistribution(params) {
 // 历史文化重点保护村类型
 export function getHistoryCultureType(params) {
   return service({
-    url: "/api/historyCultureType",
+    url: path + "/historyCultureType",
     method: "get",
     params,
   });
@@ -44,7 +47,7 @@ export function getHistoryCultureType(params) {
 // 历史文化重点保护村数量分布
 export function getHistoryCultureDistribution(params) {
   return service({
-    url: "/api/historyCultureDistribution",
+    url: path + "/historyCultureDistribution",
     method: "get",
     params,
   });
@@ -52,7 +55,7 @@ export function getHistoryCultureDistribution(params) {
 // 24节气村数量分布
 export function getSolarTermDistribution(params) {
   return service({
-    url: "/api/solarTermDistribution",
+    url: path + "/solarTermDistribution",
     method: "get",
     params,
   });
@@ -60,7 +63,7 @@ export function getSolarTermDistribution(params) {
 // 农业文化遗产地数量分布
 export function getAgriculturalHeritageDistribution(params) {
   return service({
-    url: "/api/agriculturalHeritageDistribution ",
+    url: path + "/agriculturalHeritageDistribution ",
     method: "get",
     params,
   });
@@ -68,7 +71,7 @@ export function getAgriculturalHeritageDistribution(params) {
 //  历史文化村落保护项目数量分布
 export function getProtectionItem(params) {
   return service({
-    url: "/api/protectionItem",
+    url: path + "/protectionItem",
     method: "get",
     params,
   });
@@ -76,7 +79,7 @@ export function getProtectionItem(params) {
 //  历史文化村落保护项目数量分布
 export function getLocationDistribution(data) {
   return service({
-    url: "/api/locationDistribution",
+    url: path + "/locationDistribution",
     method: "post",
     data,
   });
@@ -85,7 +88,7 @@ export function getLocationDistribution(data) {
 // 人气活动
 export function getPopularActivities(params) {
   return service({
-    url: "/api/popularActivities",
+    url: path + "/popularActivities",
     method: "get",
     params,
   });
