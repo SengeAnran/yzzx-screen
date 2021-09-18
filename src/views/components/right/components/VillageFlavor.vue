@@ -1,6 +1,11 @@
 <template>
   <div class="box-content">
-    <Swiper class="swiper" ref="mySwiper" :options="swiperOption">
+    <Swiper
+      class="swiper"
+      ref="mySwiper"
+      :options="swiperOption"
+      @slideChangeTransitionEnd="slideChangeTransitionEnd"
+    >
       <SwiperSlide v-for="group in Math.ceil(listData.length / 3)" :key="group">
         <section class="item-wrp">
           <div class="item" v-for="index in 3" :key="index">
@@ -122,6 +127,11 @@ export default {
     };
   },
   mounted() {},
+  methods: {
+    slideChangeTransitionEnd() {
+      this.swiper.autoplay.start();
+    },
+  },
 };
 </script>
 

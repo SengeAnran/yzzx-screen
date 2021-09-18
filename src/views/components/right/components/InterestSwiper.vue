@@ -1,13 +1,16 @@
 <template>
   <div class="swiper-wrp">
-    <Swiper class="swiper" ref="mySwiper" :options="swiperOption">
-      <SwiperSlide
-        class="item"
-        v-for="(item, index) in popularActList"
-        :key="index"
-      >
+    <Swiper
+      class="swiper"
+      ref="mySwiper"
+      :options="swiperOption"
+      @click-slide="handleClickSlide"
+      @slideChangeTransitionEnd="slideChangeTransitionEnd"
+    >
+      <SwiperSlide class="item" v-for="(item, index) in data" :key="index">
         <div class="content-img">
-          <img :src="item.imgs.url" alt="" />
+          <img :src="item.imgs[0]" alt="" />
+          <span class="pagination">1 / {{ item.imgs.length }}</span>
         </div>
         <div class="item-content">
           <div class="item-title">{{ item.title }}</div>
@@ -15,22 +18,21 @@
           <div class="item-time">举办时间：{{ item.time }}</div>
         </div>
       </SwiperSlide>
-      <div class="swiper-pagination" slot="pagination"></div>
     </Swiper>
     <div class="swiper-button-next"></div>
+    <ImageModal :show.sync="modalShow" :data="modalData" />
   </div>
 </template>
 <script>
-// import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
-// import "swiper/css/swiper.css";
+import ImageModal from "@/components/ImageModal";
 export default {
-  // components: {
-  //   Swiper,
-  //   SwiperSlide,
-  // },
-  // directives: {
-  //   swiper: directive,
-  // },
+  components: { ImageModal },
+  props: {
+    data: {
+      type: Array,
+      default: () => [],
+    },
+  },
   computed: {
     swiper() {
       return this.$refs.mySwiper.$swiper;
@@ -42,36 +44,31 @@ export default {
         speed: 1000,
         loop: true,
         grabCursor: true,
-        pagination: {
-          type: "fraction",
-          el: ".swiper-pagination",
-        },
+        autoplay: true,
         navigation: {
           nextEl: ".swiper-button-next",
           // prevEl: ".swiper-button-prev",
         },
       },
-      popularActList: [
-        {
-          title: "白露|赴一场象山海边的司机送",
-          address: "某某县某某村",
-          time: "2021年8月31日",
-          imgs: {
-            url: require("./img/cs_img1.jpeg"),
-            type: "img",
-          },
-        },
-        {
-          title: "白露|赴一场象山海边的司机送",
-          address: "某某县某某村",
-          time: "2021年8月31日",
-          imgs: {
-            url: require("./img/cs_img1.jpeg"),
-            type: "img",
-          },
-        },
-      ],
+
+      // 弹窗
+      modalShow: false,
+      modalData: [],
     };
+  },
+
+  methods: {
+    slideChangeTransitionEnd() {
+      this.swiper.autoplay.start();
+    },
+    handleClickSlide(index, reallyIndex) {
+      const data = this.data[reallyIndex];
+      this.showModal(data);
+    },
+    showModal(data) {
+      this.modalShow = true;
+      this.modalData = data.imgs;
+    },
   },
 };
 </script>
@@ -82,19 +79,6 @@ export default {
   .swiper {
     width: 520px;
     border-right: 2px solid #031f40;
-  }
-  .swiper-pagination {
-    width: 48px;
-    height: 24px;
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 12px;
-    font-size: 14px;
-    font-family: Microsoft YaHei;
-    color: #ffffff;
-    line-height: 24px;
-    position: absolute;
-    left: 186px;
-    bottom: 14px;
   }
   ::v-deep .swiper-button-next {
     position: absolute;
@@ -123,10 +107,27 @@ export default {
     width: 231px;
     height: 136px;
     margin-right: 26px;
+    cursor: pointer;
+    position: relative;
     img {
       width: 231px;
       height: 136px;
       border-radius: 2px;
+      object-fit: cover;
+    }
+    .pagination {
+      width: 48px;
+      height: 24px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: Microsoft YaHei;
+      color: #ffffff;
+      line-height: 24px;
+      position: absolute;
+      left: 180px;
+      bottom: 10px;
+      text-align: center;
     }
   }
   .item-content {
@@ -142,8 +143,8 @@ export default {
       font-weight: bold;
       color: #ffffff;
       line-height: 24px;
-      margin-bottom: 28px;
-      margin-top: 18px;
+      margin-bottom: 20px;
+      margin-top: 14px;
     }
     .item-address {
       margin-bottom: 14px;
@@ -151,8 +152,12 @@ export default {
       font-family: Microsoft YaHei;
       font-weight: 400;
       color: #ffffff;
-      line-height: 24px;
+      line-height: 20px;
       opacity: 0.65;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
     }
     .item-time {
       font-size: 16px;

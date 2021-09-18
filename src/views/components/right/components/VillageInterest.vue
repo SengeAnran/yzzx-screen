@@ -20,23 +20,15 @@
       <div class="content-title-right">共{{ popularActivities }}条</div>
     </div>
     <div class="content">
-      <!-- <div class="item" v-for="(item, index) in popularActList" :key="index">
-        <div class="content-img">
-          <img :src="item.imgs[0].url" alt="" />
-        </div>
-        <div class="item-content">
-          <div class="item-title">{{ item.title }}</div>
-          <div class="item-address">举办地：{{ item.address }}</div>
-          <div class="item-time">举办时间：{{ item.time }}</div>
-        </div>
-      </div> -->
-      <InterestSwiper />
+      <InterestSwiper :data="popularActList" />
     </div>
   </div>
 </template>
 
 <script>
 import InterestSwiper from "./InterestSwiper";
+import { getPopularActivities } from "@/api/index.js";
+
 export default {
   name: "VillageInterest",
   components: { InterestSwiper },
@@ -51,23 +43,7 @@ export default {
       allSchedule: 24,
       completionSchedule: 20,
       popularActivities: 24,
-      popularActList: [
-        {
-          title: "白露|赴一场象山海边的司机送",
-          address: "某某县某某村",
-          time: "2021年8月31日",
-          imgs: [
-            {
-              url: require("./img/cs_img1.jpeg"),
-              type: "img",
-            },
-            {
-              url: require("./img/cs_img2.jpeg"),
-              type: "img",
-            },
-          ],
-        },
-      ],
+      popularActList: [],
     };
   },
   computed: {
@@ -78,6 +54,24 @@ export default {
     },
     shiftLeft() {
       return -(419 - (this.completionSchedule / this.allSchedule) * 419);
+    },
+  },
+  created() {
+    this.getActivityData();
+  },
+  methods: {
+    getActivityData() {
+      getPopularActivities().then((res) => {
+        this.popularActivities = res.length || 0;
+        this.popularActList = res.map((item) => {
+          return {
+            title: item.activityName,
+            address: item.activityAddress,
+            time: item.gmtModified,
+            imgs: item.filePath.split(","),
+          };
+        });
+      });
     },
   },
 };
