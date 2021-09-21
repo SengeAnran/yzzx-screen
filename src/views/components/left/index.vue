@@ -32,7 +32,13 @@ export default {
   },
   data() {
     return {
-      villageOverview: {}, //村落概况
+      villageOverview: {
+        administrative: 19802,
+        beautiful: 3148,
+        solarTerms: 24,
+        agriculturalHeritage: 12,
+        historyCulture: 390,
+      }, //村落概况
       villageProtection: {
         zjpc: "7-9",
         // bhsqs: 758,
@@ -47,9 +53,9 @@ export default {
     },
   },
   mounted() {
-    console.log(process.env.NODE_ENV)
-    console.log(process.env)
-    this.getData(this.areaId);
+    // console.log(process.env.NODE_ENV)
+    // console.log(process.env)
+    // this.getData(this.areaId);
   },
   methods: {
     getData(areaId) {
