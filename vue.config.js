@@ -2,7 +2,9 @@
  * vue、webpack等配置
  * https://cli.vuejs.org/zh/config
  */
+const publicPath = process.env.VUE_APP_ENV === "production"? "/screen" : "/";
 module.exports = {
+    publicPath: publicPath,
     devServer: {
         open: true,
         proxy: {
