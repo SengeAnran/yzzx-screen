@@ -5,7 +5,7 @@ export default function getOption(data) {
     return b.value - a.value;
   }
 
-// 先进行一次降序排序，找出最大的前十个
+// 先进行一次降序排序
   data.sort(NumDescSort);
 
   return {

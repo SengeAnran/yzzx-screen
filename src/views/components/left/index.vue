@@ -47,8 +47,6 @@ export default {
     },
   },
   mounted() {
-    console.log(process.env.NODE_ENV)
-    console.log(process.env)
     this.getData(this.areaId);
   },
   methods: {

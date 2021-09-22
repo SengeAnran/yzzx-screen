@@ -67,6 +67,7 @@ export default {
           return {
             title: item.activityName,
             address: item.activityAddress,
+            addressB: item.activityAddress.length > 8?  item.activityAddress.slice(0,7) + '...' : item.activityAddress,
             time: item.gmtModified,
             imgs: item.filePath.split(","),
           };

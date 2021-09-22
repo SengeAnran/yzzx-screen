@@ -60,8 +60,8 @@
 import * as echarts from 'echarts';
 import getOption from './number_option';
 import getSpotOption from './spot_option';
-import option from "./map_option";
-const dapuJson = require("./330000_full.json");  //保存的json文件
+// import option from "./map_option";
+// const dapuJson = require("./330000_full.json");  //保存的json文件
 import {
   getAgritainmentDistribution, // 农家乐数量分布
   getHistoryCultureDistribution, // 历史文化重点保护村数量分布
@@ -70,6 +70,12 @@ import {
   getLocationDistribution, // 打点
 } from '@/api/index';
 import {getProtectionItem} from "../../../api";
+import {
+  getProviceJSON,
+  getCityJSON
+} from '@/api/get-json'
+import {mapOption} from "../../../config/mapOption";
+import {cityMap} from "../../../config/cityMap";
 
 export default {
   name: "index",
@@ -79,6 +85,7 @@ export default {
       city: '',
       area: '',
       village: '',
+
       statisticalData: [
         {
           name: '累计访问量',
@@ -129,7 +136,7 @@ export default {
       ],
       activeIndex: 6,
       showDim: false, // 左下方按钮文字显示暗淡
-      myChart: undefined,
+      myChart: null, // 实例化echarts
       iconList: [
         {
           type: '24节气村',
@@ -152,19 +159,119 @@ export default {
           url: require('./img/icon_05.png'),
         },
       ],
+
+      areaMap: cityMap.areaMap, //  省行政区划，用于数据的查找，按行政区划查数据
+      mapData: [], // 当前地图上的地区
+      option: {...mapOption.basicOption}, // map的相关配置
+      deepTree: [],// 点击地图时push，点返回时pop
+      areaName: '浙江省', // 当前地名
+      areaCode: '330000', // 当前行政区划
+      areaLevel: 'province', // 当前级别
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.mapEchartsInit(); // 绘画地图
+      this.myChart.on('click', this.echartsMapClick)
+    })
+
+  },
   methods: {
+    // 初次加载绘制地图
     mapEchartsInit() {
-      echarts.registerMap('浙江省', dapuJson); //引入地图文件
+      // echarts.registerMap('浙江省', dapuJson); //引入地图文件
       this.myChart = echarts.init(this.$refs.map); // 获取展示区域
-      this.myChart.setOption(option, true); // 添加配置
+      // this.myChart.setOption(option, true); // 添加配置
+      if (this.areaCode === '330000') {
+        this.requestGetProvinceJson();
+      } else {
+        this.requestGetCityJSON({areaName: this.areaName, areaCode: this.areaCode})
+      }
+
+    },
+    // 地图点击
+    echartsMapClick(params) {
+      console.log(params)
+      this.areaName = params.data.areaName;
+      if (params.name in this.areaMap) {
+        this.areaCode = params.data.areaCode;
+        this.areaLevel = params.data.areaLevel;
+        //如果点击的是11个市，绘制选中地区的二级地图
+        this.requestGetCityJSON(params.data);
+      } else {
+        return;
+      }
+      this.$emit('map-change', params.data);
+    },
+    //绘制浙江省地图
+    requestGetProvinceJson() {
+      getProviceJSON().then(res => {
+        let arr = [];
+        for (let i = 0; i < res.features.length; i++) {
+          let obj = {
+            name: res.features[i].properties.name,
+            areaName: res.features[i].properties.name,
+            areaCode: res.features[i].properties.adcode,
+            areaLevel: 'city',
+          };
+          arr.push(obj)
+        }
+        this.mapData = arr;
+        this.deepTree.push({
+          mapData: arr,
+          params: {name: '浙江省', areaName: '浙江省', areaLevel: 'province', areaCode: '330000'}
+        });
+        //注册地图
+        this.$echarts.registerMap('浙江省', res);
+        //绘制地图
+        this.renderMap('浙江省', arr);
+      });
+    },
+    // 加载市级地图
+    requestGetCityJSON(params) {
+      console.log(params)
+      this.areaLevel = params.areaLevel;
+      getCityJSON(params.areaCode).then(res => {
+        console.log(res)
+        this.$echarts.registerMap(params.areaName, res);
+        let arr = [];
+        for (let i = 0; i < res.features.length; i++) {
+          let obj = {
+            name: res.features[i].properties.name,
+            areaName: res.features[i].properties.name,
+            areaCode: res.features[i].id,
+            areaLevel: 'districts',
+          };
+          arr.push(obj)
+        }
+        this.mapData = arr;
+        this.deepTree.push({mapData: arr, params: params});
+        console.log(arr)
+        this.renderMap(params.areaName, arr);
+      })
     },
     selectMart(item, index) {
       this.showDim = false;
       this.activeIndex = 6; // 上面按钮初始化
       this.list[index].show = !this.list[index].show;
       this.getData();
+    },
+    renderMap(map, data) {
+      this.option.series = [
+        {
+          name: map,
+          mapType: map,
+          ...mapOption.seriesOption,
+          data: data,
+        }
+      ];
+      this.option.geo = {
+        map: map,
+        ...mapOption.basicOption.geo
+      }
+      //渲染地图
+      console.log(this.option)
+      this.myChart.setOption(this.option);
     },
     async getData() {
       const data = {
@@ -212,8 +319,6 @@ export default {
           }
         })
       }
-      console.log(optionData);
-      console.log(getSpotOption(optionData))
       this.myChart.setOption(getSpotOption(optionData),true)
     },
     async getIconData(type) {
@@ -231,7 +336,6 @@ export default {
           value: item.count,
         }
       })
-      console.log(data)
       this.myChart.setOption(getOption(data), true); // 添加配置
     },
     iconOnClick(item, index) {
@@ -243,9 +347,6 @@ export default {
       this.getIconData(item.type)
     }
   },
-  mounted() {
-    this.mapEchartsInit(); // 绘画地图
-  }
 }
 </script>
 

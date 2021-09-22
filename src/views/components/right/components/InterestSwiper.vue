@@ -14,7 +14,7 @@
         </div>
         <div class="item-content">
           <div class="item-title">{{ item.title }}</div>
-          <div class="item-address">举办地：{{ item.address }}</div>
+          <div class="item-address" :title="item.address">举办地：{{ item.addressB }}</div>
           <div class="item-time">举办时间：{{ item.time }}</div>
         </div>
       </SwiperSlide>
@@ -154,10 +154,12 @@ export default {
       color: #ffffff;
       line-height: 20px;
       opacity: 0.65;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
+      //display: -webkit-box;
+      //-webkit-box-orient: vertical;
+      //-webkit-line-clamp: 2;
+      //overflow: hidden;
+      //text-overflow: ellipsis;
+      //white-space: nowrap;
     }
     .item-time {
       font-size: 16px;
