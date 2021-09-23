@@ -2,13 +2,13 @@
   <div class="home">
     <left :areaId="areaId"></left>
     <right :areaId="areaId"></right>
-    <Map></Map>
+    <Map @map-change="mapChange"></Map>
     <app-bottom/>
   </div>
 </template>
 
 <script>
-import { getAgritainmentDistribution } from "@/api/index";
+// import { getAgritainmentDistribution } from "@/api/index";
 
 import left from "./components/left";
 import right from "./components/right";
@@ -29,10 +29,23 @@ export default {
     };
   },
   mounted() {
-    getAgritainmentDistribution().then((res) => {
-      console.log(res);
-    });
+    // getAgritainmentDistribution().then((res) => {
+    //   console.log(res);
+    // });
   },
+  methods: {
+    mapChange(data) {
+      if (data.areaLevel === 'city') {
+        this.areaId = Number(data.areaCode)/100;
+      } else if ( data.areaLevel === 'province') {
+        this.areaId = null
+      }
+      else {
+        this.areaId = Number(data.areaCode);
+      }
+      console.log( this.areaId)
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

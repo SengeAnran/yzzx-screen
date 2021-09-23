@@ -1,4 +1,4 @@
-export default function getOption(data) {
+export default function getOption(data,map) {
 
 
   function NumDescSort(a, b) {
@@ -35,7 +35,7 @@ export default function getOption(data) {
       {
         name: "分布数量",
         type: "map",
-        mapType: "浙江省",
+        mapType: map,
         // left: '100',
         // width: '60%',
         roam: false,

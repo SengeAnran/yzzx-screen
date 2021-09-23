@@ -46,6 +46,11 @@ export default {
       popularActList: [],
     };
   },
+  watch: {
+    areaId() {
+      this.getActivityData();
+    },
+  },
   computed: {
     percentage() {
       return Number(

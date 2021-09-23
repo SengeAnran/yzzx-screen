@@ -28,6 +28,11 @@ export default {
       chartData: [],
     };
   },
+  watch: {
+    areaId() {
+      this.loadData();
+    },
+  },
   mounted() {
     this.loadData();
   },

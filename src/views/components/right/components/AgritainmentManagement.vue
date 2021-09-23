@@ -87,6 +87,11 @@ export default {
       mealNumber: 9800,
     };
   },
+  watch: {
+    areaId() {
+      this.getData();
+    },
+  },
   mounted() {
     this.getData();
   },

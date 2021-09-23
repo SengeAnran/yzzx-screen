@@ -4,19 +4,19 @@
       <div class="img">
         <img src="./img/wz.png" alt="">
       </div>
-      <div class="address-name">{{ province }}</div>
+      <div class="address-name" @click="returnProvince">{{ province }}</div>
       <div v-if="city" class="img">
         <img src="./img/wz.png" alt="">
       </div>
-      <div class="address-name">{{ city }}</div>
+      <div class="address-name" @click="returnCity">{{ city }}</div>
       <div v-if="area" class="img">
         <img src="./img/wz.png" alt="">
       </div>
       <div class="address-name">{{ area }}</div>
-      <div v-if="village" class="img">
-        <img src="./img/wz.png" alt="">
-      </div>
-      <div class="address-name">{{ village }}</div>
+<!--      <div v-if="village" class="img">-->
+<!--        <img src="./img/wz.png" alt="">-->
+<!--      </div>-->
+<!--      <div class="address-name">{{ village }}</div>-->
     </div>
     <div class="statistical-data">
       <div class="item" v-for="(item, index) in statisticalData" :key="index">
@@ -60,8 +60,6 @@
 import * as echarts from 'echarts';
 import getOption from './number_option';
 import getSpotOption from './spot_option';
-// import option from "./map_option";
-// const dapuJson = require("./330000_full.json");  //保存的json文件
 import {
   getAgritainmentDistribution, // 农家乐数量分布
   getHistoryCultureDistribution, // 历史文化重点保护村数量分布
@@ -84,7 +82,7 @@ export default {
       province: '浙江省',
       city: '',
       area: '',
-      village: '',
+      // village: '',
 
       statisticalData: [
         {
@@ -160,6 +158,7 @@ export default {
         },
       ],
 
+      areaId: null, // 获取数据时用的区域id
       areaMap: cityMap.areaMap, //  省行政区划，用于数据的查找，按行政区划查数据
       mapData: [], // 当前地图上的地区
       option: {...mapOption.basicOption}, // map的相关配置
@@ -191,17 +190,22 @@ export default {
     },
     // 地图点击
     echartsMapClick(params) {
-      console.log(params)
-      this.areaName = params.data.areaName;
-      if (params.name in this.areaMap) {
-        this.areaCode = params.data.areaCode;
-        this.areaLevel = params.data.areaLevel;
-        //如果点击的是11个市，绘制选中地区的二级地图
-        this.requestGetCityJSON(params.data);
-      } else {
-        return;
+      if(this.activeIndex > 4 && this.list.every(item => {
+        return item.show === false
+      })) {
+        if (params.name in this.areaMap) { // 点击的为市级
+          this.areaName = params.data.areaName;
+          this.areaCode = params.data.areaCode;
+          this.areaLevel = params.data.areaLevel;
+          //如果点击的是11个市，绘制选中地区的二级地图
+          this.city = params.name;
+          this.areaId = String(Number(params.data.areaCode)/100);
+          this.requestGetCityJSON(params.data);
+        } else {
+          console.log('点击为县市级')
+          // return;
+        }
       }
-      this.$emit('map-change', params.data);
     },
     //绘制浙江省地图
     requestGetProvinceJson() {
@@ -221,6 +225,7 @@ export default {
           mapData: arr,
           params: {name: '浙江省', areaName: '浙江省', areaLevel: 'province', areaCode: '330000'}
         });
+        this.$emit('map-change', this.deepTree[0].params);
         //注册地图
         this.$echarts.registerMap('浙江省', res);
         //绘制地图
@@ -229,33 +234,43 @@ export default {
     },
     // 加载市级地图
     requestGetCityJSON(params) {
-      console.log(params)
+      // console.log(params)
       this.areaLevel = params.areaLevel;
       getCityJSON(params.areaCode).then(res => {
-        console.log(res)
         this.$echarts.registerMap(params.areaName, res);
         let arr = [];
         for (let i = 0; i < res.features.length; i++) {
           let obj = {
             name: res.features[i].properties.name,
             areaName: res.features[i].properties.name,
-            areaCode: res.features[i].id,
+            areaCode: res.features[i].properties.adcode,
             areaLevel: 'districts',
           };
           arr.push(obj)
         }
         this.mapData = arr;
         this.deepTree.push({mapData: arr, params: params});
-        console.log(arr)
+        this.$emit('map-change', params);
         this.renderMap(params.areaName, arr);
       })
     },
-    selectMart(item, index) {
+    // 打点
+    async selectMart(item, index) {
       this.showDim = false;
       this.activeIndex = 6; // 上面按钮初始化
       this.list[index].show = !this.list[index].show;
-      this.getData();
+      if(this.list.every(item => {
+        return item.show === false
+      })) {
+        const map = this.deepTree[this.deepTree.length-1].params.areaName;
+        const data = this.deepTree[this.deepTree.length-1].mapData;
+        await this.getData();
+        this.renderMap(map,data)
+      } else {
+        this.getData();
+      }
     },
+    // 绘制地图
     renderMap(map, data) {
       this.option.series = [
         {
@@ -270,8 +285,23 @@ export default {
         ...mapOption.basicOption.geo
       }
       //渲染地图
-      console.log(this.option)
-      this.myChart.setOption(this.option);
+      this.myChart.setOption(this.option,true);
+    },
+    // 返回到省级
+    returnProvince() {
+      this.deepTree = []; // 层级数组清空
+      this.city = '';
+      this.area = '';
+      this.areaId = null;
+      this.areaName = '浙江省';
+      this.requestGetProvinceJson();
+    },
+    returnCity() {
+      this.area = '';
+      this.areaId = String( Number(this.deepTree[1].params.areaCode)/100);
+      this.areaName = this.deepTree[1].params.areaName;
+      this.deepTree.splice(2,1)
+      this.requestGetCityJSON(this.deepTree[1].params);
     },
     async getData() {
       const data = {
@@ -279,6 +309,7 @@ export default {
         q2: this.list[1].show,
         q3: this.list[2].show,
         q4: this.list[3].show,
+        areaId: this.areaId,
       }
       const res = await getLocationDistribution(data);
       const optionData = {
@@ -319,7 +350,7 @@ export default {
           }
         })
       }
-      this.myChart.setOption(getSpotOption(optionData),true)
+      this.myChart.setOption(getSpotOption(optionData, this.areaName),true)
     },
     async getIconData(type) {
       let res
@@ -336,15 +367,22 @@ export default {
           value: item.count,
         }
       })
-      this.myChart.setOption(getOption(data), true); // 添加配置
+      this.myChart.setOption(getOption(data,this.areaName), true); // 添加配置
     },
     iconOnClick(item, index) {
       this.showDim = true;
       this.list.forEach(item => {
         item.show = false
       })
-      this.activeIndex = index;
-      this.getIconData(item.type)
+      if( this.activeIndex === index){
+        this.activeIndex = 7
+        const map = this.deepTree[this.deepTree.length-1].params.areaName;
+        const data = this.deepTree[this.deepTree.length-1].mapData;
+        this.renderMap(map,data)
+      } else {
+        this.activeIndex = index;
+        this.getIconData(item.type)
+      }
     }
   },
 }
@@ -371,6 +409,9 @@ export default {
       &:nth-of-type(1) {
         margin-left: 0;
       }
+    }
+    .address-name{
+      cursor: pointer;
     }
   }
   .statistical-data {

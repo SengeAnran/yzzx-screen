@@ -93,3 +93,13 @@ export function getPopularActivities(params) {
     params,
   });
 }
+
+
+// （市级以下）24节气村数量分布
+export function getCitySolarTermDistribution(params) {
+  return service({
+    url: path + "/citySolarTermDistribution",
+    method: "get",
+    params,
+  });
+}

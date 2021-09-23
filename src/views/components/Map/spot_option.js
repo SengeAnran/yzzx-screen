@@ -1,11 +1,11 @@
-export default function getSpotOption (data) {
+export default function getSpotOption (data,map) {
   return {
     color: ['#1E913F',''],
     tooltip: {
       trigger: "item"
     },
     geo: {
-      map: '浙江省', // 使用 registerMap 注册的地图名称。
+      map: map, // 使用 registerMap 注册的地图名称。
       show: true, // 是否显示地理坐标系组件。
       roam: false, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移，
       zoom: 1.2,
@@ -42,7 +42,7 @@ export default function getSpotOption (data) {
       {
         name: '浙农游',
         type: 'map',
-        mapType: '浙江省',
+        mapType: map,
         roam: false,
         zoom: 1.2,
         itemStyle: { //控制镇名文字显示

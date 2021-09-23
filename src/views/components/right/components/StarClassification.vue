@@ -37,6 +37,11 @@ export default {
       ],
     };
   },
+  watch: {
+    areaId() {
+      this.loadData();
+    },
+  },
   mounted() {
     this.loadData();
   },
