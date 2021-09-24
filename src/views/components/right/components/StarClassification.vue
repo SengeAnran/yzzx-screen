@@ -47,6 +47,7 @@ export default {
   },
   methods: {
     async loadData() {
+      this.totalNumber = 0;
       const data = {
         areaId: this.areaId,
       }

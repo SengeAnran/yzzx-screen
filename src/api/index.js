@@ -103,3 +103,39 @@ export function getCitySolarTermDistribution(params) {
     params,
   });
 }
+
+// （市级以下）农业文化遗产地数量分布
+export function getCityAgriculturalHeritage(params) {
+  return service({
+    url: path + "/cityAgriculturalHeritage",
+    method: "get",
+    params,
+  });
+}
+
+// （市级以下）历史文化重点保护村数量分布
+export function getCityHistoryCulture(params) {
+  return service({
+    url: path + "/cityHistoryCulture",
+    method: "get",
+    params,
+  });
+}
+
+// （市级以下）农家乐数量分布
+export function getCityAgritainment(params) {
+  return service({
+    url: path + "/cityAgritainment",
+    method: "get",
+    params,
+  });
+}
+
+// （市级以下）历史文化村落保护项目数量分布
+export function getCityProtectionItem(params) {
+  return service({
+    url: path + "/cityProtectionItem",
+    method: "get",
+    params,
+  });
+}

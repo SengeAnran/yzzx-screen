@@ -66,6 +66,11 @@ import {
   getSolarTermDistribution, // 24节气村数量分布
   getAgriculturalHeritageDistribution, // 农业文化遗产地数量分布
   getLocationDistribution, // 打点
+  getCitySolarTermDistribution, // （市级以下）24节气村数量分布
+  getCityAgriculturalHeritage, // （市级以下）农业文化遗产地数量分布
+  getCityHistoryCulture, // （市级以下）历史文化重点保护村数量分布
+  getCityAgritainment, // （市级以下）农家乐数量分布
+  getCityProtectionItem, // （市级以下）历史文化村落保护项目数量分布
 } from '@/api/index';
 import {getProtectionItem} from "../../../api";
 import {
@@ -294,13 +299,15 @@ export default {
       this.area = '';
       this.areaId = null;
       this.areaName = '浙江省';
+      this.initIconAndButton();
       this.requestGetProvinceJson();
     },
     returnCity() {
       this.area = '';
       this.areaId = String( Number(this.deepTree[1].params.areaCode)/100);
       this.areaName = this.deepTree[1].params.areaName;
-      this.deepTree.splice(2,1)
+      this.deepTree.splice(2,1);
+      this.initIconAndButton();
       this.requestGetCityJSON(this.deepTree[1].params);
     },
     async getData() {
@@ -354,13 +361,27 @@ export default {
     },
     async getIconData(type) {
       let res
-      switch (type) {
-        case '24节气村' : { res = await getSolarTermDistribution()} break;
-        case '农业文化遗产地' : { res = await getAgriculturalHeritageDistribution() } break;
-        case '历史文化重点保护村' : { res = await getHistoryCultureDistribution() } break;
-        case '农家乐' : { res = await getAgritainmentDistribution() } break;
-        default: { res = await getProtectionItem() } break;
+      if( this.city ) {
+        const data = {
+          areaId: this.areaId
+        }
+        switch (type) {
+          case '24节气村' : { res = await getCitySolarTermDistribution(data)} break;
+          case '农业文化遗产地' : { res = await getCityAgriculturalHeritage(data) } break;
+          case '历史文化重点保护村' : { res = await getCityHistoryCulture(data) } break;
+          case '农家乐' : { res = await getCityAgritainment(data) } break;
+          default: { res = await getCityProtectionItem(data) } break;
+        }
+      } else {
+        switch (type) {
+          case '24节气村' : { res = await getSolarTermDistribution()} break;
+          case '农业文化遗产地' : { res = await getAgriculturalHeritageDistribution() } break;
+          case '历史文化重点保护村' : { res = await getHistoryCultureDistribution() } break;
+          case '农家乐' : { res = await getAgritainmentDistribution() } break;
+          default: { res = await getProtectionItem() } break;
+        }
       }
+
       const data = res.map(item => {
         return{
           name: item.areaName,
@@ -383,6 +404,14 @@ export default {
         this.activeIndex = index;
         this.getIconData(item.type)
       }
+    },
+    // 初始化按钮状态
+    initIconAndButton() {
+      this.showDim = false;
+      this.activeIndex = 6; // 上面按钮初始化
+      this.list.forEach(item => {
+        item.show = false
+      })
     }
   },
 }
