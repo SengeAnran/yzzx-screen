@@ -24,16 +24,16 @@ export default {
     },
   },
   mounted() {
-    const fitScreen = this.fitScreen.bind(this);
-    fitScreen();
-    window.addEventListener('resize', fitScreen);
+    const fitScreen = this.fitScreen.bind(this); // 将当前组件内容绑定到fitScreen方法中并付给fitScreen
+    fitScreen(); // 调用fitScreen方法
+    window.addEventListener('resize', fitScreen); // 监听window当发生resize事件时调用fitScreen方法
     this.$once('hook:beforeDestroy', function () {
-      window.removeEventListener('resize', fitScreen);
+      window.removeEventListener('resize', fitScreen); // 在组件摧毁前注销监听事件
     });
   },
   methods: {
     fitScreen() {
-      displayMap[this.displayType](this.pageSize);
+      displayMap[this.displayType](this.pageSize); // 调用指定覆盖函数
     },
   },
   render() {
@@ -46,6 +46,6 @@ html, body {
   overflow: hidden;
 }
 body {
-  transform-origin: top left;
+  transform-origin: top left; // 变形起点为左上方
 }
 </style>
