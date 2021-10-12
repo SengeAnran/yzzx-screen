@@ -63,8 +63,8 @@ export default {
         areaId: areaId,
       };
       getVillageOverview(data).then((res) => {
-        // console.log(res)
-        this.villageOverview = res;
+        console.log(res)
+        // this.villageOverview = res;
       });
     },
   },
