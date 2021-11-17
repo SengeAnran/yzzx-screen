@@ -1,8 +1,7 @@
 <template>
   <div class="box-content">
-    <div class="small-title title">二十四节气活动举办进度</div>
+    <!-- <div class="small-title title">二十四节气活动举办进度</div>
     <div class="percentage">
-      <!--      <CountUp :num="percentage || 0"/>-->
       {{ percentage }}%
     </div>
     <div class="schedule-content">
@@ -14,7 +13,18 @@
         </div>
       </div>
       <div class="number">{{ allSchedule }}</div>
-    </div>
+    </div> -->
+    <section class="amount-wrp">
+      <div class="amount">
+        <div class="icon">
+          <img src="../../../../assets/img/car.png" alt="" />
+        </div>
+        <div class="desc">
+          <span class="desc-num"><CountUp :num="145" /> </span>
+          <span class="desc-con">农耕文化活动举办数量</span>
+        </div>
+      </div>
+    </section>
     <div class="popular-activities">
       <div class="content-title">人气活动</div>
       <div class="content-title-right">共{{ popularActivities }}条</div>
@@ -72,7 +82,10 @@ export default {
           return {
             title: item.activityName,
             address: item.activityAddress,
-            addressB: item.activityAddress.length > 8?  item.activityAddress.slice(0,7) + '...' : item.activityAddress,
+            addressB:
+              item.activityAddress.length > 8
+                ? item.activityAddress.slice(0, 7) + "..."
+                : item.activityAddress,
             time: item.gmtModified,
             imgs: item.filePath.split(","),
           };
@@ -134,6 +147,51 @@ export default {
       }
     }
   }
+
+  .amount-wrp {
+    margin-top: 16px;
+    .amount {
+      width: 528px;
+      height: 73px;
+      display: flex;
+      background: #001e4273;
+      border-radius: 8px;
+      .icon {
+        flex: 1;
+        text-align: right;
+        & img {
+          padding-top: 8px;
+        }
+      }
+      .desc {
+        width: 350px;
+        padding-right: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        span:first-child.desc-num {
+          ::v-deep .num-2 {
+            font-size: 22px;
+            font-family: Microsoft YaHei;
+            font-weight: bold;
+            color: #fefefe;
+            line-height: 1;
+          }
+        }
+        span:last-child.desc-con {
+          margin-top: 8px;
+          font-size: 16px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #fefefe;
+          line-height: 1;
+          opacity: 0.65;
+        }
+      }
+    }
+  }
+
   .popular-activities {
     display: flex;
     margin-top: 18px;

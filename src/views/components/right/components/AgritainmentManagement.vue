@@ -155,7 +155,7 @@ export default {
 
           span {
             //width: 49px;
-            font-size: 24px;
+            font-size: 22px;
             font-family: Microsoft YaHei;
             font-weight: bold;
             font-style: italic;

@@ -33,7 +33,8 @@ export default {
   &:nth-of-type(1) {
     background: rgba(255, 109, 110, 0.1);
     span {
-      background: linear-gradient(0deg, #f6b980 0%, #f5dcc4 100%);
+      background: linear-gradient(0deg, #ff6d6e 0%, #ff9999 100%);
+
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -41,7 +42,7 @@ export default {
   &:nth-of-type(2) {
     background: rgba(255, 109, 110, 0.1);
     span {
-      background: linear-gradient(0deg, #ff6d6e 0%, #ff9999 100%);
+      background: linear-gradient(0deg, #f6b980 0%, #f5dcc4 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }

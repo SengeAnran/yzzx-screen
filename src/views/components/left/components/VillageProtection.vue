@@ -47,8 +47,8 @@
         </section>
 
         <section class="summary-wrp">
-          <ImgText colorType="yellow" :num="protectionEffectiveness.ljl || 0" />
-          <ImgText colorType="claret" :num="protectionEffectiveness.yj || 0" />
+          <ImgText colorType="claret" :num="protectionEffectiveness.ljl || 0" />
+          <ImgText colorType="yellow" :num="protectionEffectiveness.yj || 0" />
           <ImgText colorType="green" :num="protectionEffectiveness.yj2 || 0" />
         </section>
       </div>
@@ -71,9 +71,9 @@ export default {
   data() {
     return {
       protectionEffectiveness: {
-        ljl: 0,
-        yj: 1,
-        yj2: 430,
+        ljl: 1,
+        yj: 4,
+        yj2: 239,
         ghbhg: 1,
         ghxd: 0,
         ghtg: 389,
@@ -128,7 +128,7 @@ export default {
         line-height: 30px;
         //opacity: 0.45;
         span {
-          font-size: 24px;
+          font-size: 22px;
           font-family: Microsoft YaHei;
           font-weight: bold;
           line-height: 30px;
