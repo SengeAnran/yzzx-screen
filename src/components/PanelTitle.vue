@@ -19,7 +19,7 @@ export default {
 .panel-title {
   position: relative;
   height: 43px;
-  line-height: 43px;
+  line-height: 40px;
   font-size: 22px;
   font-family: Microsoft YaHei;
   font-weight: bold;
@@ -42,7 +42,7 @@ export default {
     left: 10px;
     top: 50%;
     transform: rotate(-90deg);
-    margin-top: -10px;
+    margin-top: -13px;
   }
 }
 </style>
