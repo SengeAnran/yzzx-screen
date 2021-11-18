@@ -75,10 +75,12 @@ import {
 import {getProtectionItem} from "../../../api";
 import {
   getProviceJSON,
-  getCityJSON
+  getCityJSON,
+  getCountyJSON,
 } from '@/api/get-json'
 import {mapOption} from "../../../config/mapOption";
 import {cityMap} from "../../../config/cityMap";
+import {countyMap} from "../../../config/countyMap";
 
 export default {
   name: "index",
@@ -164,7 +166,8 @@ export default {
       ],
 
       areaId: null, // 获取数据时用的区域id
-      areaMap: cityMap.areaMap, //  省行政区划，用于数据的查找，按行政区划查数据
+      cityAreaMap: cityMap.areaMap, //  省行政区划，用于数据的查找，按行政区划查数据
+      countyAreaMap: countyMap.areaMap, //  省行政区划，用于数据的查找，按行政区划查数据
       mapData: [], // 当前地图上的地区
       option: {...mapOption.basicOption}, // map的相关配置
       deepTree: [],// 点击地图时push，点返回时pop
@@ -198,7 +201,7 @@ export default {
       if(this.activeIndex > 4 && this.list.every(item => {
         return item.show === false
       })) {
-        if (params.name in this.areaMap) { // 点击的为市级
+        if (params.name in this.cityAreaMap) { // 点击的为市级
           this.areaName = params.data.areaName;
           this.areaCode = params.data.areaCode;
           this.areaLevel = params.data.areaLevel;
@@ -206,8 +209,17 @@ export default {
           this.city = params.name;
           this.areaId = String(Number(params.data.areaCode)/100);
           this.requestGetCityJSON(params.data);
+        } else if (params.name in this.countyAreaMap) { // 点击的为区县级
+          console.log(params);
+          this.areaName = params.data.areaName;
+          this.areaCode = params.data.areaCode;
+          this.areaLevel = params.data.areaLevel;
+          //如果点击的是区县，绘制选中地区的三级地图
+          this.area = params.name;
+          this.areaId = String(Number(params.data.areaCode));
+          this.requestGetCountyJSON(params.data);
         } else {
-          console.log('点击为县市级')
+          console.log('点击错误')
           // return;
         }
       }
@@ -250,6 +262,28 @@ export default {
             areaName: res.features[i].properties.name,
             areaCode: res.features[i].properties.adcode,
             areaLevel: 'districts',
+          };
+          arr.push(obj)
+        }
+        this.mapData = arr;
+        this.deepTree.push({mapData: arr, params: params});
+        this.$emit('map-change', params);
+        this.renderMap(params.areaName, arr);
+      })
+    },
+    // 加载区县级地图
+    requestGetCountyJSON(params) {
+      // console.log(params)
+      this.areaLevel = params.areaLevel;
+      getCountyJSON(params.areaCode).then(res => {
+        this.$echarts.registerMap(params.areaName, res);
+        let arr = [];
+        for (let i = 0; i < res.features.length; i++) {
+          let obj = {
+            name: res.features[i].properties.name,
+            areaName: res.features[i].properties.name,
+            areaCode: res.features[i].properties.adcode,
+            areaLevel: 'town',
           };
           arr.push(obj)
         }

@@ -7,3 +7,6 @@ export const getProviceJSON = (path,params) => request.get(api+`/map/330000full.
 
 // 获取市级JSON
 export const getCityJSON = (path,params) => request.get(api+`/map/city/${path}full.json`,params)
+
+// 获取县区级JSON
+export const getCountyJSON = (path,params) => request.get(api+`/map/county/${path}.json`,params)
