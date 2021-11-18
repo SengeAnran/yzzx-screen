@@ -1,5 +1,6 @@
 import * as request from '../utils/mapRequest'
-let api = '/screen';
+// let api = '/screen';
+let api = '';
 
 // 获取浙江省JSON
 export const getProviceJSON = (path,params) => request.get(api+`/map/330000full.json`,params)
