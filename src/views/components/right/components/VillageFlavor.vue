@@ -29,6 +29,8 @@
 <script>
 // import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
 // import "swiper/css/swiper.css";
+import { getPopSelection } from "@/api/index";
+
 const LIST_DATA = [
   {
     name: "桃形李",
@@ -126,10 +128,25 @@ export default {
       },
     };
   },
-  mounted() {},
+  created() {
+    this.setPopSelection();
+  },
   methods: {
     slideChangeTransitionEnd() {
       this.swiper.autoplay.start();
+    },
+
+    setPopSelection() {
+      getPopSelection().then((res) => {
+        console.log(res);
+        this.listData = res.map((item) => {
+          return {
+            ...item,
+            address: item.fullName,
+            img: item.filePath,
+          };
+        });
+      });
     },
   },
 };
@@ -168,6 +185,7 @@ export default {
         overflow: hidden;
         margin-bottom: 12px;
         & img {
+          width: 100%;
           object-fit: cover;
         }
       }

@@ -85,6 +85,15 @@ export function getLocationDistribution(data) {
   });
 }
 
+// 农耕文化举办数量
+export function getActivityNum(params) {
+  return service({
+    url: path + "/activityNum",
+    method: "get",
+    params,
+  });
+}
+
 // 人气活动
 export function getPopularActivities(params) {
   return service({
@@ -94,6 +103,14 @@ export function getPopularActivities(params) {
   });
 }
 
+// 人气村品
+export function getPopSelection(params) {
+  return service({
+    url: path + "/cunpin",
+    method: "get",
+    params,
+  });
+}
 
 // （市级以下）24节气村数量分布
 export function getCitySolarTermDistribution(params) {

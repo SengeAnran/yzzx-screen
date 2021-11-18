@@ -1,26 +1,12 @@
 <template>
   <div class="box-content">
-    <!-- <div class="small-title title">二十四节气活动举办进度</div>
-    <div class="percentage">
-      {{ percentage }}%
-    </div>
-    <div class="schedule-content">
-      <div class="number">{{ completionSchedule }}</div>
-      <div class="bg-img"><img src="./img/jd_bg.png" alt="" /></div>
-      <div class="jd-img">
-        <div class="jd-img-content" :style="{ left: `${shiftLeft}px` }">
-          <img src="./img/jd_img.png" alt="" />
-        </div>
-      </div>
-      <div class="number">{{ allSchedule }}</div>
-    </div> -->
     <section class="amount-wrp">
       <div class="amount">
         <div class="icon">
           <img src="../../../../assets/img/car.png" alt="" />
         </div>
         <div class="desc">
-          <span class="desc-num"><CountUp :num="145" /> </span>
+          <span class="desc-num"><CountUp :num="activityAmount" /> </span>
           <span class="desc-con">农耕文化活动举办数量</span>
         </div>
       </div>
@@ -37,7 +23,7 @@
 
 <script>
 import InterestSwiper from "./InterestSwiper";
-import { getPopularActivities } from "@/api/index.js";
+import { getPopularActivities, getActivityNum } from "@/api/index.js";
 
 export default {
   name: "VillageInterest",
@@ -50,6 +36,8 @@ export default {
   data() {
     return {
       // percentage: 62,
+      activityAmount: 0, // 农耕文化活动举办数量
+
       allSchedule: 24,
       completionSchedule: 20,
       popularActivities: 24,
@@ -73,6 +61,7 @@ export default {
   },
   created() {
     this.getActivityData();
+    this.setActivityNum();
   },
   methods: {
     getActivityData() {
@@ -90,6 +79,13 @@ export default {
             imgs: item.filePath.split(","),
           };
         });
+      });
+    },
+
+    // 农耕文化举办数量
+    setActivityNum() {
+      getActivityNum().then((res) => {
+        this.activityAmount = res;
       });
     },
   },
