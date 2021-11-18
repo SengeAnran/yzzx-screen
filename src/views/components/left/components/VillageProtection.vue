@@ -59,44 +59,87 @@
 <script>
 import ImgText from "./components/ImgText.vue";
 import PieChart from "@/components/PieChart";
+const pieLabels = ["优秀", "良好", "合格", "不合格"];
+
 export default {
   name: "VillageProtection",
   components: { ImgText, PieChart },
   props: {
-    villageProtection: {
+    data: {
       type: Object,
       default: () => {},
     },
   },
   data() {
     return {
-      protectionEffectiveness: {
-        ljl: 1,
-        yj: 4,
-        yj2: 239,
-        ghbhg: 1,
-        ghxd: 0,
-        ghtg: 389,
-        ysyx: 0,
-        ysbhg: 0,
-        yshg: 21,
-      },
-
+      // protectionEffectiveness: {
+      //   ljl: 1,
+      //   yj: 4,
+      //   yj2: 239,
+      // },
       // 规划评审
-      auditData: [
-        { name: "优秀", value: 58 },
-        { name: "良好", value: 159 },
-        { name: "合格", value: 16 },
-        { name: "不合格", value: 7 },
-      ],
+      // auditData: [
+      //   { name: "优秀", value: 58 },
+      //   { name: "良好", value: 159 },
+      //   { name: "合格", value: 16 },
+      //   { name: "不合格", value: 7 },
+      // ],
       // 验收评价
-      evaluateData: [
-        { name: "优秀", value: 125 },
-        { name: "良好", value: 107 },
-        { name: "合格", value: 7 },
-        { name: "不合格", value: 4 },
-      ],
+      // evaluateData: [
+      //   { name: "优秀", value: 125 },
+      //   { name: "良好", value: 107 },
+      //   { name: "合格", value: 7 },
+      //   { name: "不合格", value: 4 },
+      // ],
     };
+  },
+  computed: {
+    villageProtection() {
+      const { data } = this;
+      return {
+        zjpc: data.batchesConstruction || "",
+        bhzjztr: Number(data.totalProtectionFunds),
+        zjgs: Number(data.numberConstruction),
+      };
+    },
+    protectionEffectiveness() {
+      const { data } = this;
+      return {
+        ljl: Number(data.redAlert),
+        yj: Number(data.yellowWarning),
+        yj2: Number(data.greenWarning),
+      };
+    },
+    auditData() {
+      const {
+        excellentReview: a,
+        wellReviewed: b,
+        qualified: c,
+        unqualifiedReview: d,
+      } = this.data;
+      const arr = [a, b, c, d];
+      return arr.map((item, i) => {
+        return {
+          name: pieLabels[i],
+          value: item || 0,
+        };
+      });
+    },
+    evaluateData() {
+      const {
+        excellentAcceptance: a,
+        goodAcceptance: b,
+        acceptancePass: c,
+        acceptanceFailed: d,
+      } = this.data;
+      const arr = [a, b, c, d];
+      return arr.map((item, i) => {
+        return {
+          name: pieLabels[i],
+          value: item || 0,
+        };
+      });
+    },
   },
 };
 </script>

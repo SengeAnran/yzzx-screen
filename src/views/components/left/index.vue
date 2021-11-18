@@ -4,7 +4,7 @@
       <village-overview :village-overview="villageOverview" />
     </Panel>
     <Panel title-name="历史文化村落保护">
-      <village-protection :village-protection="villageProtection" />
+      <village-protection :data="historyData" />
     </Panel>
     <Panel title-name="村景">
       <village-view :area-id.sync="areaId" />
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { getVillageOverview } from "@/api/index";
+import { getVillageOverview, getHisInformation } from "@/api/index";
 import VillageOverview from "./components/VillageOverview";
 import VillageProtection from "./components/VillageProtection";
 import VillageView from "./components/VillageView";
@@ -40,11 +40,13 @@ export default {
         historyCulture: 390,
       }, //村落概况
       villageProtection: {
-        zjpc: "7-9",
-        // bhsqs: 758,
-        bhzjztr: 51709,
-        zjgs: 390,
-      }, //村落概况
+        // zjpc: "7-9",
+        // // bhsqs: 758,
+        // bhzjztr: 51709,
+        // zjgs: 390,
+      },
+
+      historyData: {},
     };
   },
   watch: {
@@ -63,8 +65,17 @@ export default {
         areaId: areaId,
       };
       getVillageOverview(data).then((res) => {
-        console.log(res)
-        // this.villageOverview = res;
+        // console.log(res);
+        this.villageOverview = res;
+      });
+
+      this.setHisInformation(data); // 历史文化村落保护
+    },
+
+    // 设置历史文化村落保护数据
+    setHisInformation(data) {
+      getHisInformation(data).then((res) => {
+        this.historyData = res;
       });
     },
   },

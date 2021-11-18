@@ -156,3 +156,21 @@ export function getCityProtectionItem(params) {
     params,
   });
 }
+
+// --- 左二 历史文化村落保护
+export function getHisInformation(params) {
+  return service({
+    url: path + "/hisInformation",
+    method: "get",
+    params,
+  });
+}
+
+// --- top  地图顶部统计数据
+export function getTotalStatistic(params) {
+  return service({
+    url: path + "/numquery",
+    method: "get",
+    params,
+  });
+}

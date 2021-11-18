@@ -73,16 +73,12 @@ import {
   getCityHistoryCulture, // （市级以下）历史文化重点保护村数量分布
   getCityAgritainment, // （市级以下）农家乐数量分布
   getCityProtectionItem, // （市级以下）历史文化村落保护项目数量分布
-} from '@/api/index';
-import {getProtectionItem} from "../../../api";
-import {
-  getProviceJSON,
-  getCityJSON,
-  getCountyJSON,
-} from '@/api/get-json'
-import {mapOption} from "../../../config/mapOption";
-import {cityMap} from "../../../config/cityMap";
-import {countyMap} from "../../../config/countyMap";
+} from "@/api/index";
+import { getProtectionItem, getTotalStatistic } from "../../../api";
+import { getProviceJSON, getCityJSON, getCountyJSON } from "@/api/get-json";
+import { mapOption } from "../../../config/mapOption";
+import { cityMap } from "../../../config/cityMap";
+import { countyMap } from "../../../config/countyMap";
 
 export default {
   name: "index",
@@ -96,17 +92,20 @@ export default {
       statisticalData: [
         {
           name: "累计访问量",
-          number: 2068,
+          // number: 2068,
+          number: 0,
           unit: "次",
         },
         {
           name: "日访问量",
-          number: 57,
+          // number: 57,
+          number: 0,
           unit: "次",
         },
         {
           name: "招商/招聘发布量",
-          number: 110,
+          // number: 110,
+          number: 0,
           unit: "次",
         },
         {
@@ -182,6 +181,7 @@ export default {
     this.$nextTick(() => {
       this.mapEchartsInit(); // 绘画地图
       this.myChart.on("click", this.echartsMapClick);
+      this.setTotalStatistic();
     });
   },
   methods: {
@@ -201,10 +201,14 @@ export default {
     },
     // 地图点击
     echartsMapClick(params) {
-      if(this.activeIndex > 4 && this.list.every(item => {
-        return item.show === false
-      })) {
-        if (params.name in this.cityAreaMap) { // 点击的为市级
+      if (
+        this.activeIndex > 4 &&
+        this.list.every((item) => {
+          return item.show === false;
+        })
+      ) {
+        if (params.name in this.cityAreaMap) {
+          // 点击的为市级
           this.areaName = params.data.areaName;
           this.areaCode = params.data.areaCode;
           this.areaLevel = params.data.areaLevel;
@@ -212,7 +216,8 @@ export default {
           this.city = params.name;
           this.areaId = String(Number(params.data.areaCode) / 100);
           this.requestGetCityJSON(params.data);
-        } else if (params.name in this.countyAreaMap) { // 点击的为区县级
+        } else if (params.name in this.countyAreaMap) {
+          // 点击的为区县级
           console.log(params);
           this.areaName = params.data.areaName;
           this.areaCode = params.data.areaCode;
@@ -222,7 +227,7 @@ export default {
           this.areaId = String(Number(params.data.areaCode));
           this.requestGetCountyJSON(params.data);
         } else {
-          console.log('点击错误')
+          console.log("点击错误");
           // return;
         }
       }
@@ -251,6 +256,7 @@ export default {
           },
         });
         this.$emit("map-change", this.deepTree[0].params);
+
         //注册地图
         this.$echarts.registerMap("浙江省", res);
         //绘制地图
@@ -276,6 +282,9 @@ export default {
         this.mapData = arr;
         this.deepTree.push({ mapData: arr, params: params });
         this.$emit("map-change", params);
+
+        this.setTotalStatistic(params.areaCode);
+
         this.renderMap(params.areaName, arr);
       });
     },
@@ -283,7 +292,7 @@ export default {
     requestGetCountyJSON(params) {
       // console.log(params)
       this.areaLevel = params.areaLevel;
-      getCountyJSON(params.areaCode).then(res => {
+      getCountyJSON(params.areaCode).then((res) => {
         this.$echarts.registerMap(params.areaName, res);
         let arr = [];
         for (let i = 0; i < res.features.length; i++) {
@@ -291,15 +300,18 @@ export default {
             name: res.features[i].properties.name,
             areaName: res.features[i].properties.name,
             areaCode: res.features[i].properties.adcode,
-            areaLevel: 'town',
+            areaLevel: "town",
           };
-          arr.push(obj)
+          arr.push(obj);
         }
         this.mapData = arr;
-        this.deepTree.push({mapData: arr, params: params});
-        this.$emit('map-change', params);
+        this.deepTree.push({ mapData: arr, params: params });
+        this.$emit("map-change", params);
+
+        this.setTotalStatistic(params.areaCode);
+
         this.renderMap(params.areaName, arr);
-      })
+      });
     },
     // 打点
     async selectMart(item, index) {
@@ -495,6 +507,17 @@ export default {
       this.activeIndex = 6; // 上面按钮初始化
       this.list.forEach((item) => {
         item.show = false;
+      });
+    },
+
+    // 设置顶部统计数据
+    setTotalStatistic(areaId = 330000) {
+      getTotalStatistic({
+        areaId: areaId,
+      }).then((res) => {
+        this.statisticalData[0].number = res.cumulativeVisits || 0;
+        this.statisticalData[1].number = res.dailyVisits || 0;
+        this.statisticalData[2].number = res.merchantsRecruitment || 0;
       });
     },
   },
