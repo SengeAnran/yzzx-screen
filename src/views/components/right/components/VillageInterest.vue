@@ -16,7 +16,11 @@
       <div class="content-title-right">共{{ popularActivities }}条</div>
     </div>
     <div class="content">
-      <InterestSwiper :data="popularActList" />
+      <InterestSwiper
+        :data="popularActList"
+        v-if="popularActList && popularActList.length"
+      />
+      <Empty v-else />
     </div>
   </div>
 </template>

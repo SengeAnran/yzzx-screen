@@ -6,7 +6,8 @@
     </div>
     <div class="content-right">
       <div class="small-title title">醉美村景TOP10</div>
-      <most-village :list-data="listData" />
+      <most-village v-if="listData && listData.length" :list-data="listData" />
+      <Empty :scale="0.8" v-else />
     </div>
   </div>
 </template>

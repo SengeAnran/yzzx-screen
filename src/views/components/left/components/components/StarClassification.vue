@@ -1,7 +1,8 @@
 <template>
   <div class="TalentType">
     <!-- <pie-chart :list="chartData" :color="color" :is-percent="false" /> -->
-    <BarChart :data="chartData" />
+    <BarChart :data="chartData" v-if="chartData && chartData.length" />
+    <Empty :scale="0.8" v-else />
   </div>
 </template>
 
