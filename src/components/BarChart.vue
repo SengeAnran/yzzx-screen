@@ -24,7 +24,7 @@ export default {
   },
   watch: {
     data(val) {
-      if (val && val.length) {
+      if (val) {
         this.updateData(val);
       }
     },
