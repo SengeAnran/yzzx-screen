@@ -79,6 +79,9 @@ import { getProviceJSON, getCityJSON, getCountyJSON } from "@/api/get-json";
 import { mapOption } from "../../../config/mapOption";
 import { cityMap } from "../../../config/cityMap";
 import { countyMap } from "../../../config/countyMap";
+// vuex
+import { createNamespacedHelpers } from "vuex";
+const { mapMutations, mapGetters } = createNamespacedHelpers("map");
 
 export default {
   name: "index",
@@ -177,6 +180,9 @@ export default {
       areaLevel: "province", // 当前级别
     };
   },
+  computed: {
+    ...mapGetters(["mapAreaId"]),
+  },
   mounted() {
     this.$nextTick(() => {
       this.mapEchartsInit(); // 绘画地图
@@ -185,6 +191,7 @@ export default {
     });
   },
   methods: {
+    ...mapMutations(["setAreaId", "setAreaLevel"]),
     // 初次加载绘制地图
     mapEchartsInit() {
       // echarts.registerMap('浙江省', dapuJson); //引入地图文件
@@ -256,6 +263,7 @@ export default {
           },
         });
         this.$emit("map-change", this.deepTree[0].params);
+        this._saveMapInfo(this.deepTree[0].params);
 
         //注册地图
         this.$echarts.registerMap("浙江省", res);
@@ -282,8 +290,9 @@ export default {
         this.mapData = arr;
         this.deepTree.push({ mapData: arr, params: params });
         this.$emit("map-change", params);
+        this._saveMapInfo(params);
 
-        this.setTotalStatistic(params.areaCode);
+        this.setTotalStatistic();
 
         this.renderMap(params.areaName, arr);
       });
@@ -307,8 +316,9 @@ export default {
         this.mapData = arr;
         this.deepTree.push({ mapData: arr, params: params });
         this.$emit("map-change", params);
+        this._saveMapInfo(params);
 
-        this.setTotalStatistic(params.areaCode);
+        this.setTotalStatistic();
 
         this.renderMap(params.areaName, arr);
       });
@@ -511,14 +521,18 @@ export default {
     },
 
     // 设置顶部统计数据
-    setTotalStatistic(areaId = 330000) {
-      getTotalStatistic({
-        areaId: areaId,
-      }).then((res) => {
+    setTotalStatistic() {
+      getTotalStatistic({ areaId: this.mapAreaId }).then((res) => {
         this.statisticalData[0].number = res.cumulativeVisits || 0;
         this.statisticalData[1].number = res.dailyVisits || 0;
         this.statisticalData[2].number = res.merchantsRecruitment || 0;
       });
+    },
+
+    _saveMapInfo(data) {
+      const { areaLevel, areaCode } = data;
+      this.setAreaId(areaCode);
+      this.setAreaLevel(areaLevel);
     },
   },
 };

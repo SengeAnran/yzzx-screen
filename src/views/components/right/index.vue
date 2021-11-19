@@ -16,6 +16,9 @@
 import VillageInterest from "./components/VillageInterest";
 import AgritainmentManagement from "./components/AgritainmentManagement";
 import VillageFlavor from "./components/VillageFlavor";
+// vuex
+import { createNamespacedHelpers } from "vuex";
+const { mapGetters } = createNamespacedHelpers("map");
 export default {
   name: "index",
   components: {
@@ -23,13 +26,19 @@ export default {
     AgritainmentManagement,
     VillageFlavor,
   },
-  props: {
-    areaId: {
-      type: Number,
-    },
-  },
+  // props: {
+  //   areaId: {
+  //     type: Number,
+  //   },
+  // },
   data() {
     return {};
+  },
+  computed: {
+    ...mapGetters(["mapAreaId"]),
+    areaId() {
+      return this.mapAreaId;
+    },
   },
   watch: {
     areaId() {

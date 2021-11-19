@@ -108,7 +108,7 @@ export default {
         this.dataList[0].number = this._normalizeData(res.query1);
         this.dataList[1].number = this._normalizeData(res.query2.engagedNum);
         this.dataList[2].number = this._normalizeData(
-          Number(res.query2.revenue.toFixed(0))
+          Number(Number(res.query2.revenue).toFixed(0))
         );
         this.dataList[3].number = this._normalizeData(res.query2.farmerHouse);
 

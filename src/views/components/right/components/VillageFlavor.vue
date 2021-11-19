@@ -128,6 +128,11 @@ export default {
       },
     };
   },
+  watch: {
+    areaId() {
+      this.setPopSelection();
+    },
+  },
   created() {
     this.setPopSelection();
   },
@@ -137,8 +142,7 @@ export default {
     },
 
     setPopSelection() {
-      getPopSelection().then((res) => {
-        console.log(res);
+      getPopSelection({ areaId: this.areaId }).then((res) => {
         this.listData = res.map((item) => {
           return {
             ...item,

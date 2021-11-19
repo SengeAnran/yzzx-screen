@@ -166,6 +166,15 @@ export function getHisInformation(params) {
   });
 }
 
+// --- 左三 醉美村景top10
+export function getPrettiestView(params) {
+  return service({
+    url: path + "/beautifulVillageView",
+    method: "get",
+    params,
+  });
+}
+
 // --- top  地图顶部统计数据
 export function getTotalStatistic(params) {
   return service({

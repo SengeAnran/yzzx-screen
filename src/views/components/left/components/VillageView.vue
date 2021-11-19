@@ -1,69 +1,52 @@
 <template>
-<div class="box-content">
-  <div class="content-left">
-    <div class="small-title title">星级分类</div>
-    <star-classification :area-id="areaId"></star-classification>
+  <div class="box-content">
+    <div class="content-left">
+      <div class="small-title title">星级分类</div>
+      <star-classification :area-id="areaId"></star-classification>
+    </div>
+    <div class="content-right">
+      <div class="small-title title">醉美村景TOP10</div>
+      <most-village :list-data="listData" />
+    </div>
   </div>
-  <div class="content-right">
-    <div class="small-title title">醉美村景TOP10</div>
-    <most-village :list-data="listData"/>
-  </div>
-</div>
 </template>
 
 <script>
 import StarClassification from "./components/StarClassification";
 import MostVillage from "../../MostVillage";
+import { getPrettiestView } from "@/api/index";
 export default {
   name: "VillageView",
   props: {
     areaId: {
       type: Number,
-    }
+    },
   },
   data() {
     return {
-      listData: [
-        {
-          name: '秀山岛景区'
-        },
-        {
-          name: '鹿栏晴沙景区'
-        },
-        {
-          name: '双石合璧'
-        },
-        {
-          name: '雁荡山'
-        },
-        {
-          name: '千岛湖'
-        },
-        {
-          name: '西塘古镇'
-        },
-        {
-          name: '莫干山'
-        },
-        // {
-        //   name: '嵊泗列岛'
-        // },
-        // {
-        //   name: '仙都景区'
-        // },
-        // {
-        //   name: '浙东大峡谷'
-        // },
-      ],
-    }
+      listData: [],
+    };
   },
   components: {
     StarClassification,
     MostVillage,
   },
+  watch: {
+    areaId() {
+      this.setPrettiestView();
+    },
+  },
   mounted() {
-  }
-}
+    this.setPrettiestView();
+  },
+  methods: {
+    setPrettiestView() {
+      getPrettiestView({ areaId: this.areaId }).then((res) => {
+        this.listData = res.map((item) => ({ name: item.sceneName }));
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -79,8 +62,6 @@ export default {
     box-sizing: border-box;
   }
   .content-right {
-
   }
 }
-
 </style>

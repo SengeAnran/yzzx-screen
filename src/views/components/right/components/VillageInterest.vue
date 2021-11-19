@@ -47,6 +47,7 @@ export default {
   watch: {
     areaId() {
       this.getActivityData();
+      this.setActivityNum();
     },
   },
   computed: {
@@ -65,7 +66,7 @@ export default {
   },
   methods: {
     getActivityData() {
-      getPopularActivities().then((res) => {
+      getPopularActivities({ areaId: this.areaId }).then((res) => {
         this.popularActivities = res.length || 0;
         this.popularActList = res.map((item) => {
           return {
@@ -84,8 +85,8 @@ export default {
 
     // 农耕文化举办数量
     setActivityNum() {
-      getActivityNum().then((res) => {
-        this.activityAmount = res;
+      getActivityNum({ areaId: this.areaId }).then((res) => {
+        this.activityAmount = Number(res);
       });
     },
   },

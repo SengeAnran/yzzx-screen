@@ -17,6 +17,9 @@ import { getVillageOverview, getHisInformation } from "@/api/index";
 import VillageOverview from "./components/VillageOverview";
 import VillageProtection from "./components/VillageProtection";
 import VillageView from "./components/VillageView";
+// vuex
+import { createNamespacedHelpers } from "vuex";
+const { mapGetters } = createNamespacedHelpers("map");
 export default {
   name: "index",
   components: {
@@ -24,12 +27,12 @@ export default {
     VillageProtection,
     VillageView,
   },
-  props: {
-    areaId: {
-      type: Number,
-      default: null,
-    },
-  },
+  // props: {
+  //   areaId: {
+  //     type: Number,
+  //     default: null,
+  //   },
+  // },
   data() {
     return {
       villageOverview: {
@@ -49,6 +52,12 @@ export default {
       historyData: {},
     };
   },
+  computed: {
+    ...mapGetters(["mapAreaId"]),
+    areaId() {
+      return this.mapAreaId;
+    },
+  },
   watch: {
     areaId() {
       this.getData(this.areaId);
@@ -57,7 +66,7 @@ export default {
   mounted() {
     // console.log(process.env.NODE_ENV)
     // console.log(process.env)
-    // this.getData(this.areaId);
+    this.getData(this.areaId);
   },
   methods: {
     getData(areaId) {
