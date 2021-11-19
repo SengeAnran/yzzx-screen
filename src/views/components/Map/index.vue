@@ -73,6 +73,11 @@ import {
   getCityHistoryCulture, // （市级以下）历史文化重点保护村数量分布
   getCityAgritainment, // （市级以下）农家乐数量分布
   getCityProtectionItem, // （市级以下）历史文化村落保护项目数量分布
+  getConSolarTermDistribution, // （县级以下）24节气村数量分布
+  getConAgriculturalHeritage, // （县级以下）农业文化遗产地数量分布
+  getConHistoryCulture, // （县级以下）历史文化重点保护村数量分布
+  getConAgritainment, // （县级以下）农家乐数量分布
+  getConProtectionItem, // （县级以下）历史文化村落保护项目数量分布
 } from "@/api/index";
 import { getProtectionItem, getTotalStatistic } from "../../../api";
 import { getProviceJSON, getCityJSON, getCountyJSON } from "@/api/get-json";
@@ -182,6 +187,8 @@ export default {
   },
   computed: {
     ...mapGetters(["mapAreaId"]),
+  },
+  watch: {
   },
   mounted() {
     this.$nextTick(() => {
@@ -427,7 +434,41 @@ export default {
     },
     async getIconData(type) {
       let res;
-      if (this.city) {
+      if (this.area) {
+        const data = {
+          areaName: this.areaName,
+        };
+        const data2 = {
+          areaId: this.areaId,
+        };
+        switch (type) {
+          case "24节气村":
+            {
+              res = await getConSolarTermDistribution(data);
+            }
+            break;
+          case "农业文化遗产地":
+            {
+              res = await getConAgriculturalHeritage(data);
+            }
+            break;
+          case "历史文化重点保护村":
+            {
+              res = await getConHistoryCulture(data);
+            }
+            break;
+          case "农家乐":
+            {
+              res = await getConAgritainment(data2);
+            }
+            break;
+          default:
+            {
+              res = await getConProtectionItem(data);
+            }
+            break;
+        }
+      } else if (this.city) {
         const data = {
           areaId: this.areaId,
         };

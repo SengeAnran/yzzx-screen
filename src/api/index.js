@@ -157,6 +157,51 @@ export function getCityProtectionItem(params) {
   });
 }
 
+// （县级以下）24节气村数量分布
+export function getConSolarTermDistribution(params) {
+  return service({
+    url: path + "/conSolarTermDistribution",
+    method: "get",
+    params,
+  });
+}
+
+// （县级以下）农业文化遗产地数量分布
+export function getConAgriculturalHeritage(params) {
+  return service({
+    url: path + "/conAgriculturalHeritage",
+    method: "get",
+    params,
+  });
+}
+
+// （县级以下）历史文化重点保护村数量分布
+export function getConHistoryCulture(params) {
+  return service({
+    url: path + "/conHistoryCulture",
+    method: "get",
+    params,
+  });
+}
+
+// （县级以下）农家乐数量分布
+export function getConAgritainment(params) {
+  return service({
+    url: path + "/conAgritainment",
+    method: "get",
+    params,
+  });
+}
+
+// （县级以下）历史文化村落保护项目数量分布
+export function getConProtectionItem(params) {
+  return service({
+    url: path + "/conProtectionItem",
+    method: "get",
+    params,
+  });
+}
+
 // --- 左二 历史文化村落保护
 export function getHisInformation(params) {
   return service({

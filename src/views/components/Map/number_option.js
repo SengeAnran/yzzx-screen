@@ -57,7 +57,7 @@ export default function getOption(data,map) {
         },
         itemStyle: {
           normal: {
-            areaColor: '#EEEEEE',
+            areaColor: '#9BC4FF',
             borderColor: '#FFFFFF',
             label: {
               show: true,
