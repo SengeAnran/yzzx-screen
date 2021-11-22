@@ -1,6 +1,6 @@
 <template>
   <div class="AppTitle-root">
-    <img src="../assets/img/top_title.png" />
+    <img src="../assets/img/title_02.png" />
   </div>
 </template>
 

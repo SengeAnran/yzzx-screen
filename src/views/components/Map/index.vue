@@ -64,6 +64,7 @@ import getOption from "./number_option";
 import getSpotOption from "./spot_option";
 import {
   getAgritainmentDistribution, // 农家乐数量分布
+  getConlocationDistribution, // （浙农游）（县级）查询位置分布带点位坐标
   getHistoryCultureDistribution, // 历史文化重点保护村数量分布
   getSolarTermDistribution, // 24节气村数量分布
   getAgriculturalHeritageDistribution, // 农业文化遗产地数量分布
@@ -384,14 +385,27 @@ export default {
       this.requestGetCityJSON(this.deepTree[1].params);
     },
     async getData() {
-      const data = {
-        q1: this.list[0].show,
-        q2: this.list[1].show,
-        q3: this.list[2].show,
-        q4: this.list[3].show,
-        areaId: this.areaId,
-      };
-      const res = await getLocationDistribution(data);
+
+      let res,data;
+      if (this.area) {
+        data = {
+          q1: this.list[0].show,
+          q2: this.list[1].show,
+          q3: this.list[2].show,
+          q4: this.list[3].show,
+          areaName: this.areaName,
+        };
+        res = await getConlocationDistribution(data);
+      } else {
+        data = {
+          q1: this.list[0].show,
+          q2: this.list[1].show,
+          q3: this.list[2].show,
+          q4: this.list[3].show,
+          areaId: this.areaId,
+        };
+        res = await getLocationDistribution(data);
+      }
       const optionData = {
         data1: [],
         data2: [],

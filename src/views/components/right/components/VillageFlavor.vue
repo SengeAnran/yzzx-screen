@@ -145,6 +145,10 @@ export default {
         color: #fefefe;
         line-height: 1;
         margin-bottom: 10px;
+
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
       .item-address {
         font-size: 16px;

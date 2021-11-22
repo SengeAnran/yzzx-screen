@@ -84,6 +84,14 @@ export function getLocationDistribution(data) {
     data,
   });
 }
+//  （浙农游）（县级）查询位置分布带点位坐标
+export function getConlocationDistribution(data) {
+  return service({
+    url: path + "/conlocationDistribution",
+    method: "post",
+    data,
+  });
+}
 
 // 农耕文化举办数量
 export function getActivityNum(params) {

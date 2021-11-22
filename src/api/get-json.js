@@ -1,5 +1,6 @@
 import * as request from '../utils/mapRequest'
-const api = process.env.VUE_APP_ENV === "production" ? '' : '/screen';
+const api = process.env.VUE_APP_ENV === "production" ? '/screen' : '';
+console.log(api);
 // let api = '/screen';
 // let api = '';
 
