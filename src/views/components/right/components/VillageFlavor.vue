@@ -7,23 +7,17 @@
         :options="swiperOption"
         @slideChangeTransitionEnd="slideChangeTransitionEnd"
       >
-        <SwiperSlide
-          v-for="group in Math.ceil(listData.length / 3)"
-          :key="group"
-        >
+        <SwiperSlide v-for="(item, i) in listData" :key="i">
           <section class="item-wrp">
-            <div class="item" v-for="index in 3" :key="index">
+            <div class="item">
               <p class="item-img">
-                <img
-                  :src="listData[(group - 1) * 3 + (index - 1)].img"
-                  alt=""
-                />
+                <img :src="item.img" alt="" />
               </p>
               <p class="item-title">
-                {{ listData[(group - 1) * 3 + (index - 1)].name }}
+                {{ item.name }}
               </p>
               <p class="item-address">
-                {{ listData[(group - 1) * 3 + (index - 1)].address }}
+                {{ item.address }}
               </p>
             </div>
           </section>
@@ -68,6 +62,7 @@ export default {
         loop: true,
         grabCursor: true,
         autoplay: true,
+        slidesPerView: 3,
         pagination: {
           el: ".swiper-pagination",
           bulletActiveClass: "pagination-active",
@@ -118,11 +113,11 @@ export default {
     padding-bottom: 14px;
   }
   .item-wrp {
-    display: flex;
-    justify-content: space-between;
+    // display: flex;
+    // justify-content: space-between;
     .item {
       box-sizing: border-box;
-      width: 32%;
+      // width: 32%;
       background: #001e4266;
       border-radius: 4px;
       padding: 10px 10px 13px;
