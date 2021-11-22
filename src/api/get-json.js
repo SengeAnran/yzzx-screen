@@ -1,6 +1,7 @@
 import * as request from '../utils/mapRequest'
+const api = process.env.VUE_APP_ENV === "production" ? '' : '/screen';
 // let api = '/screen';
-let api = '';
+// let api = '';
 
 // 获取浙江省JSON
 export const getProviceJSON = (path,params) => request.get(api+`/map/330000full.json`,params)

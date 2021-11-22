@@ -438,9 +438,9 @@ export default {
         const data = {
           areaName: this.areaName,
         };
-        const data2 = {
-          areaId: this.areaId,
-        };
+        // const data2 = {
+        //   areaId: this.areaId,
+        // };
         switch (type) {
           case "24节气村":
             {
@@ -459,7 +459,7 @@ export default {
             break;
           case "农家乐":
             {
-              res = await getConAgritainment(data2);
+              res = await getConAgritainment(data);
             }
             break;
           default:
@@ -528,14 +528,18 @@ export default {
             break;
         }
       }
-
-      const data = res.map((item) => {
-        return {
-          name: item.areaName,
-          value: item.count,
-        };
-      });
-      this.myChart.setOption(getOption(data, this.areaName), true); // 添加配置
+      if(res && res.length > 0) {
+        const data = res.map((item) => {
+          return {
+            name: item.areaName,
+            value: item.count,
+          };
+        });
+        this.myChart.setOption(getOption(data, this.areaName), true); // 添加配置
+      } else {
+        console.log('无数据');
+        this.renderMap(this.areaName, this.mapData);
+      }
     },
     iconOnClick(item, index) {
       this.showDim = true;
