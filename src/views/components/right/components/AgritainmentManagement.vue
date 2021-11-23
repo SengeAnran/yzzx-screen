@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="content-bottom-right">
-        <star-classification :area-id="areaId" />
+        <star-classification :area-id="areaId"  :area-name.sync="areaName" />
       </div>
     </div>
   </div>
@@ -53,6 +53,10 @@ export default {
   props: {
     areaId: {
       type: Number,
+    },
+    areaName: {
+      type: String,
+      default: "",
     },
   },
   data() {
@@ -89,6 +93,7 @@ export default {
   },
   watch: {
     areaId() {
+      // console.log('change');
       this.getData();
     },
   },
@@ -99,6 +104,7 @@ export default {
     getData() {
       const data = {
         areaId: this.areaId,
+        areaName: this.areaName,
       };
       getFarmhouseManagement(data).then((res) => {
         // let level = 1; // 根据level判断单位

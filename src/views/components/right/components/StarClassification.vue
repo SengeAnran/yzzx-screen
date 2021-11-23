@@ -20,7 +20,11 @@ export default {
     areaId: {
       type: Number,
       default: null
-    }
+    },
+    areaName: {
+      type: String,
+      default: "",
+    },
   },
   components: {
     PieChart,
@@ -31,9 +35,9 @@ export default {
       totalNumber: 0,
       color: ['#5B9DFE', '#03C3FF', '#00DCA6', '#FFD6AF','#FF9E9F'],
       chartData: [
-        { name: '5星', value: 26 },
-        { name: '4星', value: 94 },
-        { name: '3星', value: 620 },
+        { name: '5星', value: 0 },
+        { name: '4星', value: 0 },
+        { name: '3星', value: 0 },
       ],
     };
   },
@@ -50,6 +54,7 @@ export default {
       this.totalNumber = 0;
       const data = {
         areaId: this.areaId,
+        areaName: this.areaName,
       }
       const json = await getFarmhouseManagement(data)
       json.query3.map((item) => {

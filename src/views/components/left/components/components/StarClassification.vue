@@ -17,6 +17,10 @@ export default {
       type: Number,
       default: null,
     },
+    areaName: {
+      type: String,
+      default: "",
+    },
   },
   components: {
     // PieChart,
@@ -41,10 +45,11 @@ export default {
     loadData() {
       const data = {
         areaId: this.areaId,
+        areaName: this.areaName,
       };
       getStarRating(data).then((json) => {
         json.map((item) => {
-          item.name = item.typename;
+          item.name = item.typeName;
           item.value = item.num;
         });
         this.chartData = json;

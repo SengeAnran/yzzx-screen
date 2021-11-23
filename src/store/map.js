@@ -2,11 +2,16 @@ export default {
   namespaced: true,
   state: {
     areaId: null,
+    areaName: '',
     areaLevel: "province",
   },
   mutations: {
     setAreaId(state, value) {
       state.areaId = value;
+    },
+    setAreaName(state, value) {
+      console.log('改变了名字',value)
+      state.areaName = value;
     },
     setAreaLevel(state, value) {
       state.areaLevel = value;
@@ -19,7 +24,15 @@ export default {
       } else if (state.areaLevel === "province") {
         return null;
       } else {
-        return Number(state.areaId);
+        // return Number(state.areaId);
+        return null;
+      }
+    },
+    mapAreaName(state) {
+      if (state.areaLevel === "districts") {
+        return state.areaName;
+      } else {
+        return '';
       }
     },
   },

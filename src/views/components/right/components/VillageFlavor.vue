@@ -47,6 +47,10 @@ export default {
     areaId: {
       type: Number,
     },
+    areaName: {
+      type: String,
+      default: "",
+    },
   },
   computed: {
     swiper() {
@@ -84,7 +88,7 @@ export default {
     },
 
     setPopSelection() {
-      getPopSelection({ areaId: this.areaId }).then((res) => {
+      getPopSelection({ areaId: this.areaId, areaName: this.areaName }).then((res) => {
         this.listData = res.map((item) => {
           return {
             ...item,

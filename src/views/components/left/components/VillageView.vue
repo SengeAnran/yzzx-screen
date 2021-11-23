@@ -2,7 +2,7 @@
   <div class="box-content">
     <div class="content-left">
       <div class="small-title title">星级分类</div>
-      <star-classification :area-id="areaId"></star-classification>
+      <star-classification :area-id="areaId" :area-name.sync="areaName"></star-classification>
     </div>
     <div class="content-right">
       <div class="small-title title">醉美村景TOP10</div>
@@ -16,11 +16,16 @@
 import StarClassification from "./components/StarClassification";
 import MostVillage from "../../MostVillage";
 import { getPrettiestView } from "@/api/index";
+
 export default {
   name: "VillageView",
   props: {
     areaId: {
       type: Number,
+    },
+    areaName: {
+      type: String,
+      default: "",
     },
   },
   data() {
@@ -42,7 +47,7 @@ export default {
   },
   methods: {
     setPrettiestView() {
-      getPrettiestView({ areaId: this.areaId }).then((res) => {
+      getPrettiestView({ areaId: this.areaId, areaName: this.areaName }).then((res) => {
         this.listData = res.map((item) => ({ name: item.sceneName }));
       });
     },

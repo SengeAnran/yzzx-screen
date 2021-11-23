@@ -7,7 +7,10 @@
       <village-protection :data="historyData" />
     </Panel>
     <Panel title-name="村景">
-      <village-view :area-id.sync="areaId" />
+      <village-view
+        :area-id.sync="areaId"
+        :area-name.sync="areaName"
+      />
     </Panel>
   </div>
 </template>
@@ -53,28 +56,33 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["mapAreaId"]),
+    ...mapGetters(["mapAreaId", "mapAreaName"]),
     areaId() {
       return this.mapAreaId;
+    },
+    areaName() {
+      return this.mapAreaName;
     },
   },
   watch: {
     areaId() {
-      this.getData(this.areaId);
+      this.getData(this.areaId, this.areaName);
     },
   },
   mounted() {
     // console.log(process.env.NODE_ENV)
     // console.log(process.env)
-    this.getData(this.areaId);
+    this.getData(this.areaId, this.areaName);
   },
   methods: {
-    getData(areaId) {
+    getData(areaId, areaName) {
       const data = {
+        areaName: areaName,
         areaId: areaId,
       };
+      console.log(data);
       getVillageOverview(data).then((res) => {
-        // console.log(res);
+        console.log(res);
         this.villageOverview = res;
       });
 

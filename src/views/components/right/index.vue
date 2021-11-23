@@ -1,13 +1,13 @@
 <template>
   <div class="right-content">
     <Panel title-name="村趣">
-      <village-interest :area-id="areaId" />
+      <village-interest :area-id="areaId" :area-name.sync="areaName"/>
     </Panel>
     <Panel title-name="农家乐经营一件事">
-      <agritainment-management :area-id="areaId" />
+      <agritainment-management :area-id="areaId" :area-name.sync="areaName"/>
     </Panel>
     <Panel title-name="人气村品" style="padding-bottom:8px;">
-      <village-flavor :area-id="areaId" />
+      <village-flavor :area-id="areaId" :area-name.sync="areaName"/>
     </Panel>
   </div>
 </template>
@@ -35,9 +35,12 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(["mapAreaId"]),
+    ...mapGetters(["mapAreaId", "mapAreaName"]),
     areaId() {
       return this.mapAreaId;
+    },
+    areaName() {
+      return this.mapAreaName;
     },
   },
   watch: {

@@ -36,6 +36,10 @@ export default {
     areaId: {
       type: Number,
     },
+    areaName: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
@@ -70,7 +74,7 @@ export default {
   },
   methods: {
     getActivityData() {
-      getPopularActivities({ areaId: this.areaId }).then((res) => {
+      getPopularActivities({ areaId: this.areaId, areaName: this.areaName }).then((res) => {
         this.popularActivities = res.length || 0;
         this.popularActList = res.map((item) => {
           return {
@@ -89,7 +93,7 @@ export default {
 
     // 农耕文化举办数量
     setActivityNum() {
-      getActivityNum({ areaId: this.areaId }).then((res) => {
+      getActivityNum({ areaId: this.areaId, areaName: this.areaName }).then((res) => {
         this.activityAmount = Number(res);
       });
     },

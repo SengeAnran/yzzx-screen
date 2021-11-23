@@ -187,7 +187,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["mapAreaId"]),
+    ...mapGetters(["mapAreaId", "mapAreaName"]),
   },
   watch: {
   },
@@ -199,7 +199,7 @@ export default {
     });
   },
   methods: {
-    ...mapMutations(["setAreaId", "setAreaLevel"]),
+    ...mapMutations(["setAreaId", "setAreaName", "setAreaLevel"]),
     // 初次加载绘制地图
     mapEchartsInit() {
       // echarts.registerMap('浙江省', dapuJson); //引入地图文件
@@ -581,7 +581,7 @@ export default {
 
     // 设置顶部统计数据
     setTotalStatistic() {
-      getTotalStatistic({ areaId: this.mapAreaId }).then((res) => {
+      getTotalStatistic({ areaId: this.mapAreaId, areaName: this.mapAreaName }).then((res) => {
         this.statisticalData[0].number = res.cumulativeVisits || 0;
         this.statisticalData[1].number = res.dailyVisits || 0;
         this.statisticalData[2].number = res.merchantsRecruitment || 0;
@@ -589,9 +589,10 @@ export default {
     },
 
     _saveMapInfo(data) {
-      const { areaLevel, areaCode } = data;
+      const { areaLevel, areaCode, areaName } = data;
       this.setAreaId(areaCode);
       this.setAreaLevel(areaLevel);
+      this.setAreaName(areaName);
     },
   },
 };
