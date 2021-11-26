@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <fit-screen />
-    <app-title />
+<!--    <app-title />-->
     <router-view />
   </div>
 </template>
@@ -12,7 +12,10 @@ import FitScreen from "./components/FitScreen";
 import("./scss/common.scss");
 export default {
   name: "App",
-  components: { AppTitle, FitScreen },
+  components: {
+    // AppTitle,
+    FitScreen,
+  },
   data() {
     return {
       pageSize: {

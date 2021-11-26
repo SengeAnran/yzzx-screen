@@ -1,7 +1,7 @@
 <template>
   <div class="left-content">
     <Panel title-name="村落概况">
-      <village-overview :village-overview="villageOverview" />
+      <village-overview :village-overview.sync="villageOverview2" />
     </Panel>
     <Panel title-name="历史文化村落保护">
       <village-protection :data="historyData" />
@@ -39,12 +39,13 @@ export default {
   data() {
     return {
       villageOverview: {
-        administrative: 19802,
-        beautiful: 3148,
-        solarTerms: 24,
-        agriculturalHeritage: 12,
-        historyCulture: 390,
+        // administrative: 19802,
+        // beautiful: 3148,
+        // solarTerms: 24,
+        // agriculturalHeritage: 12,
+        // historyCulture: 390,
       }, //村落概况
+      villageOverview2: {},
       villageProtection: {
         // zjpc: "7-9",
         // // bhsqs: 758,
@@ -80,19 +81,25 @@ export default {
         areaName: areaName,
         areaId: areaId,
       };
-      console.log(data);
       getVillageOverview(data).then((res) => {
-        console.log(res);
+        // console.log(res);
         this.villageOverview = res;
+        this.setHisInformation(); // 历史文化村落保护
       });
 
-      this.setHisInformation(data); // 历史文化村落保护
     },
 
     // 设置历史文化村落保护数据
-    setHisInformation(data) {
+    setHisInformation() {
+      const data = {
+        areaName: this.areaName,
+        areaId: this.areaId || (this.areaName? null : 33),
+      };
       getHisInformation(data).then((res) => {
         this.historyData = res;
+        this.villageOverview.administrative = res.administrativeNum;
+        console.log(this.villageOverview);
+        this.villageOverview2 = this.villageOverview;
       });
     },
   },

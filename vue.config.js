@@ -13,6 +13,11 @@ module.exports = {
                 changeOrange: true,
                 pathRewrite: { '^/api': '' },
             },
+            '/login': { // 测试环境
+                target: 'https://jqy.zjagri.cn/', //
+                changeOrange: true,
+                pathRewrite: { '^/login': '' },
+            },
         },
     },
 };

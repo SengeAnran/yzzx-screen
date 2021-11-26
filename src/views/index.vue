@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <app-title/>
     <left :areaId="areaId"></left>
     <right :areaId="areaId"></right>
     <Map @map-change="mapChange"></Map>
@@ -14,7 +15,7 @@ import left from "./components/left";
 import right from "./components/right";
 import Map from "./components/Map";
 import AppBottom from "../components/AppBottom";
-
+import AppTitle from "../components/AppTitle";
 export default {
   name: "Home",
   components: {
@@ -22,6 +23,7 @@ export default {
     right,
     Map,
     AppBottom,
+    AppTitle,
   },
   data() {
     return {

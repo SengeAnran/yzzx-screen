@@ -4,6 +4,7 @@ import service from "../utils/request";
 // const path = process.env.VUE_APP_ENV === "production"? "" : "/api";
 const path = "/api";
 
+
 export function getVillageOverview(params) {
   return service({
     url: path + "/villageOverview",

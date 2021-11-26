@@ -22,13 +22,14 @@ export default {
       if (state.areaLevel === "city") {
         return Number(state.areaId) / 100;
       } else if (state.areaLevel === "province") {
-        return null;
+        return 33;
       } else {
         // return Number(state.areaId);
         return null;
       }
     },
     mapAreaName(state) {
+      console.log(state.areaLevel)
       if (state.areaLevel === "districts") {
         return state.areaName;
       } else {

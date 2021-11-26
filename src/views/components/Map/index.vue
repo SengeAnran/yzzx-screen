@@ -273,6 +273,7 @@ export default {
         this.$emit("map-change", this.deepTree[0].params);
         this._saveMapInfo(this.deepTree[0].params);
 
+        this.setTotalStatistic();
         //注册地图
         this.$echarts.registerMap("浙江省", res);
         //绘制地图
@@ -590,6 +591,7 @@ export default {
 
     _saveMapInfo(data) {
       const { areaLevel, areaCode, areaName } = data;
+      console.log(areaLevel, areaCode, areaName);
       this.setAreaId(areaCode);
       this.setAreaLevel(areaLevel);
       this.setAreaName(areaName);
