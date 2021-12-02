@@ -1,5 +1,16 @@
 <template>
   <div class="map">
+    <div class="statistical-data">
+      <div class="item" v-for="(item, index) in statisticalData" :key="index">
+        <div class="name">{{ item.name }}</div>
+        <div class="number" v-if="item.unit !== '%'">
+          <CountUp :num="item.number || 0" />{{ item.unit }}
+        </div>
+        <div class="number" v-else>
+          <span> <CountUp :num="item.number || 0" />{{ item.unit }} </span>
+        </div>
+      </div>
+    </div>
     <div class="address">
       <div class="img">
         <img src="./img/wz.png" alt="" />
@@ -17,17 +28,6 @@
       <!--        <img src="./img/wz.png" alt="">-->
       <!--      </div>-->
       <!--      <div class="address-name">{{ village }}</div>-->
-    </div>
-    <div class="statistical-data">
-      <div class="item" v-for="(item, index) in statisticalData" :key="index">
-        <div class="name">{{ item.name }}</div>
-        <div class="number" v-if="item.unit !== '%'">
-          <CountUp :num="item.number || 0" />{{ item.unit }}
-        </div>
-        <div class="number" v-else>
-          <span> <CountUp :num="item.number || 0" />{{ item.unit }} </span>
-        </div>
-      </div>
     </div>
     <div class="map-bottom" ref="map"></div>
     <div class="icon-button">
@@ -216,35 +216,56 @@ export default {
     },
     // 地图点击
     echartsMapClick(params) {
+      console.log('点击了');
       if (
-        this.activeIndex > 4 &&
+        !(this.activeIndex > 4 &&
         this.list.every((item) => {
           return item.show === false;
-        })
+        }))
       ) {
-        if (params.name in this.cityAreaMap) {
-          // 点击的为市级
-          this.areaName = params.data.areaName;
-          this.areaCode = params.data.areaCode;
-          this.areaLevel = params.data.areaLevel;
-          //如果点击的是11个市，绘制选中地区的二级地图
-          this.city = params.name;
-          this.areaId = String(Number(params.data.areaCode) / 100);
-          this.requestGetCityJSON(params.data);
-        } else if (params.name in this.countyAreaMap) {
-          // 点击的为区县级
-          console.log(params);
-          this.areaName = params.data.areaName;
-          this.areaCode = params.data.areaCode;
-          this.areaLevel = params.data.areaLevel;
-          //如果点击的是区县，绘制选中地区的三级地图
-          this.area = params.name;
-          this.areaId = String(Number(params.data.areaCode));
-          this.requestGetCountyJSON(params.data);
-        } else {
-          console.log("点击错误");
-          // return;
-        }
+        this.activeIndex = 5;
+        this.list.map((item) => {
+          item.show = false;
+        })
+      }
+      if (params.name in this.cityAreaMap) {
+        // 点击的为市级
+        // this.areaName = params.data.areaName;
+        // this.areaCode = params.data.areaCode;
+        // this.areaLevel = params.data.areaLevel;
+        this.areaName = params.name;
+        this.areaCode = this.cityAreaMap[params.name];
+        this.areaLevel = 'city';
+        const data = {
+          areaName: this.areaName,
+          areaCode: this.areaCode,
+          areaLevel: this.areaLevel,
+        };
+        //如果点击的是11个市，绘制选中地区的二级地图
+        this.city = params.name;
+        this.areaId = String(Number(this.areaCode) / 100);
+        this.requestGetCityJSON(data);
+      } else if (params.name in this.countyAreaMap) {
+        // 点击的为区县级
+        console.log(params);
+        // this.areaName = params.data.areaName;
+        // this.areaCode = params.data.areaCode;
+        // this.areaLevel = params.data.areaLevel;
+        this.areaName = params.name;
+        this.areaCode = this.countyAreaMap[params.name];
+        this.areaLevel = 'districts';
+        const data = {
+          areaName: this.areaName,
+          areaCode: this.areaCode,
+          areaLevel: this.areaLevel,
+        };
+        //如果点击的是区县，绘制选中地区的三级地图
+        this.area = params.name;
+        this.areaId = String(Number(this.areaCode));
+        this.requestGetCountyJSON(data);
+      } else {
+        console.log("点击错误");
+        // return;
       }
     },
     //绘制浙江省地图
@@ -273,7 +294,7 @@ export default {
         this.$emit("map-change", this.deepTree[0].params);
         this._saveMapInfo(this.deepTree[0].params);
 
-        this.setTotalStatistic();
+        this.setTotalStatistic(); // 设置顶部统计数据
         //注册地图
         this.$echarts.registerMap("浙江省", res);
         //绘制地图
@@ -327,7 +348,7 @@ export default {
         this.$emit("map-change", params);
         this._saveMapInfo(params);
 
-        this.setTotalStatistic();
+        this.setTotalStatistic(); // 设置顶部统计数据
 
         this.renderMap(params.areaName, arr);
       });
@@ -385,6 +406,7 @@ export default {
       this.initIconAndButton();
       this.requestGetCityJSON(this.deepTree[1].params);
     },
+    // 获取打点数据
     async getData() {
 
       let res,data;
@@ -447,6 +469,7 @@ export default {
       }
       this.myChart.setOption(getSpotOption(optionData, this.areaName), true);
     },
+
     async getIconData(type) {
       let res;
       if (this.area) {
@@ -609,26 +632,10 @@ export default {
   //background: red;
   left: 616px;
   top: 92px;
-  .address {
-    display: flex;
-    margin-left: 44px;
-    margin-top: 27px;
-    margin-bottom: 30px;
-    .img {
-      width: 24px;
-      margin-right: 7px;
-      margin-left: 7px;
-      &:nth-of-type(1) {
-        margin-left: 0;
-      }
-    }
-    .address-name {
-      cursor: pointer;
-    }
-  }
   .statistical-data {
     margin-left: 16px;
     margin-right: 16px;
+    margin-top: 18px;
     display: flex;
     justify-content: space-between;
     .item {
@@ -680,6 +687,23 @@ export default {
           margin-right: 0;
         }
       }
+    }
+  }
+  .address {
+    display: flex;
+    margin-left: 44px;
+    margin-top: 18px;
+    margin-bottom: 30px;
+    .img {
+      width: 24px;
+      margin-right: 7px;
+      margin-left: 7px;
+      &:nth-of-type(1) {
+        margin-left: 0;
+      }
+    }
+    .address-name {
+      cursor: pointer;
     }
   }
   .map-bottom {

@@ -56,6 +56,7 @@ export default {
   height: 1080px;
   position: relative;
   user-select: none;
-  background: url(../assets/img/dp_bg.png) no-repeat 100% 100%;
+  //background: url(../assets/img/dp_bg.png) no-repeat 100% 100%;
+  background: #022A4D;
 }
 </style>
