@@ -49,7 +49,7 @@ export default {
     width: 201px;
     height: 36px;
     cursor: pointer;
-    background: url("../assets/img/left_button.png") 100% 100% no-repeat;
+    background: url("../assets/img/left_button2.png") 100% 100% no-repeat;
   }
   .right-button {
     position: absolute;
