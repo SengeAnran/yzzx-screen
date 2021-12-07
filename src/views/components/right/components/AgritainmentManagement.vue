@@ -108,10 +108,10 @@ export default {
       };
       getFarmhouseManagement(data).then((res) => {
         // let level = 1; // 根据level判断单位
-        const unit = ["万家", "万人", "亿元", "万户"];
+        const unit = ["家", "万人", "亿元", "万户"];
         this.bedNumber = res.query2.bedNum;
         this.mealNumber = res.query2.mealsNum;
-        this.dataList[0].number = this._normalizeData(res.query1);
+        this.dataList[0].number = res.query1;
         this.dataList[1].number = this._normalizeData(res.query2.engagedNum);
         this.dataList[2].number = this._normalizeData(
           Number(Number(res.query2.revenue).toFixed(0))

@@ -4,7 +4,7 @@
     <left :areaId="areaId"></left>
     <right :areaId="areaId"></right>
     <Map @map-change="mapChange"></Map>
-    <app-bottom/>
+    <app-bottom v-if="false"/>
   </div>
 </template>
 

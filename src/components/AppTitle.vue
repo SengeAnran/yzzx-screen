@@ -1,6 +1,6 @@
 <template>
   <div class="AppTitle-root">
-    <img src="../assets/img/title_03.png" @click="goHome"/>
+    <img src="../assets/img/top_title.png" @click="goHome"/>
     <div class="left-button" @click="goPage"></div>
     <div class="right-button" @click="goPage2"></div>
   </div>
