@@ -177,6 +177,7 @@ export default {
 
       areaId: null, // 获取数据时用的区域id
       cityAreaMap: cityMap.areaMap, //  省行政区划，用于数据的查找，按行政区划查数据
+      areaCityMap: cityMap.areaMap1, //  省行政区划，用于数据的查找，按行政区划查数据
       countyAreaMap: countyMap.areaMap, //  省行政区划，用于数据的查找，按行政区划查数据
       mapData: [], // 当前地图上的地区
       option: { ...mapOption.basicOption }, // map的相关配置
@@ -201,19 +202,76 @@ export default {
   methods: {
     ...mapMutations(["setAreaId", "setAreaName", "setAreaLevel"]),
     // 初次加载绘制地图
-    mapEchartsInit() {
+    async mapEchartsInit() {
       // echarts.registerMap('浙江省', dapuJson); //引入地图文件
-      // this.$route.query.
       this.myChart = echarts.init(this.$refs.map); // 获取展示区域
-      // this.myChart.setOption(option, true); // 添加配置
+      if(this.$route.query.areaName) {
+        // console.log(this.$route.query.areaName);
+        if (this.$route.query.areaName in this.cityAreaMap) {
+          // 点击的为市级
+
+          this.areaName = this.$route.query.areaName;
+          this.areaCode = this.cityAreaMap[this.$route.query.areaName];
+          this.areaLevel = 'city';
+          const data = {
+            areaName: this.areaName,
+            areaCode: this.areaCode,
+            areaLevel: this.areaLevel,
+          };
+          //如果点击的是11个市，绘制选中地区的二级地图
+          this.city = this.$route.query.areaName;
+          this.areaId = String(Number(this.areaCode) / 100);
+          this.requestGetCityJSON(data);
+        } else if (this.$route.query.areaName in this.countyAreaMap) {
+          // 点击的为区县级
+          const cityCode = parseInt(parseInt(this.countyAreaMap[this.$route.query.areaName]) / 100) * 100;
+          const cityName = this.areaCityMap[cityCode];
+          console.log(cityName, cityCode);
+          const res = await getCityJSON(cityCode)
+          console.log(res);
+          this.$echarts.registerMap(cityName, res);
+          let arr = [];
+          for (let i = 0; i < res.features.length; i++) {
+            let obj = {
+              name: res.features[i].properties.name,
+              areaName: res.features[i].properties.name,
+              areaCode: res.features[i].properties.adcode,
+              areaLevel: "districts",
+            };
+            arr.push(obj);
+          }
+          const cityParams = {
+            areaName: cityName,
+            areaCode: cityCode,
+            areaLevel: 'city',
+          }
+          this.city = cityName;
+          // this.mapData = arr;
+          console.log(arr, cityParams);
+          this.deepTree.push({ mapData: arr, params: cityParams });
+          this.deepTree.push({ mapData: arr, params: cityParams });
+          console.log(this.deepTree);
+
+          //  ssssss
+          this.areaName = this.$route.query.areaName;
+          this.areaCode = this.countyAreaMap[this.$route.query.areaName];
+          this.areaLevel = 'districts';
+          const data = {
+            areaName: this.areaName,
+            areaCode: this.areaCode,
+            areaLevel: this.areaLevel,
+          };
+          //如果点击的是区县，绘制选中地区的三级地图
+          this.area = this.$route.query.areaName;
+          this.areaId = String(Number(this.areaCode));
+          this.requestGetCountyJSON(data);
+        }
+      }
       if (this.areaCode === "330000") {
         this.requestGetProvinceJson();
-      } else {
-        this.requestGetCityJSON({
-          areaName: this.areaName,
-          areaCode: this.areaCode,
-        });
       }
+      // this.myChart.setOption(option, true); // 添加配置
+
     },
     // 地图点击
     echartsMapClick(params) {
@@ -231,9 +289,6 @@ export default {
       }
       if (params.name in this.cityAreaMap) {
         // 点击的为市级
-        // this.areaName = params.data.areaName;
-        // this.areaCode = params.data.areaCode;
-        // this.areaLevel = params.data.areaLevel;
         this.areaName = params.name;
         this.areaCode = this.cityAreaMap[params.name];
         this.areaLevel = 'city';
@@ -249,9 +304,6 @@ export default {
       } else if (params.name in this.countyAreaMap) {
         // 点击的为区县级
         console.log(params);
-        // this.areaName = params.data.areaName;
-        // this.areaCode = params.data.areaCode;
-        // this.areaLevel = params.data.areaLevel;
         this.areaName = params.name;
         this.areaCode = this.countyAreaMap[params.name];
         this.areaLevel = 'districts';
@@ -401,6 +453,7 @@ export default {
     },
     returnCity() {
       this.area = "";
+      console.log(this.deepTree);
       this.areaId = String(Number(this.deepTree[1].params.areaCode) / 100);
       this.areaName = this.deepTree[1].params.areaName;
       this.deepTree.splice(2, 1);
