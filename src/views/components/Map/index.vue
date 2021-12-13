@@ -203,6 +203,7 @@ export default {
     // 初次加载绘制地图
     mapEchartsInit() {
       // echarts.registerMap('浙江省', dapuJson); //引入地图文件
+      // this.$route.query.
       this.myChart = echarts.init(this.$refs.map); // 获取展示区域
       // this.myChart.setOption(option, true); // 添加配置
       if (this.areaCode === "330000") {
