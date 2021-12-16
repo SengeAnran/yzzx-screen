@@ -69,6 +69,7 @@ export default {
         ],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
       },
+      areaName: '',
     };
   },
   watch: {
@@ -78,6 +79,11 @@ export default {
         this.form.password = this.data.password || "";
       }
     },
+  },
+  mounted() {
+    if (this.$route.query.areaName) {
+      this.areaName = this.$route.query.areaName;
+    }
   },
   methods: {
     confirm() {
@@ -95,7 +101,7 @@ export default {
           axios.post('https://jqy.zjagri.cn/api/screen/scanBinding',data).then(res => {
             console.log(res);
             if (res.data.code === 0) {
-              location.replace('http://jqy.zjagri.cn/screen/#/')
+              location.replace('http://jqy.zjagri.cn/screen/#/?areaName=' + this.areaName);
             } else {
               this.$message({ type: "success", message: res.data.msg });
             }

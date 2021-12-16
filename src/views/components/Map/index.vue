@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="address">
-      <div class="img">
+      <div class="img" v-if="province">
         <img src="./img/wz.png" alt="" />
       </div>
       <div class="address-name" @click="returnProvince">{{ province }}</div>
@@ -206,10 +206,10 @@ export default {
       // echarts.registerMap('浙江省', dapuJson); //引入地图文件
       this.myChart = echarts.init(this.$refs.map); // 获取展示区域
       if(this.$route.query.areaName) {
-        // console.log(this.$route.query.areaName);
+        console.log(this.$route.query.areaName);
         if (this.$route.query.areaName in this.cityAreaMap) {
-          // 点击的为市级
-
+          // 初次加载为市级
+          this.province = '';
           this.areaName = this.$route.query.areaName;
           this.areaCode = this.cityAreaMap[this.$route.query.areaName];
           this.areaLevel = 'city';
@@ -223,35 +223,35 @@ export default {
           this.areaId = String(Number(this.areaCode) / 100);
           this.requestGetCityJSON(data);
         } else if (this.$route.query.areaName in this.countyAreaMap) {
-          // 点击的为区县级
-          const cityCode = parseInt(parseInt(this.countyAreaMap[this.$route.query.areaName]) / 100) * 100;
-          const cityName = this.areaCityMap[cityCode];
-          console.log(cityName, cityCode);
-          const res = await getCityJSON(cityCode)
-          console.log(res);
-          this.$echarts.registerMap(cityName, res);
-          let arr = [];
-          for (let i = 0; i < res.features.length; i++) {
-            let obj = {
-              name: res.features[i].properties.name,
-              areaName: res.features[i].properties.name,
-              areaCode: res.features[i].properties.adcode,
-              areaLevel: "districts",
-            };
-            arr.push(obj);
-          }
-          const cityParams = {
-            areaName: cityName,
-            areaCode: cityCode,
-            areaLevel: 'city',
-          }
-          this.city = cityName;
-          // this.mapData = arr;
-          console.log(arr, cityParams);
-          this.deepTree.push({ mapData: arr, params: cityParams });
-          this.deepTree.push({ mapData: arr, params: cityParams });
-          console.log(this.deepTree);
-
+          // 初次加载为区县级
+          // const cityCode = parseInt(parseInt(this.countyAreaMap[this.$route.query.areaName]) / 100) * 100;
+          // const cityName = this.areaCityMap[cityCode];
+          // console.log(cityName, cityCode);
+          // const res = await getCityJSON(cityCode)
+          // console.log(res);
+          // this.$echarts.registerMap(cityName, res);
+          // let arr = [];
+          // for (let i = 0; i < res.features.length; i++) {
+          //   let obj = {
+          //     name: res.features[i].properties.name,
+          //     areaName: res.features[i].properties.name,
+          //     areaCode: res.features[i].properties.adcode,
+          //     areaLevel: "districts",
+          //   };
+          //   arr.push(obj);
+          // }
+          // const cityParams = {
+          //   areaName: cityName,
+          //   areaCode: cityCode,
+          //   areaLevel: 'city',
+          // }
+          // this.city = cityName;
+          // // this.mapData = arr;
+          // console.log(arr, cityParams);
+          // this.deepTree.push({ mapData: arr, params: cityParams });
+          // this.deepTree.push({ mapData: arr, params: cityParams });
+          // console.log(this.deepTree);
+          this.province = '';
           //  ssssss
           this.areaName = this.$route.query.areaName;
           this.areaCode = this.countyAreaMap[this.$route.query.areaName];
@@ -454,11 +454,12 @@ export default {
     returnCity() {
       this.area = "";
       console.log(this.deepTree);
-      this.areaId = String(Number(this.deepTree[1].params.areaCode) / 100);
-      this.areaName = this.deepTree[1].params.areaName;
-      this.deepTree.splice(2, 1);
+      this.areaId = String(Number(this.deepTree[0].params.areaCode) / 100);
+      this.areaName = this.deepTree[0].params.areaName;
+      this.deepTree.splice(1, 1);
+      console.log(this.deepTree);
       this.initIconAndButton();
-      this.requestGetCityJSON(this.deepTree[1].params);
+      this.requestGetCityJSON(this.deepTree[0].params);
     },
     // 获取打点数据
     async getData() {
