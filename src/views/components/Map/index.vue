@@ -271,7 +271,6 @@ export default {
         this.requestGetProvinceJson();
       }
       // this.myChart.setOption(option, true); // 添加配置
-
     },
     // 地图点击
     echartsMapClick(params) {

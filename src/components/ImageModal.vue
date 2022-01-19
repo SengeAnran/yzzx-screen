@@ -137,18 +137,18 @@ export default {
 }
 </style>
 
-<style lang="scss" scoped>
-/* fade-transform */
-.fade-transform-leave-active,
-.fade-transform-enter-active {
-  transition: all 0.5s;
-}
+  <style lang="scss" scoped>
+  /* fade-transform */
+  .fade-transform-leave-active,
+  .fade-transform-enter-active {
+    transition: all 0.5s;
+  }
 
-.fade-transform-enter {
-  opacity: 0;
-}
+  .fade-transform-enter {
+    opacity: 0;
+  }
 
-.fade-transform-leave-to {
-  opacity: 0;
-}
+  .fade-transform-leave-to {
+    opacity: 0;
+  }
 </style>
