@@ -11,7 +11,7 @@
           <section class="item-wrp">
             <div class="item">
               <p class="item-img">
-                <img :src="item.img" alt="" />
+                <img :src="getOSSImgResize(item.img,130)" alt="" />
               </p>
               <p class="item-title">
                 {{ item.name }}
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { getOSSImgResize } from "@/utils/data"
 // import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
 // import "swiper/css/swiper.css";
 import { getPopSelection } from "@/api/index";
@@ -83,6 +84,9 @@ export default {
     this.setPopSelection();
   },
   methods: {
+    getOSSImgResize(src, h) {
+      return getOSSImgResize(src, h);
+    },
     slideChangeTransitionEnd() {
       this.swiper.autoplay.start();
     },

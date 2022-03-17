@@ -9,7 +9,7 @@
     >
       <SwiperSlide class="item" v-for="(item, index) in data" :key="index">
         <div class="content-img">
-          <img :src="item.imgs[0]" alt="" />
+          <img :src="getOSSImgResize(item.imgs[0], 150)" alt="" />
           <span class="pagination">1 / {{ item.imgs.length }}</span>
         </div>
         <div class="item-content">
@@ -24,6 +24,7 @@
   </div>
 </template>
 <script>
+import { getOSSImgResize } from "@/utils/data"
 import ImageModal from "@/components/ImageModal";
 export default {
   components: { ImageModal },
@@ -58,6 +59,10 @@ export default {
   },
 
   methods: {
+    // 图片压缩
+    getOSSImgResize(src, h) {
+      return getOSSImgResize(src, h);
+    },
     slideChangeTransitionEnd() {
       this.swiper.autoplay.start();
     },
