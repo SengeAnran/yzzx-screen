@@ -131,7 +131,7 @@ export default {
           axios.post('https://jqy.zjagri.cn/api/screen/scanBinding',data).then(res => {
             console.log(res);
             if (res.data.code === 0) {
-              location.replace('http://jqy.zjagri.cn/screen/#/?areaName=' + this.areaName);
+              location.replace('https://jqy.zjagri.cn/screen/#/?areaName=' + this.areaName + '&userId=' + res.data.data);
             } else {
               this.$message({ type: "warning", message: res.data.msg });
             }
@@ -162,6 +162,7 @@ export default {
       const data = {
         userName: this.userName,
         password: this.password,
+        areaId: this.$route.query.areaId,
         zwddUserInfo: {
           employeeCode: this.$route.query.employeeCode,
           accountId:this.$route.query.accountId,
@@ -171,7 +172,7 @@ export default {
       axios.post('https://jqy.zjagri.cn/api/screen/defaultBinding',data).then(res => {
         console.log(res);
         if (res.data.code === 0) {
-          location.replace('http://jqy.zjagri.cn/screen/#/?areaName=' + this.areaName);
+          location.replace('https://jqy.zjagri.cn/screen/#/?areaName=' + this.areaName + '&userId=' + res.data.data);
         } else {
           this.$message({ type: "success", message: res.data.msg });
         }

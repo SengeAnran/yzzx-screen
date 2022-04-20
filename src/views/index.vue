@@ -30,6 +30,16 @@ export default {
       areaId: 1,
     };
   },
+  beforeRouteEnter(to, from, next){
+    console.log(to, from);
+    console.log(to.query.userId);
+    if (!to.query.userId){
+      window.open('https://szsn.zjagri.cn/sso/logout?redirectUri=https://jqy.zjagri.cn/api/screen/login', '_self', '');
+    } else {
+      window.localStorage.setItem('userId', to.query.userId);
+    }
+    next();
+  },
   mounted() {
     // getAgritainmentDistribution().then((res) => {
     //   console.log(res);
