@@ -29,10 +29,12 @@ const routes = [
 
 const router = new VueRouter({
   base: config.routerBase,
+  mode: "history",
   routes
 })
 let employeeCode,accountId,realmId,regionName, userId;
 function initSession() {
+  console.log(parse().userId);
   employeeCode = parse().employeeCode;
   accountId = parse().accountId;
   realmId = parse().realmId;
@@ -55,12 +57,12 @@ router.beforeEach((to, from, next) => {
   }
   initSession();
   if ( to.path === '/' && userId && regionName ) {
-    const userInfo = {
-      userId: userId,
-      regionCode: area[regionName || "浙江省"],
-      regionName: regionName || "浙江省",
-    }
-    recordUserInfo(userInfo);
+      const userInfo = {
+        userId: userId,
+        regionCode: area[regionName || "浙江省"],
+        regionName: regionName || "浙江省",
+      }
+      recordUserInfo(userInfo);
   }
   // return next({ path: "/noAuth", replace: true });
   return next();

@@ -1,5 +1,5 @@
 export function parse() {
-  const searchStr = location.search.replace(/^\?/, '');
+  const searchStr = location.search.replace(/^\?/, ''); // hash模式会有问题，应用history模式
   if (parse[searchStr]) {
     return parse[searchStr];
   }

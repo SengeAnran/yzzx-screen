@@ -1,6 +1,6 @@
 // 埋点信息
 export function recordUserInfo(userInfo) {
-  if (!window.origin.includes("jqy.zjagri.cn/")) {
+  if (!window.origin.includes("jqy.zjagri.cn")) { // 正式服才执行后面的
     return;
   }
   const { userId = "", regionCode = "", regionName = "" } = userInfo;
