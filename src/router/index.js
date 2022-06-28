@@ -51,6 +51,7 @@ router.beforeEach((to, from, next) => {
   recordPath(to, from);
   if (employeeCode && accountId && realmId) {
     if (to.path === '/') {
+      //*//
       return next({ path: "/bindAccount", query: {employeeCode, accountId, realmId}, replace: true});
     }
     return next();

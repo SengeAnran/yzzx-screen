@@ -52,7 +52,8 @@ export default {
       window.open(location.href.slice(0,-2),'_self');
     },
     goPage() {
-      window.open('https://szsn.zjagri.cn/view/official/index.html');
+      // window.open('https://szsn.zjagri.cn/view/official/index.html'); // 旧地址
+      window.open('https://szsn.zjagri.cn/bg');
     },
     goPage2() {
       window.open('https://jqy.zjagri.cn/gzjqyxc/#/login');
