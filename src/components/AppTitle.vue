@@ -57,7 +57,7 @@ export default {
     },
     goPage2() {
       // window.open('https://jqy.zjagri.cn/gzjqyxc/#/login'); // 旧地址
-      window.open('https://jqy.zjagri.cn/v2/portal/login');
+      window.open('https://wlxc.zjagri.cn/v2/portal/login');
     },
     goPage3() {
       window.open('https://szsn.zjagri.cn/sso/logout?redirectUri=https://jqy.zjagri.cn/api/screen/login', '_self')
