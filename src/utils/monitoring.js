@@ -17,11 +17,14 @@ export function recordUserInfo(userInfo) {
     regionName, //用户所在地区名称（中文）
   };
   el.setAttribute("option", JSON.stringify(option));
-  var ref = document.getElementsByTagName("script")[0];
+  const ref = document.getElementsByTagName("script")[0];
   ref.parentNode.insertBefore(el, ref);
 }
 
 export function recordPath(to, from) {
+  if (!window.origin.includes("jqy.zjagri.cn")) { // 正式服才执行后面的
+    return;
+  }
   if (to.path && to.path != from.path && from.path != "/") {
     try {
       //重点：执行monitoring.js暴露出来的hashChange方法

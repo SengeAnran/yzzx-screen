@@ -131,6 +131,7 @@ export default {
           axios.post('https://jqy.zjagri.cn/api/screen/scanBinding',data).then(res => {
             console.log(res);
             if (res.data.code === 0) {
+              console.log('replace');
               location.replace('https://jqy.zjagri.cn/screen/#/?areaName=' + this.areaName + '&userId=' + res.data.data);
             } else {
               this.$message({ type: "warning", message: res.data.msg });

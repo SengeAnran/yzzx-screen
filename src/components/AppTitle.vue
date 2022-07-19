@@ -70,11 +70,6 @@ export default {
       console.log(params);
       axios.get('https://jqy.zjagri.cn/api/screen/unBind', {params}).then(res => {
         console.log(res);
-        // if (res.data.code === 0) {
-        //   location.replace('https://jqy.zjagri.cn/screen/#/?areaName=' + this.areaName);
-        // } else {
-        //   this.$message({ type: "warning", message: res.data.msg });
-        // }
         window.open(res.data.data, '_self')
       }).catch(err => {
         console.log(err);
