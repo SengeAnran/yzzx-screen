@@ -1,8 +1,11 @@
 <template>
   <div class="AppTitle-root">
     <img src="../assets/img/top_title.png" @click="goHome"/>
-    <div class="left-button" @click="goPage">
-      <span> {{areaName}}乡村大脑</span>
+    <div v-if="areaName === '浙江省'" class="left-button" @click="goPage">
+      浙江乡村大脑
+    </div>
+    <div v-else class="left-button" @click="goPage">
+      浙江乡村大脑·{{areaName}}
     </div>
     <div class="right-button">
       <div class="buttons">
@@ -40,9 +43,9 @@ export default {
     initTitleName() {
       if (this.$route.query.areaName) {
         if (this.$route.query.areaName === "景宁畲族自治县") {
-          this.areaName = '景宁';
+          this.areaName = '景宁县';
         } else {
-          this.areaName = this.$route.query.areaName.slice(0,-1); // 截取地区名称
+          this.areaName = this.$route.query.areaName; // 截取地区名称
         }
       }
     },
@@ -98,22 +101,31 @@ export default {
     cursor: pointer;
   }
   .left-button {
+    box-sizing: border-box;
     position: absolute;
     left: 71px;
     top: 29px;
-    width: 201px;
+    min-width: 201px;
+    padding: 0 20px 0 51px;
     height: 36px;
     cursor: pointer;
     background: url("../assets/img/left_button3.png") 100% 100% no-repeat;
+    background-size: 100% 100%;
     font-size: 18px;
     font-family: Microsoft YaHei;
     font-weight: bold;
     color: #E5F2FF;
     line-height: 36px;
     text-shadow: 0px 4px 4px rgba(20, 36, 51, 0.4);
-    span {
+    &::before {
+      content: '';
       display: inline-block;
-      margin-left: 12px;
+      position: absolute;
+      top: 7px;
+      left: 21px;
+      width: 18px;
+      height: 21px;
+      background: url("../assets/img/left_button3_icon.png");
     }
   }
   .right-button {
@@ -124,6 +136,7 @@ export default {
     height: 36px;
     cursor: pointer;
     background: url("../assets/img/right_button2.png") 100% 100% no-repeat;
+    background-size: 100% 100%;
     &:hover {
       .buttons {
         display: block;

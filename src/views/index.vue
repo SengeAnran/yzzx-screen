@@ -31,8 +31,6 @@ export default {
     };
   },
   beforeRouteEnter(to, from, next){
-    console.log(to, from);
-    console.log(to.query.userId);
     if (!to.query.userId){
       //*//
       window.open('https://szsn.zjagri.cn/sso/logout?redirectUri=https://jqy.zjagri.cn/api/screen/login', '_self', '');
