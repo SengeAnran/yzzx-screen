@@ -10,6 +10,7 @@
 
 <script>
 // import { getAgritainmentDistribution } from "@/api/index";
+import config from '../utils/config';
 
 import left from "./components/left";
 import right from "./components/right";
@@ -31,7 +32,8 @@ export default {
     };
   },
   beforeRouteEnter(to, from, next){
-    if (!to.query.userId){
+    console.log(to);
+    if (!to.query.userId && config.isLogin){
       //*//
       window.open('https://szsn.zjagri.cn/sso/logout?redirectUri=https://jqy.zjagri.cn/api/screen/login', '_self', '');
     } else {

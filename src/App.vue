@@ -1,20 +1,24 @@
 <template>
   <div id="app">
-    <fit-screen />
-<!--    <app-title />-->
-    <router-view />
+    <!--    <fit-screen />-->
+    <Layout/>
+    <!--    <app-title />-->
+    <!--    <router-view />-->
   </div>
 </template>
 
 <script>
-import AppTitle from "./components/AppTitle";
-import FitScreen from "./components/FitScreen";
+// import AppTitle from "./components/AppTitle";
+// import FitScreen from "./components/FitScreen";
+import Layout from "./layout/index.vue";
+
 import("./scss/common.scss");
 export default {
   name: "App",
   components: {
     // AppTitle,
-    FitScreen,
+    // FitScreen,
+    Layout,
   },
   data() {
     return {
@@ -25,8 +29,8 @@ export default {
     };
   },
   comments: {
-    AppTitle,
-    FitScreen,
+    // AppTitle,
+    // FitScreen,
   },
 };
 </script>

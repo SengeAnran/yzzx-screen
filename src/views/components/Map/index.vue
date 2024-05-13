@@ -532,7 +532,7 @@ export default {
           };
         });
       }
-      this.myChart.setOption(getSpotOption(optionData, this.areaName), true);
+        this.myChart.setOption(getSpotOption(optionData, this.areaName), true);
     },
 
     async getIconData(type) {

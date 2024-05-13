@@ -1,5 +1,5 @@
 <script>
-import { equalRatioFull, centerFull, none } from '@/utils/resizeScreen';
+import {equalRatioFull, centerFull, none} from '@/utils/resizeScreen';
 
 const displayMap = {
   centerFull,
@@ -43,8 +43,9 @@ export default {
 </script>
 <style lang="scss">
 html, body {
-  overflow: hidden;
+  //overflow: hidden;
 }
+
 body {
   transform-origin: top left; // 变形起点为左上方
 }
