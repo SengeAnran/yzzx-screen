@@ -23,11 +23,11 @@ export default {
     dataObj: Object,
     height: {
       type: String,
-      default: '96px',
+      default: '0.5rem',
     },
     lineHeight: {
       type: String,
-      default: '40px',
+      default: '0.2rem',
     }
   }
 }
@@ -64,6 +64,8 @@ export default {
   }
 
   .item {
+
+    font-size: 12px;
     position: relative;
     flex: 1;
     text-align: center;
@@ -75,6 +77,11 @@ export default {
     .text {
       max-width: 127px;
       color: #1c81ff;
+    }
+
+    img {
+      width: 128px;
+      height: 46px;
     }
 
     &:nth-child(n+2)::before {

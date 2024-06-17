@@ -27,7 +27,7 @@ export default {
 <style scoped lang="scss">
 .detail-page {
   background: url("./bg.svg") top left no-repeat;
-  //background-size: 100% 100%;
+  background-size: 100% 100%;
 
   .top {
     display: flex;

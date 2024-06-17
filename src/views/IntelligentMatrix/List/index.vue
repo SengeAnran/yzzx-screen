@@ -79,6 +79,11 @@ export default {
       font-size: 20px;
       color: #424656;
 
+      img {
+        width: 75px;
+        height: 66px;
+      }
+
       .name {
         margin-top: 22px;
       }

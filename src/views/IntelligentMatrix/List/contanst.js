@@ -26,6 +26,7 @@ export const dataList1 =
             name: '通用物体场景识别',
             tip: '这是一段文字描述这是一段文字描述这是一段文字描述这是一段文字描述',
             path: '',
+            canDetail: true,
             iconUrl: require('./img/icon1_01.svg'),
         },
         {

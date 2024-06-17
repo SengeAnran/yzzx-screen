@@ -67,6 +67,14 @@ export const routes = [
         },
         component: () => import("../views/PersonnelTraining"),
     },
+    {
+        path: "/personnelTraining/detail",
+        name: "personnelTrainingDetail",
+        meta: {
+            index: 3
+        },
+        component: () => import("../views/PersonnelTraining/Detail"),
+    },
     { // 数智化转型
         name: "digitalTransformation",
         path: "/digitalTransformation",

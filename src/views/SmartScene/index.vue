@@ -38,13 +38,13 @@ export default {
   methods: {
     goDetail(item) {
       console.log(item);
-      this.$message.warning('即将上线，敬请期待！')
-      // this.$router.push({
-      //   path: '/smartScene/detail',
-      //   query: {
-      //     name: item.name,
-      //   }
-      // })
+      // this.$message.warning('即将上线，敬请期待！')
+      this.$router.push({
+        path: '/smartScene/detail',
+        query: {
+          name: item.name,
+        }
+      })
     }
   }
 }

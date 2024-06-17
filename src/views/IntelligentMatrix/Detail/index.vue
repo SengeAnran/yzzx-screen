@@ -37,7 +37,7 @@ export default {
       name: this.$route.query.name || '',
       navList: [
         '功能演示',
-        '应用场景'
+        // '应用场景'
       ],
       activeIndex: 0,
     }
@@ -89,6 +89,7 @@ export default {
   height: 74px;
   display: flex;
   justify-content: center;
+  font-size: 16px;
   border-bottom: 1px solid #eaecf1;
 
   .nav-item {

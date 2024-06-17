@@ -8,11 +8,11 @@
       <el-row :gutter="24">
         <el-col :span="15">
           <el-row :gutter="24">
-            <el-col :span="14" style="margin-bottom: 24px">
-              <BaseLine :data-obj="line5" line-height="20px"/>
+            <el-col :span="14" style="margin-bottom: 0.11rem">
+              <BaseLine :data-obj="line5" line-height="0.1rem"/>
             </el-col>
             <el-col :span="10">
-              <BaseLine :data-obj="line6" line-height="20px"/>
+              <BaseLine :data-obj="line6" line-height="0.1rem"/>
             </el-col>
           </el-row>
           <el-row>
@@ -24,7 +24,7 @@
         </el-col>
       </el-row>
     </div>
-    <BaseLine :data-obj="line8" line-height="20px"/>
+    <BaseLine :data-obj="line8" line-height="0.1rem"/>
   </div>
 </template>
 <script>

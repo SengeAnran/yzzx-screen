@@ -49,13 +49,32 @@ router.beforeEach((to, from, next) => {
     //     recordUserInfo(userInfo);
     // }
     // return next({ path: "/noAuth", replace: true });
-    if (to.meta.index || to.meta.index === 0) {
-        store.commit('SET_ACTIVE_NAV_INDEX', to.meta.index)
+    // if (to.meta.index || to.meta.index === 0) {
+    //     store.commit('SET_ACTIVE_NAV_INDEX', to.meta.index)
+    // } else {
+    //     store.commit('SET_ACTIVE_NAV_INDEX', '')
+    // }
+    // return next();
+    if (!store.getters.token) {
+        console.log('获取最新token');
+        store.dispatch('user/getToken').then(() => {
+            if (to.meta.index || to.meta.index === 0) {
+                store.commit('SET_ACTIVE_NAV_INDEX', to.meta.index)
+            } else {
+                store.commit('SET_ACTIVE_NAV_INDEX', '')
+            }
+            return next();
+        });
     } else {
-        store.commit('SET_ACTIVE_NAV_INDEX', '')
+        if (to.meta.index || to.meta.index === 0) {
+            store.commit('SET_ACTIVE_NAV_INDEX', to.meta.index)
+        } else {
+            store.commit('SET_ACTIVE_NAV_INDEX', '')
+        }
+        return next();
     }
 
-    return next();
+
 })
 
 export default router

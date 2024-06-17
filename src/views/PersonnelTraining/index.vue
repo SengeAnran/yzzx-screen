@@ -19,6 +19,7 @@
         <div
             v-for="(i, index) in dataList"
             :key="index"
+            @click="goDetail(index)"
             class="list-item"
         >
           <div class="name">{{ i.title }}</div>
@@ -38,52 +39,31 @@ export default {
       activeIndex: 0,
       dataList: [
         {
-          title: '这是一条要闻动态这是一条要闻动态这是一条要闻动态这是一条要闻动态',
-          time: '2024-03-22'
+          title: 'AI+领城智能化实战训练营',
+          time: '2024-06-06'
         },
         {
-          title: '这是一条要闻动态',
-          time: '2024-03-22'
+          title: 'AI大模型赋能领域数字化转型系列主题沙龙活动',
+          time: '2024-06-06'
         },
         {
-          title: '这是要闻动态',
-          time: '2024-03-22'
+          title: '观想数智AI创新赋能中心正式投入使用，引领智能化新篇章',
+          time: '2024-06-06'
         },
-        {
-          title: '这是一条最新的要闻动态',
-          time: '2024-03-22'
-        },
-        {
-          title: '这是要闻动态这是要闻动态',
-          time: '2024-03-22'
-        },
-        {
-          title: '这是一条要闻动态这是一条要闻动态这是一条要闻动态这是一条要闻动态',
-          time: '2024-03-22'
-        },
-        {
-          title: '这是一条要闻动态',
-          time: '2024-03-22'
-        },
-        {
-          title: '这是要闻动态',
-          time: '2024-03-22'
-        },
-        {
-          title: '这是一条最新的要闻动态',
-          time: '2024-03-22'
-        },
-        {
-          title: '这是要闻动态这是要闻动态',
-          time: '2024-03-22'
-        },
-
       ]
     }
   },
   methods: {
     changeActive(index) {
       this.activeIndex = index;
+    },
+    goDetail(index) {
+      this.$router.push({
+        path: '/personnelTraining/detail',
+        query: {
+          index,
+        }
+      })
     }
   }
 }
@@ -97,6 +77,7 @@ export default {
   .left {
     width: 56%;
     background: url("./bg.png") no-repeat center center;
+    background-size: 100% 100%;
     display: flex;
     flex-direction: column;
     align-items: center;

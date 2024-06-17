@@ -2,6 +2,8 @@
   <div class="show-box">
     <iframe
         v-loading="loading"
+        id="myIframe"
+        ref="myIframe"
         :src="'https://view.officeapps.live.com/op/embed.aspx?src=' + pptUrl"
         frameborder="0"
     >这是嵌入
@@ -55,6 +57,9 @@ export default {
       pptUrl: "http%3A%2F%2Fvideo%2Ech9%2Ems%3A80%2Fbuild%2F2011%2Fslides%2FTOOL%2D532T%5FSutter%2Epptx&amp;wdAr=1.7777777777777777", //http%3A%2F%2Fvideo%2Ech9%2Ems%3A80%2Fbuild%2F2011%2Fslides%2FTOOL%2D532T%5FSutter%2Epptx&amp;wdAr=1.7777777777777777
     };
   },
+  mounted() {
+    this.getInfo()
+  },
   watch: {
     // fileId(val) {
     //   if (val) {
@@ -69,6 +74,15 @@ export default {
     //     this.loading = false;
     //   });
     // },
+    // getInfo() {
+    //   window.setTimeout(() => {
+    //     const dom = window.document.querySelector('#myIframe');
+    //     console.log(dom);
+    //     console.log(dom.contentWindow.document.getElementById('wacframe'));
+    //     console.log(dom.contentWindow.document.getElementById('SlideLabel-Medium14'))
+    //   }, 2000)
+    //
+    // }
   },
 };
 </script>

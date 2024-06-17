@@ -22,12 +22,17 @@ export default {
   },
   methods: {
     goDetail() {
-      this.$router.push({
-        path: '/intelligentMatrix/detail',
-        query: {
-          name: this.dataObj.name,
-        }
-      })
+      if (this.dataObj.canDetail) {
+        this.$router.push({
+          path: '/intelligentMatrix/detail',
+          query: {
+            name: this.dataObj.name,
+          }
+        })
+      } else {
+        this.$message.warning('即将上线，敬请期待!')
+      }
+
     }
   }
 }
@@ -60,6 +65,11 @@ export default {
   .img {
     width: 117px;
     text-align: center;
+
+    img {
+      height: 44px;
+      width: 44px;
+    }
   }
 
   .item-right {

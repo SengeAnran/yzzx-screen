@@ -21,7 +21,7 @@ export default {
     dataObj: Object,
     lineHeight: {
       type: String,
-      default: '40px',
+      default: '0.2rem',
     }
   }
 }
@@ -53,6 +53,7 @@ export default {
   }
 
   .item-list {
+    font-size: 14px;
     //padding: 28px 0;
     //line-height: 40px;
     flex: 1;

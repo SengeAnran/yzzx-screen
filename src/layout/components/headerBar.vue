@@ -1,6 +1,9 @@
 <template>
   <header class="header-bar">
-    <div @click="goHome" class="logo">数智科技LOGO</div>
+    <!--    <div @click="goHome" class="logo">数智科技LOGO</div>-->
+    <div @click="goHome" class="logo">
+      <img :src="require('@/assets/logo.png')" alt="">
+    </div>
     <nav>
       <ul>
         <li v-for="(item, index) in navList" :class="{active: activeNavIndex === index}" @click="toPage(item)"
@@ -82,6 +85,12 @@ export default {
   .logo {
 
     cursor: pointer;
+
+    img {
+      width: 84px;
+      height: 50px;
+      object-fit: fill;
+    }
   }
 
   ul {

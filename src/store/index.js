@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import map from "./map";
+import user from "./user";
 import getters from "./getters";
 import {getStorage, setStorage} from "../utils/storage";
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     actions: {},
     modules: {
         map,
+        user,
     },
     getters: getters,
 });
