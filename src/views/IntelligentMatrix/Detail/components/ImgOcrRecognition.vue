@@ -1,21 +1,36 @@
 <template>
   <div class="ocr-recognition">
+    <!--    识别覆盖-->
     <div class="recognition-scan" :style="{display: showScan ? 'block' : 'none'}"></div>
     <div class="img-content">
       <div class="tech-canvas-container" ref="canvasBox">
+        <!--        图片识别加载-->
+        <div class="demo-loading" :style="{display: showScan ? 'block' : 'none'}">
+          <div class="demo-loading-img"></div>
+          <div class="demo-loading-text">图片解析中…</div>
+        </div>
+        <!--        图片识别错误-->
+        <div class="demo-data-error-msg" :style="{display: showErr ? 'block' : 'none'}">
+          <img
+              src="../img/err.png" alt=""
+              class="error-img">
+          <div class="error-text"></div>
+        </div>
+        <!--        图片上传-->
         <div class="image-input">
           <div class="image-input-container">
-            <input type="text" spallcheck="false" placeholder="请输入网络图片URL"
+            <input type="text" v-model="inputImgUrl" spallcheck="false" placeholder="请输入网络图片URL"
                    class="image-url">
-            <button class="image-button">
+            <button @click="inputImgSubmit" class="image-button">
               检测
             </button>
             <div class="image-text">或</div>
-            <label class="image-local">
-              <input type="file" accept="image/png, image/bmp, image/jpg, image/jpeg"
-                     class="image-local-input">
-              本地上传
-            </label>
+            <!--            <label  class="image-local">-->
+            <!--              <input type="file" accept="image/png, image/bmp, image/jpg, image/jpeg"-->
+            <!--                     class="image-local-input">-->
+            <!--              本地上传-->
+            <!--            </label>-->
+            <uploadImg class="image-local" v-model="image"/>
           </div>
           <div class="image-notice">
             此处仅供功能展示，图片类型支持PNG、JPG、JPEG、BMP，大小不超过8M。该接口实际能力的图片格式及大小要求以接口文档为准
@@ -32,7 +47,7 @@
             <div class="operate-item tooltip" @click="reduction"></div>
           </el-tooltip>
         </div>
-        <canvas width="2934" height="2096" class="img-canvas" ref="myCanvas"></canvas>
+        <canvas :width="canvasWidth" :height="canvasHeight" class="img-canvas" ref="myCanvas"></canvas>
       </div>
       <div class="image-select">
         <div v-for="(item, index) in imgList" class="image-select-item" :class="{active: activeIndex === index}"
@@ -64,12 +79,58 @@
   </div>
 </template>
 <script>
-import {getIdCard} from "@/api/baiduAi";
 import listRes from "./listRes.vue";
 import JsonRes from "./JsonRes.vue";
 
 export default {
   name: "OcrRecognition",
+  props: {
+    ocrMethod: Function, // 识别api
+    otherParams: Object, // 其他参数
+    imgList: {
+      type: Array,
+      default: () => {
+        return [{
+          url: 'https://ai.bdstatic.com/file/3C8C5B451BB4445697730217EC8648E3',
+        },
+          {
+            url: 'https://ai.bdstatic.com/file/96D2F45674F54D4287EB9FBF9E6AB19A',
+          },
+          {
+            url: 'https://ai.bdstatic.com/file/C8124E563BBE4DFE9647ACB7B8B12D0A',
+          },
+          {
+            url: 'https://ai.bdstatic.com/file/0C2E17DA8CBC4C04AF4A6D1E38FC04ED',
+          },
+          {
+            url: 'https://ai.bdstatic.com/file/D348C98B677149C8B95909CFA204BA1C',
+          },]
+      }
+    }, // 示例图片数据
+    tapList: {
+      type: Array,
+      default: () => {
+        return [
+          {
+            name: '识别结果',
+            showType: 'list',
+          },
+          {
+            name: 'JSON结果',
+            showType: 'json',
+          },
+        ]
+      }
+    }, // 结果栏
+    tabIndex: {
+      type: Number,
+      default: 0,
+    },
+    resDateKey: {
+      type: String,
+      default: '',
+    },
+  },
   components: {
     JsonRes,
     listRes,
@@ -77,11 +138,16 @@ export default {
   data() {
     return {
       showScan: false,
+      showErr: false,
       activeIndex: 0,
       tabActiveIndex: 0,
       orcImgUrl: '',
+      image: '',
+      inputImgUrl: '',
       orcRes: [],
-      jsonData: [],
+      jsonData: {},
+      canvasWidth: 2934, // 画布宽度
+      canvasHeight: 2096, // 画布高度
       canvasBox: null, // 窗口
       myCanvas: null, // canvas
       myCanvasContext: null, // 上下文
@@ -94,70 +160,62 @@ export default {
       lastY: 0,
       translateX: 0,
       translateY: 0,
-      imgList: [
-        {
-          url: 'https://ai.bdstatic.com/file/3C8C5B451BB4445697730217EC8648E3',
-        },
-        {
-          url: 'https://ai.bdstatic.com/file/96D2F45674F54D4287EB9FBF9E6AB19A',
-        },
-        {
-          url: 'https://ai.bdstatic.com/file/C8124E563BBE4DFE9647ACB7B8B12D0A',
-        },
-        {
-          url: 'https://ai.bdstatic.com/file/0C2E17DA8CBC4C04AF4A6D1E38FC04ED',
-        },
-        {
-          url: 'https://ai.bdstatic.com/file/D348C98B677149C8B95909CFA204BA1C',
-        },
-      ],
-      imgInfo: {
+      imgInfo: { // 图片信息
         width: 0,
         height: 0,
       },
-      tapList: [
-        {
-          name: '识别结果',
-          showType: 'list',
-        },
-        // {
-        //   name: '请求参数',
-        //   showType: 'request',
-        // },
-        {
-          name: 'JSON结果',
-          showType: 'json',
-        },
-      ]
     }
   },
   beforeMount() {
     this.orcImgUrl = this.imgList[0].url;
     this.postOcrRequest();
   },
+  watch: {
+    image(val) {
+      if (val) {
+        // this.getData();
+        this.activeIndex = -1;
+        this.orcImgUrl = '';
+        this.drawImg();
+        this.postOcrRequest();
+      }
+    },
+    tabIndex() {
+      this.activeIndex = 0;
+      this.orcImgUrl = this.imgList[0].url;
+      this.postOcrRequest();
+      this.drawImg();
+    }
+  },
   mounted() {
     this.myCanvas = this.$refs.myCanvas;
     this.canvasBox = this.$refs.canvasBox;
     this.myCanvasContext = this.$refs.myCanvas.getContext('2d'); // 获取上下文
-    this.init();
+    this.drawImg();
   },
   methods: {
     /**
-     * 初始化
+     * 画图片
      */
-    init() {
+    drawImg() {
       if (this.myCanvasContext) {
+        this.clearCanvas();
         const img = new Image();
-        img.src = this.orcImgUrl;
+        img.src = this.orcImgUrl || this.image;
         img.onload = () => {
           //  收集图片数据
           this.imgInfo.height = img.height;
           this.imgInfo.width = img.width;
-          //  设置图像drawImage(图像数据，起点x,起点y, ？宽带，？高度)
-          this.myCanvasContext.drawImage(img, 0, 0);
-          this.setCanvasTransform();
+          this.canvasHeight = img.height;
+          this.canvasWidth = img.width;
+          this.$nextTick(() => {
+            //  设置图像drawImage(图像数据，起点x,起点y, ？宽带，？高度)
+            this.myCanvasContext.drawImage(img, 0, 0);
+            this.setCanvasTransform();
+          })
         }
       }
+      //  图层移动
       this.myCanvas.addEventListener("mousedown", ((t) => {
             this.isDragging = !0;
             this.lastX = t.clientX;
@@ -192,7 +250,24 @@ export default {
           }
       ))
     },
-    // 初始化设置缩放位移
+    /**
+     * 画识别后的矩形数据
+     */
+    drawRect() {
+      this.myCanvasContext.fillStyle = 'rgba(153,173,211,0.5)';
+      this.orcRes.forEach(i => {
+        const {left: x, top: y, width: w, height: h} = i.location;
+        this.myCanvasContext.fillRect(x, y, w, h);
+      })
+    },
+    /**
+     * 清除画布
+     */
+    clearCanvas() {
+      const w = this.myCanvas.width, h = this.myCanvas.height;
+      this.myCanvasContext.clearRect(0, 0, w, h);
+    },
+    // 初始化设置缩放
     setCanvasTransform() {
       const {width, height} = this.imgInfo;
       const {clientWidth: boxWidth, clientHeight: boxHeight} = this.canvasBox;
@@ -221,6 +296,16 @@ export default {
       this.setCanvasTransform();
     },
     /**
+     * 通过输入图片地址进行检测
+     */
+    inputImgSubmit() {
+      this.orcImgUrl = this.inputImgUrl;
+      this.inputImgUrl = '';
+      this.image = '';
+      this.postOcrRequest();
+      this.drawImg();
+    },
+    /**
      *
      * @param item
      * @param index
@@ -228,8 +313,9 @@ export default {
     changeImg(item, index) {
       this.activeIndex = index;
       this.orcImgUrl = item.url;
+      this.image = '';
       this.postOcrRequest();
-      this.init();
+      this.drawImg();
     },
     changeTabActive(item, index) {
       this.tabActiveIndex = index;
@@ -242,29 +328,56 @@ export default {
     postOcrRequest() {
       this.showScan = true;
       const data = {
-        image: '',
+        image: this.image,
         url: this.orcImgUrl,
-        detect_photo: false,
-        detect_risk: true,
-        detect_quality: true,
-        id_card_side: 'front', //-front：身份证含照片的一 -back：身份证带国徽的一面
+        ...this.otherParams,
 
       };
-      getIdCard(data).then(res => {
-        this.orcRes = Object.keys(res.words_result).map(i => {
-          return {
-            name: i,
-            label: res.words_result[i].words,
-            location: res.words_result[i].location,
+      if (this.ocrMethod) {
+        this.ocrMethod(data).then(res => {
+          console.log(res)
+          switch (this.resDateKey) {
+            case 'words_result':
+              this.cardResHandel(res);
+              break;
+            case 'result':
+              this.currencyResHandel(res);
+              break;
+            default:
           }
-        });
-        this.jsonData = {
-          words_result: res.words_result,
+          this.drawRect();
+          this.showScan = false;
+        }).catch(() => {
+          this.showScan = false;
+        })
+      }
+
+    },
+    //    证件识别
+    cardResHandel(res) {
+      this.orcRes = Object.keys(res.words_result).map(i => {
+        return {
+          name: i,
+          label: res.words_result[i].words,
+          location: res.words_result[i].location,
         }
-        this.showScan = false;
-      }).catch(() => {
-        this.showScan = false;
-      })
+      });
+      this.jsonData = {
+        words_result: res.words_result,
+      }
+    },
+    //   通用识别
+    currencyResHandel(res) {
+      this.orcRes = res.result.map(i => {
+        return {
+          name: i.keyword,
+          label: i.score.toFixed(2),
+          ...i,
+        }
+      });
+      this.jsonData = {
+        result: res.result,
+      }
     }
   }
 }
@@ -411,6 +524,56 @@ export default {
   }
 }
 
+// 加载失败
+.demo-data-error-msg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center
+}
+
+.demo-data-error-msg img {
+  width: 90px
+}
+
+.demo-data-error-msg .error-text {
+  max-width: 416px;
+  margin-top: 12px;
+  line-height: 26px;
+  font-size: 16px;
+  color: #fff
+}
+
+// 加载中
+.demo-loading {
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%)
+}
+
+.demo-loading-img {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto;
+  background-image: url(../img/loading.png);
+  background-size: 100% 100%;
+}
+
+.demo-loading-text {
+  margin-top: 12px;
+  font-size: 16px;
+  color: #fff;
+  text-align: center
+}
+
 .image-input {
   position: absolute;
   left: 0;
@@ -464,26 +627,26 @@ export default {
 
     .image-local {
       display: inline-block;
-      vertical-align: middle;
-      height: 38px;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      outline: none;
-      width: 116px;
-      font-size: 16px;
-      line-height: 38px;
-      text-align: center;
-      color: #fff;
-      background-color: #0073eb;
-      border: none;
+      //vertical-align: middle;
+      //height: 38px;
+      //-webkit-box-sizing: border-box;
+      //-moz-box-sizing: border-box;
+      //box-sizing: border-box;
+      //outline: none;
+      //width: 116px;
+      //font-size: 16px;
+      //line-height: 38px;
+      //text-align: center;
+      //color: #fff;
+      //background-color: #0073eb;
+      //border: none;
 
-      .image-local-input {
-
-        width: 100%;
-        height: 100%;
-        display: none;
-      }
+      //.image-local-input {
+      //
+      //  width: 100%;
+      //  height: 100%;
+      //  display: none;
+      //}
     }
   }
 
@@ -530,21 +693,21 @@ export default {
   border: none
 }
 
-.image-input .image-input-container .image-local {
-  width: 116px;
-  font-size: 16px;
-  line-height: 38px;
-  text-align: center;
-  color: #fff;
-  background-color: #0073eb;
-  border: none
-}
+//.image-input .image-input-container .image-local {
+//  width: 116px;
+//  font-size: 16px;
+//  line-height: 38px;
+//  text-align: center;
+//  color: #fff;
+//  background-color: #0073eb;
+//  border: none
+//}
 
-.image-input .image-input-container .image-local-input {
-  width: 100%;
-  height: 100%;
-  display: none
-}
+//.image-input .image-input-container .image-local-input {
+//  width: 100%;
+//  height: 100%;
+//  display: none
+//}
 
 .image-input .image-notice {
   margin-top: 10px;

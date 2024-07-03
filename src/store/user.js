@@ -4,8 +4,8 @@ import {getAccessToken} from "../api/baiduAi";
 // const client_id = 'cmy8oSHHPHr0VlowAfUYhEDS';
 // const client_secret = 'hxV0QPk0qHWgpXhf11XelCWu6QQSfbrf';
 //  公司的
-const client_id = 'DQhjTZOf05CY20jvTS8O6QrZ'; // Api Key
-const client_secret = 'CIBvs4rHiCW7xuwHvZkrSdMdsFrYnWKh';
+const client_id = '6ZXBXKhIYz5yLVTU25JxtOJ7'; // Api Key
+const client_secret = 'TjWkXPgXV40ieD00TREMa7GXmAYwWnh1';
 export default {
     namespaced: true,
     state: {
@@ -34,7 +34,6 @@ export default {
                     reject();
                 })
             })
-
         }
     }
 };

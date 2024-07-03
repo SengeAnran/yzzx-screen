@@ -18,9 +18,12 @@ export function getAccessToken({grant_type, client_id, client_secret}) {
 //  通用物体和场景识别
 export function getAdvancedGeneral(data) {
     return service({
-        url: path + `/rest/2.0/image-classify/v2/advanced_general?access_token=${getToken()}&image=${data.image}`,
+        url: path + `/rest/2.0/image-classify/v2/advanced_general?access_token=${getToken()}`,
         method: "POST",
-        data,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: qs.stringify(data),
     });
 }
 
@@ -34,5 +37,29 @@ export function getIdCard(data) {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         data: qs.stringify(data),
+    });
+}
+
+//  文章标签
+export function getTextKeyWord(data) {
+    return service({
+        url: path + `/rpc/2.0/nlp/v1/keyword?access_token=${getToken()}`,
+        method: "POST",
+        // headers: {
+        //     'Content-Type': 'application/x-www-form-urlencoded'
+        // },
+        data: data,
+    });
+}
+
+//  文章分类
+export function getTextClass(data) {
+    return service({
+        url: path + `/rpc/2.0/nlp/v1/topic?charset=UTF-8&access_token=${getToken()}`,
+        method: "POST",
+        // headers: {
+        //     'Content-Type': 'application/x-www-form-urlencoded'
+        // },
+        data: data,
     });
 }

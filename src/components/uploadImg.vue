@@ -4,19 +4,20 @@
         class="upload-demo"
         action=""
         accept=".jpg, .png"
-        :limit="1"
+        :show-file-list="false"
+        :limit="2"
         :auto-upload="false"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :on-change="getFile"
         :file-list="fileList"
         list-type="picture">
-      <el-button size="small" type="primary">点击上传</el-button>
-      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+      <el-button size="" type="primary" style="background-color: #0073eb;">本地上传</el-button>
+      <!--      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
     </el-upload>
-    <el-dialog :visible.sync="dialogVisible" append-to-body>
-      <img width="100%" :src="dialogImageUrl" alt/>
-    </el-dialog>
+    <!--    <el-dialog :visible.sync="dialogVisible" append-to-body>-->
+    <!--      <img width="100%" :src="dialogImageUrl" alt/>-->
+    <!--    </el-dialog>-->
   </div>
 
 </template>
@@ -61,14 +62,10 @@ export default {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    getFile(file, fileList) {
-      console.log(file, fileList)
+    getFile(file) {
+      // console.log(file)
       this.getBase64(file.raw).then(res => {
         console.log(res);
-        // const obj = {
-        //   name: '资质证明',
-        //   url: this.proofImage,
-        // }
         this.$emit('change', res)
       })
     },

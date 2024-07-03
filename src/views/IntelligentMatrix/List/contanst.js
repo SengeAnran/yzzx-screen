@@ -134,11 +134,12 @@ export const dataList1 =
         {
             name: '专业证件识别',
             tip: '这是一段文字描述这是一段文字描述',
+            canDetail: true,
             path: '',
             iconUrl: require('./img/icon1_19.svg'),
         },
         {
-            name: '专业证件识别',
+            name: '旗语识别',
             tip: '这是一段文字描述这是一段文字描述',
             path: '',
             iconUrl: require('./img/icon1_20.svg'),
@@ -162,17 +163,20 @@ export const dataList2 =
             name: '关键词提取',
             tip: '这是一段文字描述这是一段文字描述',
             path: '',
+            canDetail: true,
             iconUrl: require('./img/icon2_03.svg'),
         },
         {
             name: '标签抽取',
             tip: '这是一段文字描述这是一段文字描述',
+            canDetail: true,
             path: '',
             iconUrl: require('./img/icon2_04.svg'),
         },
         {
             name: '文章分类',
             tip: '这是一段文字描述这是一段文字描述',
+            canDetail: true,
             path: '',
             iconUrl: require('./img/icon2_05.svg'),
         },
@@ -185,6 +189,7 @@ export const dataList2 =
         {
             name: '摘要总结',
             tip: '这是一段文字描述这是一段文字描述',
+            canDetail: true,
             path: '',
             iconUrl: require('./img/icon2_07.svg'),
         },

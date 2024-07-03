@@ -1,5 +1,6 @@
 import axios from 'axios'
 import config from "./config";
+import {Message} from 'element-ui'
 
 // 创建axios实例
 const service = axios.create({
@@ -23,7 +24,16 @@ service.interceptors.request.use(
 // response 拦截器
 service.interceptors.response.use(
     response => {
-        return response.data
+        if (response.data.error_code) {
+            Message({
+                showClose: true,
+                message: response.data.error_msg,
+                type: 'warning'
+            });
+        } else {
+            return response.data
+        }
+
     },
     error => {
         return Promise.reject(error)

@@ -1,25 +1,60 @@
 <template>
   <div class="able-show">
-    <!--    <img src="./able.png" alt="">-->
-    <OcrRecognition/>
-    <uploadImg v-model="imageUrl"/>
-    <div class="result">
-      <!--      {{ res }}-->
+    <div v-if="tabList.length > 0" class="tab-list">
+      <div class="tab-item"
+           v-for="(item, index) in tabList"
+           @click="changeActive(item, index)"
+           :class="{active: activeIndex === index}"
+           :key="index">
+        {{ item.name }}
+      </div>
     </div>
+    <!--    图片类识别-->
+    <ImgOcrRecognition
+        v-if="type === 'img'"
+        :img-list="imgList"
+        :ocr-method="ocrMethod"
+        :other-params="otherParams"
+        :tap-list="resTapList"
+        :tab-index="activeIndex"
+        :res-date-key="resDateName"
+    />
+    <!--    文字类识别-->
+    <TextOcrRecognition
+        v-else-if="type === 'text'"
+        :ocr-method="ocrMethod"
+        :other-params="otherParams"
+        :res-date-key="resDateName"
+        :example-info="exampleInfo"
+    />
   </div>
 </template>
 <script>
-// import {getAdvancedGeneral} from "@/api/baiduAi";
-import OcrRecognition from "./components/OcrRecognition.vue";
+import {getIdCard} from "@/api/baiduAi";
+import {ableData} from "./contanst";
+
+import ImgOcrRecognition from "./components/ImgOcrRecognition.vue";
+import TextOcrRecognition from "./components/TextOcrRecognition.vue";
 
 export default {
   name: "AbleShow",
-  components: {OcrRecognition},
+  components: {TextOcrRecognition, ImgOcrRecognition},
   data() {
     return {
-      imageUrl: 'http://www.gxwin.cn/img/%E5%85%B4%E9%9A%86%E6%B9%963.jpg',
-      resStr: '',
+      activeIndex: 0,
+      infoData: null,
+      tabList: [], // 分类项
+      otherParams: {}, // 额外参数
+      ocrMethod: getIdCard,  // 识别api
+      resDateName: '',  // 识别api
+      imgList: [],  // 示例数据
+      resTapList: [], // 识别结果栏
+      type: 'img', // 识别类型
+      exampleInfo: null, // 例子信息
     };
+  },
+  beforeMount() {
+    this.initData();
   },
   mounted() {
     // this.getData()
@@ -32,16 +67,38 @@ export default {
     }
   },
   methods: {
-    // getData() {
-    //   const data = {
-    //     image: this.imageUrl,
-    //     // url: this.imageUrl,
-    //     // baike_num:
-    //   }
-    //   getAdvancedGeneral(data).then(res => {
-    //     this.resStr = res.result[0].keyword;
-    //   })
-    // },
+    initData() {
+      const name = this.$route.query.name;
+      const index = ableData.findIndex(i => i.name === name);
+      if (index === -1) {
+        return
+      }
+      this.type = ableData[index].type;
+      if (ableData[index].type === 'img') { // 图片识别
+        this.infoData = ableData[index];
+        this.tabList = ableData[index].tabList;
+        this.resTapList = ableData[index].resTapList;
+        this.otherParams = ableData[index].otherParams;
+        this.ocrMethod = ableData[index].ocrMethod;
+        this.resDateName = ableData[index].resDateName;
+        if (this.tabList && this.tabList.length > 0) {
+          this.imgList = ableData[index].imgList[0];
+        } else {
+          this.imgList = ableData[index].imgList;
+        }
+      } else if (ableData[index].type === 'text') { // 文字识别
+        this.otherParams = ableData[index].otherParams;
+        this.ocrMethod = ableData[index].ocrMethod;
+        this.exampleInfo = ableData[index].exampleInfo;
+        this.resDateName = ableData[index].resDateName;
+      }
+
+    },
+    changeActive(item, index) {
+      this.activeIndex = index;
+      this.otherParams[item.key] = item.value;
+      this.imgList = this.infoData.imgList[index];
+    }
   }
 }
 </script>
@@ -50,30 +107,26 @@ export default {
   padding-top: 30px;
 }
 
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
+.tab-list {
+  box-sizing: content-box;
+  display: flex;
+  justify-content: center;
+  height: 32px;
+  line-height: 32px;
   position: relative;
-  overflow: hidden;
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
-}
-
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
+  padding-bottom: 20px;
+  //border-bottom: 1px solid #eee;
   text-align: center;
-}
+  background: #fff;
 
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
+  .tab-item {
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 20px;
+
+    &.active {
+      font-weight: 600;
+    }
+  }
 }
 </style>
